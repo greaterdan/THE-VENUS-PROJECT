@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ScrollPortrait from "@/components/ScrollPortrait";
+import architectureBg from "@assets/fd7aa77a-6cf8-41b7-a61c-a2ea33400e8e_1754887176761.png";
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
@@ -24,30 +25,52 @@ export default function Home() {
 
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-white">
+      <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
+        {/* Multiple layer approach to handle PNG transparency */}
+        <div className="absolute inset-0 bg-gray-100"></div>
+        <div 
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url(${architectureBg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        ></div>
+        <div className="absolute inset-0 bg-white bg-opacity-10"></div>
         
-        <div className="text-center px-4">
+        <div className="text-center px-4 relative z-20">
           <h1 
-            className="text-6xl md:text-8xl font-bold text-black tracking-tight transition-all duration-300"
+            className="text-6xl md:text-8xl font-bold text-black tracking-tight transition-all duration-300 drop-shadow-lg"
             style={{
               opacity: titleOpacity,
-              transform: `translateY(${titleTranslateY}px) scale(${titleScale})`
+              transform: `translateY(${titleTranslateY}px) scale(${titleScale})`,
+              textShadow: '2px 2px 4px rgba(255,255,255,0.8)'
             }}
           >
             THE VENUS PROJECT
           </h1>
         </div>
         
+        {/* Gradient overlay for smooth transition */}
+        <div 
+          className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent pointer-events-none z-10"
+          style={{
+            opacity: Math.min(1, scrollY / 200)
+          }}
+        />
+        
         {/* Scroll indicator */}
         <div 
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-black animate-bounce"
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-black animate-bounce z-20"
           style={{
-            opacity: Math.max(0, 1 - scrollY / 200)
+            opacity: Math.max(0, 1 - scrollY / 200),
+            textShadow: '2px 2px 4px rgba(255,255,255,0.8)'
           }}
         >
           <div className="flex flex-col items-center">
             <span className="text-sm mb-2">Scroll to explore</span>
-            <div className="w-px h-8 bg-black"></div>
+            <div className="w-px h-8 bg-black shadow-lg"></div>
           </div>
         </div>
       </div>
