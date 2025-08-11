@@ -19,23 +19,39 @@ export default function Navigation() {
   const contributeDropdownRef = useRef<HTMLDivElement>(null);
   const venusDropdownRef = useRef<HTMLDivElement>(null);
 
-  // Create click sound effect
+  // Create realistic click sound effect
   const playClickSound = () => {
-    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-    
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    
-    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-    oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.1);
-    
-    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-    
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 0.1);
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      
+      // Create a sharp click sound using white noise and filtering
+      const bufferSize = audioContext.sampleRate * 0.05; // 50ms
+      const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+      const output = buffer.getChannelData(0);
+      
+      // Generate click sound with rapid attack and decay
+      for (let i = 0; i < bufferSize; i++) {
+        const t = i / audioContext.sampleRate;
+        // Create a sharp transient with exponential decay
+        const envelope = Math.exp(-t * 100);
+        // Add some high frequency content for the "click"
+        const noise = (Math.random() * 2 - 1) * envelope;
+        const tone = Math.sin(2 * Math.PI * 2000 * t) * envelope * 0.3;
+        output[i] = (noise + tone) * 0.15;
+      }
+      
+      const source = audioContext.createBufferSource();
+      const gainNode = audioContext.createGain();
+      
+      source.buffer = buffer;
+      source.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      gainNode.gain.setValueAtTime(0.4, audioContext.currentTime);
+      source.start();
+    } catch (error) {
+      console.log('Audio not supported');
+    }
   };
 
   useEffect(() => {
