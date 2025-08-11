@@ -88,7 +88,7 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
   useEffect(() => {
     let animationId: number;
     let position = 0;
-    const scrollSpeed = 1; // pixels per frame
+    const scrollSpeed = 0.2; // pixels per frame (slower to match 50s CSS animation)
     let containerWidth = 0;
     
     const animate = () => {
