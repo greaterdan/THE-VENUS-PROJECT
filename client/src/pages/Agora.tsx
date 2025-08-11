@@ -190,48 +190,77 @@ const ARCHIVE_DECISIONS = [
   { id: 5, title: 'Healthcare System Upgrade', status: 'IMPLEMENTED', timestamp: '14:06:12', impact: '97.3% diagnostic accuracy' }
 ];
 
-const AgentNode = ({ agent, isSelected, onClick }: { agent: Agent; isSelected: boolean; onClick: () => void }) => {
+const SVGAgentNode = ({ agent, isSelected, onClick }: { agent: Agent; isSelected: boolean; onClick: () => void }) => {
   // Color coding based on agent type matching example image
   const agentColors = {
-    alpha: 'bg-green-500',    // Infrastructure - Green
-    beta: 'bg-yellow-500',    // Energy - Yellow
-    gamma: 'bg-green-500',    // Agriculture - Green
-    delta: 'bg-gray-500',     // Ecology - Gray
-    epsilon: 'bg-green-500',  // Social - Green
-    zeta: 'bg-yellow-500',    // Transportation - Yellow
-    eta: 'bg-green-500',      // Health - Green
-    theta: 'bg-yellow-500',   // Education - Yellow
-    iota: 'bg-green-500',     // Resources - Green
-    kappa: 'bg-green-500'     // Governance - Green
+    alpha: '#22c55e',    // Infrastructure - Green
+    beta: '#eab308',     // Energy - Yellow
+    gamma: '#22c55e',    // Agriculture - Green
+    delta: '#6b7280',    // Ecology - Gray
+    epsilon: '#22c55e',  // Social - Green
+    zeta: '#eab308',     // Transportation - Yellow
+    eta: '#22c55e',      // Health - Green
+    theta: '#eab308',    // Education - Yellow
+    iota: '#22c55e',     // Resources - Green
+    kappa: '#22c55e'     // Governance - Green
   };
 
   return (
-    <motion.div
-      className={`absolute cursor-pointer`}
-      style={{ left: agent.position.x - 20, top: agent.position.y - 20 }} // Center the 40px circle
-      whileHover={{ scale: 1.1 }}
-      onClick={onClick}
-      initial={{ scale: 0 }}
-      animate={{ scale: 1 }}
-      transition={{ delay: 0.1 }}
-    >
-      {/* Main agent circle */}
-      <div className={`w-10 h-10 rounded-full ${agentColors[agent.id as keyof typeof agentColors]} shadow-lg flex items-center justify-center border-2 border-white ${
-        isSelected ? 'ring-4 ring-lime-400' : ''
-      }`}>
-        <span className="text-white font-bold text-sm">{agent.name.charAt(0)}</span>
-      </div>
+    <g>
+      {/* Agent circle */}
+      <motion.circle
+        cx={agent.position.x}
+        cy={agent.position.y}
+        r="20"
+        fill={agentColors[agent.id as keyof typeof agentColors]}
+        stroke={isSelected ? '#a3e635' : '#ffffff'}
+        strokeWidth={isSelected ? '4' : '2'}
+        className="cursor-pointer"
+        onClick={onClick}
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        whileHover={{ scale: 1.1 }}
+        transition={{ delay: 0.1 }}
+      />
+      
+      {/* Agent letter */}
+      <text
+        x={agent.position.x}
+        y={agent.position.y}
+        textAnchor="middle"
+        dominantBaseline="central"
+        className="fill-white font-bold text-sm pointer-events-none"
+        style={{ fontSize: '14px' }}
+      >
+        {agent.name.charAt(0)}
+      </text>
       
       {/* Agent name label */}
-      <div className="absolute top-12 left-1/2 transform -translate-x-1/2 text-xs font-medium text-gray-600 whitespace-nowrap">
+      <text
+        x={agent.position.x}
+        y={agent.position.y + 35}
+        textAnchor="middle"
+        className="fill-gray-600 text-xs font-medium pointer-events-none"
+        style={{ fontSize: '12px' }}
+      >
         {agent.name}
-      </div>
+      </text>
       
       {/* Activity indicator for active agents */}
       {agent.status === 'active' && (
-        <div className="absolute inset-0 w-10 h-10 rounded-full bg-green-400 animate-ping opacity-30"></div>
+        <motion.circle
+          cx={agent.position.x}
+          cy={agent.position.y}
+          r="20"
+          fill="none"
+          stroke="#22c55e"
+          strokeWidth="2"
+          opacity="0.5"
+          animate={{ r: [20, 30, 20] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        />
       )}
-    </motion.div>
+    </g>
   );
 };
 
@@ -475,8 +504,9 @@ export default function Agora() {
                 </div>
               </div>
 
-              {/* Agent Network */}
-              <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 600 400">
+              {/* Agent Network - everything in SVG for proper coordination */}
+              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 600 400">
+                {/* Connection lines */}
                 <AnimatePresence>
                   {activeConnections.map((connection) => (
                     <AnimatedConnectionLine 
@@ -486,16 +516,17 @@ export default function Agora() {
                     />
                   ))}
                 </AnimatePresence>
+                
+                {/* Agent nodes */}
+                {AGENTS.map(agent => (
+                  <SVGAgentNode
+                    key={agent.id}
+                    agent={agent}
+                    isSelected={selectedAgent?.id === agent.id}
+                    onClick={() => setSelectedAgent(agent)}
+                  />
+                ))}
               </svg>
-
-              {AGENTS.map(agent => (
-                <AgentNode
-                  key={agent.id}
-                  agent={agent}
-                  isSelected={selectedAgent?.id === agent.id}
-                  onClick={() => setSelectedAgent(agent)}
-                />
-              ))}
 
               {/* Agent Detail Panel */}
               <AnimatePresence>
