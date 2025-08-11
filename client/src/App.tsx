@@ -37,19 +37,19 @@ function Router({ isLoaded, showContent }: { isLoaded: boolean; showContent: boo
 }
 
 function App() {
-  const [isLoaded, setIsLoaded] = useState(true);
-  const [showContent, setShowContent] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
     // Show main title first
     const titleTimer = setTimeout(() => {
       setIsLoaded(true);
-    }, 800);
+    }, 500);
 
-    // Then show rest of content gradually - slightly sooner
+    // Then show background and other content AFTER title is visible
     const contentTimer = setTimeout(() => {
       setShowContent(true);
-    }, 1600);
+    }, 1800);
 
     return () => {
       clearTimeout(titleTimer);
@@ -63,7 +63,7 @@ function App() {
         <div className="min-h-screen bg-venus-bg text-foreground font-inter">
           {/* Navigation with delayed fade in */}
           <div 
-            className={`transition-opacity duration-4000 ease-out delay-1000 ${
+            className={`transition-opacity duration-3000 ease-out delay-800 ${
               showContent ? 'opacity-100' : 'opacity-0'
             }`}
           >
@@ -72,9 +72,9 @@ function App() {
           
           <Router isLoaded={isLoaded} showContent={showContent} />
           
-          {/* Fixed Social Icons - Bottom Right with delayed fade in */}
+          {/* Fixed Social Icons - Bottom Right with smooth delayed fade in */}
           <div 
-            className={`fixed bottom-6 right-6 flex flex-col space-y-3 z-50 transition-opacity duration-4000 ease-out delay-4000 ${
+            className={`fixed bottom-6 right-6 flex flex-col space-y-3 z-50 transition-opacity duration-3000 ease-out delay-3000 ${
               showContent ? 'opacity-100' : 'opacity-0'
             }`}
           >
