@@ -23,11 +23,11 @@ const ScrollPortrait = () => {
         className="object-cover transition-transform duration-300"
         style={{ width: '640px', height: '640px' }}
       />
-      <div className="mb-16 max-w-sm" style={{ marginLeft: '-350px' }}>
-        <blockquote className="text-xl italic text-black mb-4 leading-relaxed">
+      <div className="mb-16 max-w-sm" style={{ marginLeft: '-310px' }}>
+        <blockquote className="text-lg italic text-black mb-4 leading-relaxed">
           "If we continue to use the same methods, we will get the same results."
         </blockquote>
-        <cite className="text-lg font-semibold text-black">
+        <cite className="text-base font-semibold text-black">
           — Jacque Fresco
         </cite>
       </div>
