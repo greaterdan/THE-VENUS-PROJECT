@@ -17,7 +17,8 @@ const ScrollPortrait = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const opacity = Math.min(1, Math.max(0, (scrollY - 800) / 300));
+  const portraitOpacity = Math.min(1, Math.max(0, (scrollY - 800) / 200));
+  const shouldShowQuote = scrollY > 800;
 
   useEffect(() => {
     const shouldStartTyping = scrollY > 800;
@@ -48,27 +49,34 @@ const ScrollPortrait = () => {
   }, [scrollY, displayedQuote, displayedAuthor, isTypingQuote, isTypingAuthor, fullQuote, fullAuthor]);
 
   return (
-    <div 
-      className="fixed bottom-0 left-0 z-40 flex items-end"
-      style={{ opacity }}
-    >
-      <img 
-        src={portraitImage} 
-        alt="Portrait" 
-        className="object-cover transition-transform duration-300"
-        style={{ width: '640px', height: '640px' }}
-      />
-      <div className="mb-16 max-w-sm" style={{ marginLeft: '-310px' }}>
-        <blockquote className="text-lg italic text-black mb-4 leading-relaxed">
-          "{displayedQuote}"
-          {isTypingQuote && <span className="animate-pulse">|</span>}
-        </blockquote>
-        <cite className="text-base font-semibold text-black">
-          {displayedAuthor}
-          {isTypingAuthor && <span className="animate-pulse">|</span>}
-        </cite>
+    <>
+      {/* Portrait */}
+      <div 
+        className="fixed bottom-0 left-0 z-40"
+        style={{ opacity: portraitOpacity }}
+      >
+        <img 
+          src={portraitImage} 
+          alt="Portrait" 
+          className="object-cover transition-transform duration-300"
+          style={{ width: '640px', height: '640px' }}
+        />
       </div>
-    </div>
+      
+      {/* Quote */}
+      {shouldShowQuote && (
+        <div className="fixed bottom-16 left-80 z-50 max-w-sm">
+          <blockquote className="text-lg italic text-black mb-4 leading-relaxed bg-white/90 p-4 rounded-lg shadow-lg">
+            "{displayedQuote}"
+            {isTypingQuote && <span className="animate-pulse">|</span>}
+          </blockquote>
+          <cite className="text-base font-semibold text-black bg-white/90 px-4 py-2 rounded">
+            {displayedAuthor}
+            {isTypingAuthor && <span className="animate-pulse">|</span>}
+          </cite>
+        </div>
+      )}
+    </>
   );
 };
 
