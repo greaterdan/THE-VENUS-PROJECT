@@ -40,6 +40,27 @@ import nbcLogo from "@assets/Untitled design (4) copy 9_1754942660088.png";
 import starzLogo from "@assets/Untitled design (4) copy_1754942660088.png";
 import espnLogo from "@assets/Untitled design (4)_1754942660088.png";
 
+// Third row logos
+import nbcPeacockLogo from "@assets/Untitled design (4) copy 10_1754943218265.png";
+import nhkLogo from "@assets/Untitled design (4) copy 11_1754943218265.png";
+import jpMorganLogo from "@assets/Untitled design (4) copy 12_1754943218265.png";
+import geoLogo from "@assets/Untitled design (5) copy 2_1754943218265.png";
+import milliLogo from "@assets/Untitled design (5) copy 3_1754943218265.png";
+import huffpostLogo from "@assets/Untitled design (5) copy 4_1754943218265.png";
+import haberturkLogo from "@assets/Untitled design (5) copy 5_1754943218265.png";
+import nowThisLogo from "@assets/Untitled design (5) copy 6_1754943218265.png";
+import freeSpeechTvLogo from "@assets/Untitled design (5) copy 7_1754943218265.png";
+import sputnikLogo from "@assets/Untitled design (5) copy 8_1754943218265.png";
+import starLogo from "@assets/Untitled design (5) copy 9_1754943218265.png";
+import pumaLogo from "@assets/Untitled design (5) copy 10_1754943218265.png";
+import philadelphiaTribuneLogo from "@assets/Untitled design (5) copy 11_1754943218265.png";
+import rteLogo from "@assets/Untitled design (5) copy 12_1754943218265.png";
+import orfLogo from "@assets/Untitled design (5) copy 13_1754943218265.png";
+import appleLogo from "@assets/Untitled design (5) copy 14_1754943218265.png";
+import vancouverSunLogo from "@assets/Untitled design (5) copy 15_1754943218265.png";
+import ieBusinessLogo from "@assets/Untitled design (5) copy_1754943218265.png";
+import inLogo from "@assets/Untitled design (5)_1754943218265.png";
+
 interface HomeProps {
   isLoaded?: boolean;
   showContent?: boolean;
@@ -352,6 +373,86 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
                 <img src={jmorgenLogo} alt="J.P. Morgan" className="h-20 object-contain" />
                 <img src={plainDealerLogo} alt="The Plain Dealer" className="h-20 object-contain" />
                 <img src={sunLogo} alt="The Sun" className="h-20 object-contain" />
+              </div>
+            </div>
+          </div>
+          
+          {/* Third row - New logos scrolling right to left */}
+          <div className="overflow-hidden mt-8">
+            <div 
+              className="flex select-none"
+              style={{
+                animation: 'scrollRightToLeft 50s linear infinite',
+                willChange: 'transform'
+              }}
+            >
+              {/* First set of third row logos */}
+              <div className="flex space-x-20 items-center min-w-max">
+                <img src={nbcPeacockLogo} alt="NBC" className="h-20 object-contain" />
+                <img src={nhkLogo} alt="NHK" className="h-20 object-contain" />
+                <img src={jpMorganLogo} alt="J.P. Morgan" className="h-20 object-contain" />
+                <img src={geoLogo} alt="GEO" className="h-20 object-contain" />
+                <img src={milliLogo} alt="Milliyet" className="h-20 object-contain" />
+                <img src={huffpostLogo} alt="HuffPost" className="h-20 object-contain" />
+                <img src={haberturkLogo} alt="Habertürk" className="h-20 object-contain" />
+                <img src={nowThisLogo} alt="NowThis" className="h-20 object-contain" />
+                <img src={freeSpeechTvLogo} alt="Free Speech TV" className="h-20 object-contain" />
+                <img src={sputnikLogo} alt="Sputnik" className="h-20 object-contain" />
+                <img src={starLogo} alt="Star" className="h-20 object-contain" />
+                <img src={pumaLogo} alt="Puma" className="h-20 object-contain" />
+                <img src={philadelphiaTribuneLogo} alt="Philadelphia Tribune" className="h-20 object-contain" />
+                <img src={rteLogo} alt="RTÉ" className="h-20 object-contain" />
+                <img src={orfLogo} alt="ORF eins" className="h-20 object-contain" />
+                <img src={appleLogo} alt="Apple" className="h-20 object-contain" />
+                <img src={vancouverSunLogo} alt="The Vancouver Sun" className="h-20 object-contain" />
+                <img src={ieBusinessLogo} alt="IE Business" className="h-20 object-contain" />
+                <img src={inLogo} alt="IN" className="h-20 object-contain" />
+              </div>
+              
+              {/* Duplicate set for seamless loop */}
+              <div className="flex space-x-20 items-center min-w-max ml-20">
+                <img src={nbcPeacockLogo} alt="NBC" className="h-20 object-contain" />
+                <img src={nhkLogo} alt="NHK" className="h-20 object-contain" />
+                <img src={jpMorganLogo} alt="J.P. Morgan" className="h-20 object-contain" />
+                <img src={geoLogo} alt="GEO" className="h-20 object-contain" />
+                <img src={milliLogo} alt="Milliyet" className="h-20 object-contain" />
+                <img src={huffpostLogo} alt="HuffPost" className="h-20 object-contain" />
+                <img src={haberturkLogo} alt="Habertürk" className="h-20 object-contain" />
+                <img src={nowThisLogo} alt="NowThis" className="h-20 object-contain" />
+                <img src={freeSpeechTvLogo} alt="Free Speech TV" className="h-20 object-contain" />
+                <img src={sputnikLogo} alt="Sputnik" className="h-20 object-contain" />
+                <img src={starLogo} alt="Star" className="h-20 object-contain" />
+                <img src={pumaLogo} alt="Puma" className="h-20 object-contain" />
+                <img src={philadelphiaTribuneLogo} alt="Philadelphia Tribune" className="h-20 object-contain" />
+                <img src={rteLogo} alt="RTÉ" className="h-20 object-contain" />
+                <img src={orfLogo} alt="ORF eins" className="h-20 object-contain" />
+                <img src={appleLogo} alt="Apple" className="h-20 object-contain" />
+                <img src={vancouverSunLogo} alt="The Vancouver Sun" className="h-20 object-contain" />
+                <img src={ieBusinessLogo} alt="IE Business" className="h-20 object-contain" />
+                <img src={inLogo} alt="IN" className="h-20 object-contain" />
+              </div>
+              
+              {/* Third set for extra smooth scrolling */}
+              <div className="flex space-x-20 items-center min-w-max ml-20">
+                <img src={nbcPeacockLogo} alt="NBC" className="h-20 object-contain" />
+                <img src={nhkLogo} alt="NHK" className="h-20 object-contain" />
+                <img src={jpMorganLogo} alt="J.P. Morgan" className="h-20 object-contain" />
+                <img src={geoLogo} alt="GEO" className="h-20 object-contain" />
+                <img src={milliLogo} alt="Milliyet" className="h-20 object-contain" />
+                <img src={huffpostLogo} alt="HuffPost" className="h-20 object-contain" />
+                <img src={haberturkLogo} alt="Habertürk" className="h-20 object-contain" />
+                <img src={nowThisLogo} alt="NowThis" className="h-20 object-contain" />
+                <img src={freeSpeechTvLogo} alt="Free Speech TV" className="h-20 object-contain" />
+                <img src={sputnikLogo} alt="Sputnik" className="h-20 object-contain" />
+                <img src={starLogo} alt="Star" className="h-20 object-contain" />
+                <img src={pumaLogo} alt="Puma" className="h-20 object-contain" />
+                <img src={philadelphiaTribuneLogo} alt="Philadelphia Tribune" className="h-20 object-contain" />
+                <img src={rteLogo} alt="RTÉ" className="h-20 object-contain" />
+                <img src={orfLogo} alt="ORF eins" className="h-20 object-contain" />
+                <img src={appleLogo} alt="Apple" className="h-20 object-contain" />
+                <img src={vancouverSunLogo} alt="The Vancouver Sun" className="h-20 object-contain" />
+                <img src={ieBusinessLogo} alt="IE Business" className="h-20 object-contain" />
+                <img src={inLogo} alt="IN" className="h-20 object-contain" />
               </div>
             </div>
           </div>
