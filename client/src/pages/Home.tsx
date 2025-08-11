@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ScrollPortrait from "@/components/ScrollPortrait";
+import cityImagePath from "@assets/9a62f427-54dc-4f39-b44a-e2f9aeb960ba_1754885823494.png";
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
@@ -24,12 +25,23 @@ export default function Home() {
 
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      <div 
+        className="min-h-screen flex items-center justify-center relative overflow-hidden"
+        style={{
+          backgroundImage: `url(${cityImagePath})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        {/* Dark overlay for better text readability */}
+        <div className="absolute inset-0 bg-black bg-opacity-30"></div>
         <h1 
-          className="text-6xl md:text-8xl font-bold text-black text-center tracking-tight transition-all duration-300"
+          className="text-6xl md:text-8xl font-bold text-white text-center tracking-tight transition-all duration-300 relative z-10 drop-shadow-lg"
           style={{
             opacity: titleOpacity,
             transform: `translateY(${titleTranslateY}px) scale(${titleScale})`,
+            textShadow: '2px 2px 8px rgba(0,0,0,0.8)'
           }}
         >
           THE VENUS PROJECT
@@ -45,14 +57,15 @@ export default function Home() {
         
         {/* Scroll indicator */}
         <div 
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-black animate-bounce"
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce relative z-10"
           style={{
-            opacity: Math.max(0, 1 - scrollY / 200)
+            opacity: Math.max(0, 1 - scrollY / 200),
+            textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
           }}
         >
           <div className="flex flex-col items-center">
             <span className="text-sm mb-2">Scroll to explore</span>
-            <div className="w-px h-8 bg-black"></div>
+            <div className="w-px h-8 bg-white shadow-lg"></div>
           </div>
         </div>
       </div>
