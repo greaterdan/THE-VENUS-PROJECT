@@ -77,12 +77,12 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
       <div className="min-h-screen flex items-center justify-center relative overflow-hidden -mt-16 pt-16">
         {/* Multiple layer approach to handle PNG transparency */}
         <div 
-          className={`absolute -top-16 left-0 right-0 bottom-0 bg-gray-100 transition-opacity duration-2000 ease-out delay-500 ${
+          className={`absolute -top-16 left-0 right-0 bottom-0 bg-gray-100 transition-opacity duration-2500 ease-out delay-300 ${
             showContent ? 'opacity-100' : 'opacity-0'
           }`}
         ></div>
         <div 
-          className={`absolute -top-16 left-0 right-0 bottom-0 transition-opacity duration-2000 ease-out delay-1000 ${
+          className={`absolute -top-16 left-0 right-0 bottom-0 transition-opacity duration-2500 ease-out delay-800 ${
             showContent ? 'opacity-100' : 'opacity-0'
           }`}
           style={{
@@ -93,7 +93,7 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
           }}
         ></div>
         <div 
-          className={`absolute -top-16 left-0 right-0 bottom-0 bg-white bg-opacity-10 transition-opacity duration-2000 ease-out delay-1500 ${
+          className={`absolute -top-16 left-0 right-0 bottom-0 bg-white bg-opacity-10 transition-opacity duration-2500 ease-out delay-1200 ${
             showContent ? 'opacity-100' : 'opacity-0'
           }`}
         ></div>
@@ -115,7 +115,7 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
         
         {/* Gradient overlay for smooth transition */}
         <div 
-          className={`absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none z-25 transition-opacity duration-2000 ease-out delay-2000 ${
+          className={`absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none z-25 transition-opacity duration-2500 ease-out delay-1600 ${
             showContent ? 'opacity-100' : 'opacity-0'
           }`}
           style={{
@@ -125,7 +125,7 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
         
         {/* Scroll indicator */}
         <div 
-          className={`absolute bottom-1 left-1/2 transform -translate-x-1/2 text-black animate-bounce z-20 transition-opacity duration-2000 ease-out delay-2500 ${
+          className={`absolute bottom-1 left-1/2 transform -translate-x-1/2 text-black animate-bounce z-20 transition-opacity duration-2500 ease-out delay-2000 ${
             showContent ? 'opacity-100' : 'opacity-0'
           }`}
           style={{
@@ -142,7 +142,7 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
       
       {/* Transition section */}
       <div 
-        className={`min-h-screen bg-white p-8 relative z-30 transition-all duration-2000 ease-out delay-1500 ${
+        className={`min-h-screen bg-white p-8 relative z-30 transition-all duration-2500 ease-out delay-1000 ${
           showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}
         style={{
@@ -189,7 +189,7 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
       
       {/* Featured In Section - Separate section */}
       <div 
-        className={`bg-white py-16 transition-all duration-2000 ease-out delay-2500 ${
+        className={`bg-white py-16 transition-all duration-2500 ease-out delay-2000 ${
           showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}
       >
