@@ -301,12 +301,7 @@ export default function Agora() {
         </div>
       </div>
 
-      {/* Timeline Ribbon */}
-      <TimelineRibbon 
-        markers={timelineMarkers}
-        onMarkerClick={scrollToMessage}
-        className="z-40"
-      />
+
 
       {/* Main Content */}
       <div className="pt-40 pb-20 max-w-4xl mx-auto px-6 relative z-20">
