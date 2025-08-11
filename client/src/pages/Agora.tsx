@@ -209,7 +209,7 @@ export default function Agora() {
       
       {/* Enhanced Header */}
       <motion.div 
-        className="relative w-full z-50 bg-white border-b border-gray-200 mt-4"
+        className="relative w-full z-50 bg-white border-b border-gray-200 mt-16"
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -241,7 +241,7 @@ export default function Agora() {
       </motion.div>
 
       {/* Council Network Visualization */}
-      <div className="absolute top-96 right-20 w-64 h-64 pointer-events-none z-30">
+      <div className="absolute top-[26rem] right-20 w-64 h-64 pointer-events-none z-30">
         <div className="relative w-full h-full bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 p-4">
           <h3 className="text-sm font-medium text-gray-700 mb-2">Council Network</h3>
           <div className="relative w-full h-full">
@@ -291,7 +291,7 @@ export default function Agora() {
       </div>
 
       {/* Global Metrics Dashboard */}
-      <div className="absolute top-32 right-16 w-72 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 p-4 z-30">
+      <div className="absolute top-40 right-16 w-72 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 p-4 z-30">
         <h3 className="text-sm font-medium text-gray-700 mb-3">Global Metrics</h3>
         <div className="space-y-2">
           <MicroChart type="efficiency" value={globalMetrics.efficiency} change={2.3} />
@@ -304,7 +304,7 @@ export default function Agora() {
 
 
       {/* Main Content */}
-      <div className="pt-32 pb-20 max-w-4xl mx-auto px-6 relative z-20">
+      <div className="pt-48 pb-20 max-w-4xl mx-auto px-6 relative z-20">
         {/* Message Feed */}
         <AnimatePresence>
           <div className="space-y-4 max-h-[calc(100vh-240px)] overflow-y-auto scroll-smooth">
