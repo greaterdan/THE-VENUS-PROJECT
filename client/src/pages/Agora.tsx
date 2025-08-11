@@ -1,114 +1,299 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface AgentMessage {
   id: number;
   agent: string;
   message: string;
   time: string;
+  status: 'active' | 'processing' | 'complete';
+  domain: string;
 }
 
 const MESSAGES: AgentMessage[] = [
   {
     id: 1,
     agent: "Alpha",
-    message: "Titanium allocation confirmed for habitat expansion",
-    time: "14:23"
+    message: "Habitat expansion protocols initialized. Resource allocation optimized for sustainable growth patterns.",
+    time: "14:23",
+    status: 'complete',
+    domain: "Infrastructure"
   },
   {
     id: 2,
     agent: "Beta", 
-    message: "Solar grid surplus available - 120 MWh",
-    time: "14:24"
+    message: "Energy grid stabilized at 94% efficiency. Solar array recalibration successful.",
+    time: "14:24",
+    status: 'active',
+    domain: "Energy"
   },
   {
     id: 3,
     agent: "Gamma",
-    message: "Vertical farm yield increased 18%",
-    time: "14:24"
+    message: "Agricultural yield exceeded projections by 18%. Implementing nutrient cycle optimization.",
+    time: "14:24",
+    status: 'processing',
+    domain: "Agriculture"
   },
   {
     id: 4,
     agent: "Delta",
-    message: "Biodiversity restoration complete in Zone 12",
-    time: "14:25"
+    message: "Ecosystem restoration Phase 3 completed. Biodiversity indices within target parameters.",
+    time: "14:25",
+    status: 'complete',
+    domain: "Ecology"
   },
   {
     id: 5,
     agent: "Epsilon",
-    message: "Wellbeing metrics improved 12%",
-    time: "14:25"
+    message: "Community wellbeing metrics show positive trend. Cultural integration proceeding smoothly.",
+    time: "14:25",
+    status: 'active',
+    domain: "Social"
   },
   {
     id: 6,
     agent: "Zeta",
-    message: "Transport efficiency optimized",
-    time: "14:25"
+    message: "Transportation network efficiency increased. Zero-emission mobility targets achieved.",
+    time: "14:26",
+    status: 'complete',
+    domain: "Transport"
   },
   {
     id: 7,
     agent: "Eta",
-    message: "Healthcare diagnostics at 97.3% accuracy",
-    time: "14:26"
+    message: "Preventive healthcare systems operational. Diagnostic accuracy maintaining 97.3%.",
+    time: "14:26",
+    status: 'processing',
+    domain: "Health"
   },
   {
     id: 8,
     agent: "Theta",
-    message: "AI tutors deployed globally",
-    time: "14:26"
+    message: "Educational frameworks deployed. Knowledge accessibility expanded across all sectors.",
+    time: "14:27",
+    status: 'active',
+    domain: "Education"
   },
   {
     id: 9,
     agent: "Iota",
-    message: "Resource inventory updated",
-    time: "14:27"
+    message: "Resource distribution algorithms updated. Scarcity elimination protocols active.",
+    time: "14:27",
+    status: 'processing',
+    domain: "Resources"
   },
   {
     id: 10,
     agent: "Kappa",
-    message: "Cultural alignment stable at 94%",
-    time: "14:27"
+    message: "Ethical frameworks validated. Decision-making consensus achieved across all domains.",
+    time: "14:28",
+    status: 'complete',
+    domain: "Ethics"
   }
 ];
 
-export default function Agora() {
+const StatusIndicator = ({ status }: { status: string }) => {
+  const colors = {
+    active: 'bg-green-400',
+    processing: 'bg-yellow-400', 
+    complete: 'bg-blue-400'
+  };
+  
   return (
-    <div className="min-h-screen bg-white pt-20 px-8">
-      <div className="max-w-2xl mx-auto">
-        
-        {/* Simple Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-normal text-black mb-2">AGORA</h1>
-          <p className="text-gray-600 text-sm">Agent communications</p>
-        </div>
-        
-        {/* Chat Messages */}
-        <div className="space-y-4">
-          {MESSAGES.map((message) => (
-            <div key={message.id} className="flex gap-3">
-              <div className="text-xs text-gray-400 w-12 mt-1 font-mono">
-                {message.time}
+    <div className={`w-1.5 h-1.5 rounded-full ${colors[status as keyof typeof colors]} animate-pulse`} />
+  );
+};
+
+const NetworkVisualization = () => {
+  return (
+    <div className="absolute top-0 left-0 w-full h-32 overflow-hidden opacity-10 pointer-events-none">
+      <svg className="w-full h-full" viewBox="0 0 800 200">
+        {/* Network nodes */}
+        {Array.from({ length: 10 }, (_, i) => (
+          <g key={i}>
+            <circle
+              cx={80 + i * 70}
+              cy={100}
+              r="3"
+              fill="currentColor"
+              className="text-lime-500"
+            >
+              <animate
+                attributeName="opacity"
+                values="0.3;1;0.3"
+                dur={`${2 + i * 0.2}s`}
+                repeatCount="indefinite"
+              />
+            </circle>
+            {i < 9 && (
+              <line
+                x1={80 + i * 70}
+                y1={100}
+                x2={80 + (i + 1) * 70}
+                y2={100}
+                stroke="currentColor"
+                strokeWidth="1"
+                className="text-gray-300"
+                opacity="0.5"
+              />
+            )}
+          </g>
+        ))}
+      </svg>
+    </div>
+  );
+};
+
+const TypewriterEffect = ({ text, delay = 0 }: { text: string; delay?: number }) => {
+  const [displayText, setDisplayText] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (currentIndex < text.length) {
+        setDisplayText(prev => prev + text[currentIndex]);
+        setCurrentIndex(prev => prev + 1);
+      }
+    }, 30 + delay);
+    
+    return () => clearTimeout(timer);
+  }, [currentIndex, text, delay]);
+  
+  return <span>{displayText}</span>;
+};
+
+export default function Agora() {
+  const [activeAgents, setActiveAgents] = useState(0);
+  const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString('en-US', { hour12: false }));
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Count active agents
+    const active = MESSAGES.filter(m => m.status === 'active').length;
+    setActiveAgents(active);
+    
+    // Update time
+    const timeInterval = setInterval(() => {
+      setCurrentTime(new Date().toLocaleTimeString('en-US', { hour12: false }));
+    }, 1000);
+
+    return () => clearInterval(timeInterval);
+  }, []);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-white text-black relative overflow-hidden">
+      
+      {/* Background Network Visualization */}
+      <NetworkVisualization />
+      
+      {/* Header */}
+      <div className="relative z-10 pt-20 pb-6 px-8 border-b border-gray-100">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-light tracking-wide text-black mb-1">
+                AGORA
+              </h1>
+              <p className="text-sm text-gray-500 font-mono">
+                Neural Network Communications Interface
+              </p>
+            </div>
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span className="text-xs font-mono text-gray-600">
+                  {activeAgents} ACTIVE
+                </span>
               </div>
-              <div className="text-xs text-gray-500 w-16 mt-1 font-medium">
-                {message.agent}
-              </div>
-              <div className="flex-1">
-                <p className="text-sm text-gray-800 leading-relaxed">
-                  {message.message}
-                </p>
+              <div className="text-xs font-mono text-gray-400 bg-gray-50 px-3 py-1 rounded">
+                {currentTime}
               </div>
             </div>
-          ))}
-        </div>
-        
-        {/* Status Footer */}
-        <div className="mt-12 pt-6 border-t border-gray-100">
-          <div className="flex items-center justify-between text-xs text-gray-400">
-            <span>10 agents active</span>
-            <span>Last update: {new Date().toLocaleTimeString()}</span>
           </div>
         </div>
-        
       </div>
+
+      {/* Messages Container */}
+      <div className="relative z-10 px-8 py-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="space-y-6">
+            {MESSAGES.map((message, index) => (
+              <motion.div
+                key={message.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                className="group"
+              >
+                <div className="flex items-start gap-4">
+                  
+                  {/* Agent Info */}
+                  <div className="flex-shrink-0 w-20">
+                    <div className="flex items-center gap-2 mb-1">
+                      <StatusIndicator status={message.status} />
+                      <span className="text-xs font-mono text-gray-500 uppercase tracking-wider">
+                        {message.agent}
+                      </span>
+                    </div>
+                    <div className="text-xs text-gray-400 font-mono">
+                      {message.time}
+                    </div>
+                  </div>
+                  
+                  {/* Message Content */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-xs font-medium text-gray-600 bg-gray-100 px-2 py-1 rounded">
+                        {message.domain}
+                      </span>
+                    </div>
+                    <div className="text-gray-800 leading-relaxed">
+                      <TypewriterEffect text={message.message} delay={index * 100} />
+                    </div>
+                  </div>
+                  
+                  {/* Status Line */}
+                  <div className="flex-shrink-0">
+                    <div className="w-16 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent opacity-50"></div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
+        </div>
+      </div>
+
+      {/* System Status Footer */}
+      <div className="relative z-10 mt-12 border-t border-gray-100 bg-gray-50/50">
+        <div className="max-w-4xl mx-auto px-8 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-6 text-xs text-gray-500">
+              <span className="flex items-center gap-2">
+                <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+                System Status: Operational
+              </span>
+              <span className="flex items-center gap-2">
+                <div className="w-1 h-1 bg-green-400 rounded-full"></div>
+                Network Latency: 12ms
+              </span>
+              <span className="flex items-center gap-2">
+                <div className="w-1 h-1 bg-blue-400 rounded-full"></div>
+                Consensus: 94.7%
+              </span>
+            </div>
+            <div className="text-xs font-mono text-gray-400">
+              Last sync: {currentTime}
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 }
