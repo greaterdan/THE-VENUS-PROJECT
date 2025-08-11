@@ -134,10 +134,10 @@ export default function Home() {
               in an environment designed for both individual fulfillment and collective prosperity.
             </p>
           </div>
-          
-          {/* Portrait integrated in Vision section */}
-          <ScrollPortrait />
         </div>
+        
+        {/* Portrait integrated in Vision section */}
+        <ScrollPortrait />
       </div>
       
       {/* Featured In Section - Separate section */}
