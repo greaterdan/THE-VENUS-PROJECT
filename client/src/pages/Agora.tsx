@@ -37,7 +37,7 @@ const AGENTS: Agent[] = [
     id: 'alpha',
     name: 'Alpha',
     domain: 'Infrastructure & Habitat Design',
-    position: { x: 120, y: 80 },
+    position: { x: 80, y: 120 },
     status: 'active',
     resources: { surplus: ['titanium', 'concrete'], deficit: ['energy'] },
     alignment: 94
@@ -46,7 +46,7 @@ const AGENTS: Agent[] = [
     id: 'beta',
     name: 'Beta',
     domain: 'Energy Systems',
-    position: { x: 280, y: 60 },
+    position: { x: 300, y: 80 },
     status: 'processing',
     resources: { surplus: ['solar', 'wind'], deficit: ['materials'] },
     alignment: 96
@@ -55,7 +55,7 @@ const AGENTS: Agent[] = [
     id: 'gamma',
     name: 'Gamma',
     domain: 'Food & Agriculture',
-    position: { x: 440, y: 90 },
+    position: { x: 480, y: 120 },
     status: 'active',
     resources: { surplus: ['biomass', 'nutrients'], deficit: ['water'] },
     alignment: 91
@@ -64,7 +64,7 @@ const AGENTS: Agent[] = [
     id: 'delta',
     name: 'Delta',
     domain: 'Ecology & Environmental Restoration',
-    position: { x: 180, y: 160 },
+    position: { x: 180, y: 200 },
     status: 'idle',
     resources: { surplus: ['biodiversity'], deficit: ['time'] },
     alignment: 89
@@ -73,7 +73,7 @@ const AGENTS: Agent[] = [
     id: 'epsilon',
     name: 'Epsilon',
     domain: 'Social Dynamics & Wellbeing',
-    position: { x: 340, y: 140 },
+    position: { x: 360, y: 160 },
     status: 'active',
     resources: { surplus: ['culture', 'knowledge'], deficit: ['infrastructure'] },
     alignment: 93
@@ -82,7 +82,7 @@ const AGENTS: Agent[] = [
     id: 'zeta',
     name: 'Zeta',
     domain: 'Transportation & Mobility',
-    position: { x: 500, y: 180 },
+    position: { x: 520, y: 220 },
     status: 'processing',
     resources: { surplus: ['efficiency', 'networks'], deficit: ['energy'] },
     alignment: 88
@@ -91,7 +91,7 @@ const AGENTS: Agent[] = [
     id: 'eta',
     name: 'Eta',
     domain: 'Health & Medical Systems',
-    position: { x: 100, y: 220 },
+    position: { x: 60, y: 280 },
     status: 'active',
     resources: { surplus: ['diagnostics', 'prevention'], deficit: ['materials'] },
     alignment: 95
@@ -100,7 +100,7 @@ const AGENTS: Agent[] = [
     id: 'theta',
     name: 'Theta',
     domain: 'Education & Knowledge Access',
-    position: { x: 260, y: 240 },
+    position: { x: 260, y: 280 },
     status: 'processing',
     resources: { surplus: ['knowledge', 'analysis'], deficit: ['time'] },
     alignment: 92
@@ -109,7 +109,7 @@ const AGENTS: Agent[] = [
     id: 'iota',
     name: 'Iota',
     domain: 'Resource Management & Allocation',
-    position: { x: 420, y: 260 },
+    position: { x: 440, y: 280 },
     status: 'active',
     resources: { surplus: ['inventory', 'data'], deficit: ['distribution'] },
     alignment: 90
@@ -118,7 +118,7 @@ const AGENTS: Agent[] = [
     id: 'kappa',
     name: 'Kappa',
     domain: 'Culture, Ethics & Governance',
-    position: { x: 300, y: 320 },
+    position: { x: 300, y: 340 },
     status: 'active',
     resources: { surplus: ['wisdom', 'balance'], deficit: ['consensus'] },
     alignment: 97
@@ -193,38 +193,69 @@ const ResourceFlowLine = ({ flow, agents }: { flow: ResourceFlow; agents: Agent[
   if (!fromAgent || !toAgent) return null;
 
   const flowColors = {
-    energy: 'stroke-yellow-400',
-    material: 'stroke-blue-400',
-    data: 'stroke-purple-400',
-    time: 'stroke-green-400'
+    energy: '#facc15',
+    material: '#60a5fa', 
+    data: '#a78bfa',
+    time: '#4ade80'
   };
+
+  const x1 = fromAgent.position.x + 16;
+  const y1 = fromAgent.position.y + 16;
+  const x2 = toAgent.position.x + 16;
+  const y2 = toAgent.position.y + 16;
 
   return (
     <g>
-      <motion.line
-        x1={fromAgent.position.x + 16}
-        y1={fromAgent.position.y + 16}
-        x2={toAgent.position.x + 16}
-        y2={toAgent.position.y + 16}
-        className={`${flowColors[flow.type]} opacity-60`}
+      {/* Connection Line */}
+      <line
+        x1={x1}
+        y1={y1}
+        x2={x2}
+        y2={y2}
+        stroke={flowColors[flow.type]}
         strokeWidth="2"
-        strokeDasharray="5,5"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: 2, repeat: Infinity }}
-      />
+        strokeOpacity="0.4"
+        strokeDasharray="4,4"
+      >
+        <animate
+          attributeName="stroke-dashoffset"
+          values="0;8"
+          dur="1s"
+          repeatCount="indefinite"
+        />
+      </line>
+      
+      {/* Animated Resource Particle */}
       <circle
-        cx={(fromAgent.position.x + toAgent.position.x) / 2 + 16}
-        cy={(fromAgent.position.y + toAgent.position.y) / 2 + 16}
-        r="3"
-        className={`fill-current ${flowColors[flow.type].replace('stroke', 'text')}`}
+        r="4"
+        fill={flowColors[flow.type]}
+        opacity="0.8"
       >
         <animateMotion
           dur="3s"
           repeatCount="indefinite"
-          path={`M ${fromAgent.position.x + 16} ${fromAgent.position.y + 16} L ${toAgent.position.x + 16} ${toAgent.position.y + 16}`}
+          path={`M ${x1},${y1} L ${x2},${y2}`}
+        />
+        <animate
+          attributeName="opacity"
+          values="0.8;1;0.8"
+          dur="1.5s"
+          repeatCount="indefinite"
         />
       </circle>
+      
+      {/* Resource Label (appears on hover) */}
+      <text
+        x={(x1 + x2) / 2}
+        y={(y1 + y2) / 2 - 10}
+        textAnchor="middle"
+        fontSize="10"
+        fill={flowColors[flow.type]}
+        opacity="0.7"
+        className="font-mono"
+      >
+        {flow.amount}
+      </text>
     </g>
   );
 };
@@ -333,10 +364,10 @@ export default function Agora() {
               
               {/* Decision Center */}
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-                <div className="bg-white rounded-lg shadow-lg border-2 border-lime-500 p-4 w-64">
+                <div className="bg-white/95 backdrop-blur-sm rounded-lg shadow-lg border-2 border-lime-500 p-3 w-56">
                   <div className="text-center">
                     <div className="w-3 h-3 bg-lime-500 rounded-full mx-auto mb-2 animate-pulse"></div>
-                    <h3 className="font-semibold text-sm text-gray-800">{CURRENT_DECISION.title}</h3>
+                    <h3 className="font-semibold text-xs text-gray-800">{CURRENT_DECISION.title}</h3>
                     <p className="text-xs text-gray-500 uppercase tracking-wider mt-1">{CURRENT_DECISION.status}</p>
                     <div className="mt-2 text-xs text-gray-600">
                       Timeline: <span className="font-mono">{CURRENT_DECISION.timeline}</span>
@@ -346,7 +377,7 @@ export default function Agora() {
               </div>
 
               {/* Agent Network */}
-              <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 620 400">
+              <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 600 400">
                 {RESOURCE_FLOWS.map((flow, index) => (
                   <ResourceFlowLine key={index} flow={flow} agents={AGENTS} />
                 ))}
