@@ -70,7 +70,7 @@ const ScrollPortrait = () => {
       
       {/* Quote */}
       {shouldShowQuote && (
-        <div className="fixed bottom-32 left-96 z-50 max-w-md">
+        <div className="fixed bottom-32 left-80 z-50 max-w-md">
           <div className="bg-white p-6 rounded-lg shadow-xl">
             <blockquote className="text-xl italic text-black mb-4 leading-relaxed">
               "{displayedQuote}"
