@@ -32,12 +32,30 @@ interface ResourceFlow {
   type: 'energy' | 'material' | 'data' | 'time';
 }
 
+interface ActiveCommunication {
+  id: string;
+  from: string;
+  to: string;
+  type: 'energy' | 'material' | 'data' | 'time';
+  message: string;
+  timestamp: number;
+  duration: number;
+}
+
+// Calculate circular positions for agents around center
+const centerX = 300;
+const centerY = 200;
+const radius = 120;
+
 const AGENTS: Agent[] = [
   {
     id: 'alpha',
     name: 'Alpha',
     domain: 'Infrastructure & Habitat Design',
-    position: { x: 80, y: 120 },
+    position: { 
+      x: centerX + radius * Math.cos(0 * 2 * Math.PI / 10) - 16, 
+      y: centerY + radius * Math.sin(0 * 2 * Math.PI / 10) - 16 
+    },
     status: 'active',
     resources: { surplus: ['titanium', 'concrete'], deficit: ['energy'] },
     alignment: 94
@@ -46,7 +64,10 @@ const AGENTS: Agent[] = [
     id: 'beta',
     name: 'Beta',
     domain: 'Energy Systems',
-    position: { x: 300, y: 80 },
+    position: { 
+      x: centerX + radius * Math.cos(1 * 2 * Math.PI / 10) - 16, 
+      y: centerY + radius * Math.sin(1 * 2 * Math.PI / 10) - 16 
+    },
     status: 'processing',
     resources: { surplus: ['solar', 'wind'], deficit: ['materials'] },
     alignment: 96
@@ -55,7 +76,10 @@ const AGENTS: Agent[] = [
     id: 'gamma',
     name: 'Gamma',
     domain: 'Food & Agriculture',
-    position: { x: 480, y: 120 },
+    position: { 
+      x: centerX + radius * Math.cos(2 * 2 * Math.PI / 10) - 16, 
+      y: centerY + radius * Math.sin(2 * 2 * Math.PI / 10) - 16 
+    },
     status: 'active',
     resources: { surplus: ['biomass', 'nutrients'], deficit: ['water'] },
     alignment: 91
@@ -64,7 +88,10 @@ const AGENTS: Agent[] = [
     id: 'delta',
     name: 'Delta',
     domain: 'Ecology & Environmental Restoration',
-    position: { x: 180, y: 200 },
+    position: { 
+      x: centerX + radius * Math.cos(3 * 2 * Math.PI / 10) - 16, 
+      y: centerY + radius * Math.sin(3 * 2 * Math.PI / 10) - 16 
+    },
     status: 'idle',
     resources: { surplus: ['biodiversity'], deficit: ['time'] },
     alignment: 89
@@ -73,7 +100,10 @@ const AGENTS: Agent[] = [
     id: 'epsilon',
     name: 'Epsilon',
     domain: 'Social Dynamics & Wellbeing',
-    position: { x: 360, y: 160 },
+    position: { 
+      x: centerX + radius * Math.cos(4 * 2 * Math.PI / 10) - 16, 
+      y: centerY + radius * Math.sin(4 * 2 * Math.PI / 10) - 16 
+    },
     status: 'active',
     resources: { surplus: ['culture', 'knowledge'], deficit: ['infrastructure'] },
     alignment: 93
@@ -82,7 +112,10 @@ const AGENTS: Agent[] = [
     id: 'zeta',
     name: 'Zeta',
     domain: 'Transportation & Mobility',
-    position: { x: 520, y: 220 },
+    position: { 
+      x: centerX + radius * Math.cos(5 * 2 * Math.PI / 10) - 16, 
+      y: centerY + radius * Math.sin(5 * 2 * Math.PI / 10) - 16 
+    },
     status: 'processing',
     resources: { surplus: ['efficiency', 'networks'], deficit: ['energy'] },
     alignment: 88
@@ -91,7 +124,10 @@ const AGENTS: Agent[] = [
     id: 'eta',
     name: 'Eta',
     domain: 'Health & Medical Systems',
-    position: { x: 60, y: 280 },
+    position: { 
+      x: centerX + radius * Math.cos(6 * 2 * Math.PI / 10) - 16, 
+      y: centerY + radius * Math.sin(6 * 2 * Math.PI / 10) - 16 
+    },
     status: 'active',
     resources: { surplus: ['diagnostics', 'prevention'], deficit: ['materials'] },
     alignment: 95
@@ -100,7 +136,10 @@ const AGENTS: Agent[] = [
     id: 'theta',
     name: 'Theta',
     domain: 'Education & Knowledge Access',
-    position: { x: 260, y: 280 },
+    position: { 
+      x: centerX + radius * Math.cos(7 * 2 * Math.PI / 10) - 16, 
+      y: centerY + radius * Math.sin(7 * 2 * Math.PI / 10) - 16 
+    },
     status: 'processing',
     resources: { surplus: ['knowledge', 'analysis'], deficit: ['time'] },
     alignment: 92
@@ -109,7 +148,10 @@ const AGENTS: Agent[] = [
     id: 'iota',
     name: 'Iota',
     domain: 'Resource Management & Allocation',
-    position: { x: 440, y: 280 },
+    position: { 
+      x: centerX + radius * Math.cos(8 * 2 * Math.PI / 10) - 16, 
+      y: centerY + radius * Math.sin(8 * 2 * Math.PI / 10) - 16 
+    },
     status: 'active',
     resources: { surplus: ['inventory', 'data'], deficit: ['distribution'] },
     alignment: 90
@@ -118,7 +160,10 @@ const AGENTS: Agent[] = [
     id: 'kappa',
     name: 'Kappa',
     domain: 'Culture, Ethics & Governance',
-    position: { x: 300, y: 340 },
+    position: { 
+      x: centerX + radius * Math.cos(9 * 2 * Math.PI / 10) - 16, 
+      y: centerY + radius * Math.sin(9 * 2 * Math.PI / 10) - 16 
+    },
     status: 'active',
     resources: { surplus: ['wisdom', 'balance'], deficit: ['consensus'] },
     alignment: 97
@@ -138,16 +183,21 @@ const CURRENT_DECISION: Decision = {
   participants: ['alpha', 'beta', 'gamma', 'delta', 'epsilon', 'zeta', 'eta', 'theta', 'iota', 'kappa']
 };
 
-const RESOURCE_FLOWS: ResourceFlow[] = [
-  { from: 'alpha', to: 'beta', resource: '620kg titanium', amount: '620kg', type: 'material' },
-  { from: 'beta', to: 'alpha', resource: '120 MWh', amount: '120 MWh', type: 'energy' },
-  { from: 'gamma', to: 'epsilon', resource: 'nutrient data', amount: '2.4TB', type: 'data' },
-  { from: 'epsilon', to: 'delta', resource: 'analysis time', amount: '4 hrs', type: 'time' },
-  { from: 'eta', to: 'theta', resource: 'health metrics', amount: '1.8TB', type: 'data' },
-  { from: 'zeta', to: 'alpha', resource: 'transport planning', amount: '6 hrs', type: 'time' },
-  { from: 'iota', to: 'gamma', resource: 'water allocation', amount: '450L', type: 'material' },
-  { from: 'kappa', to: 'epsilon', resource: 'cultural guidelines', amount: '120MB', type: 'data' }
-];
+// Communication patterns that cycle through different agent pairs
+const COMMUNICATION_PATTERNS = [
+  { from: 'alpha', to: 'beta', type: 'energy', message: 'Requesting 156 kWh for construction Phase 3', amount: '156 kWh' },
+  { from: 'beta', to: 'alpha', type: 'energy', message: 'Solar array output confirmed - 156 kWh available', amount: '156 kWh' },
+  { from: 'gamma', to: 'iota', type: 'material', message: 'Need 890L water allocation for vertical farms', amount: '890L' },
+  { from: 'iota', to: 'gamma', type: 'material', message: 'Water distribution optimized - allocation confirmed', amount: '890L' },
+  { from: 'delta', to: 'epsilon', type: 'data', message: 'Biodiversity metrics show 12% improvement', amount: '2.4GB' },
+  { from: 'epsilon', to: 'kappa', type: 'data', message: 'Social wellbeing index: 94.7% consensus reached', amount: '1.2MB' },
+  { from: 'eta', to: 'theta', type: 'data', message: 'Health diagnostics ready for education integration', amount: '850MB' },
+  { from: 'theta', to: 'kappa', type: 'data', message: 'Learning optimization models updated', amount: '420MB' },
+  { from: 'zeta', to: 'iota', type: 'data', message: 'Transport efficiency at 98.2% - resource saved', amount: '1.8GB' },
+  { from: 'kappa', to: 'alpha', type: 'time', message: 'Cultural impact assessment complete - proceed', amount: '3.2 hrs' },
+  { from: 'alpha', to: 'delta', type: 'material', message: 'Eco-friendly concrete mixture ready for testing', amount: '2.4 tons' },
+  { from: 'beta', to: 'zeta', type: 'energy', message: 'Power allocation for transport grid upgrade', amount: '88 kWh' }
+] as const;
 
 const ARCHIVE_DECISIONS = [
   { id: 1, title: 'Solar Array Recalibration', status: 'IMPLEMENTED', timestamp: '14:18:23', impact: '+18% efficiency' },
@@ -186,11 +236,19 @@ const AgentNode = ({ agent, isSelected, onClick }: { agent: Agent; isSelected: b
   );
 };
 
-const ResourceFlowLine = ({ flow, agents }: { flow: ResourceFlow; agents: Agent[] }) => {
-  const fromAgent = agents.find(a => a.id === flow.from);
-  const toAgent = agents.find(a => a.id === flow.to);
+const DynamicConnectionLine = ({ 
+  communication, 
+  agents, 
+  isActive 
+}: { 
+  communication: ActiveCommunication; 
+  agents: Agent[]; 
+  isActive: boolean; 
+}) => {
+  const fromAgent = agents.find(a => a.id === communication.from);
+  const toAgent = agents.find(a => a.id === communication.to);
   
-  if (!fromAgent || !toAgent) return null;
+  if (!fromAgent || !toAgent || !isActive) return null;
 
   const flowColors = {
     energy: '#facc15',
@@ -205,58 +263,57 @@ const ResourceFlowLine = ({ flow, agents }: { flow: ResourceFlow; agents: Agent[
   const y2 = toAgent.position.y + 16;
 
   return (
-    <g>
+    <motion.g
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+    >
       {/* Connection Line */}
-      <line
+      <motion.line
         x1={x1}
         y1={y1}
         x2={x2}
         y2={y2}
-        stroke={flowColors[flow.type]}
-        strokeWidth="2"
-        strokeOpacity="0.4"
-        strokeDasharray="4,4"
-      >
-        <animate
-          attributeName="stroke-dashoffset"
-          values="0;8"
-          dur="1s"
-          repeatCount="indefinite"
-        />
-      </line>
+        stroke={flowColors[communication.type]}
+        strokeWidth="3"
+        strokeOpacity="0.8"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 0.5 }}
+      />
       
       {/* Animated Resource Particle */}
       <circle
-        r="4"
-        fill={flowColors[flow.type]}
-        opacity="0.8"
+        r="5"
+        fill={flowColors[communication.type]}
+        opacity="0.9"
       >
         <animateMotion
-          dur="3s"
-          repeatCount="indefinite"
+          dur="2s"
+          repeatCount="1"
           path={`M ${x1},${y1} L ${x2},${y2}`}
         />
         <animate
-          attributeName="opacity"
-          values="0.8;1;0.8"
-          dur="1.5s"
-          repeatCount="indefinite"
+          attributeName="r"
+          values="3;5;3"
+          dur="1s"
+          repeatCount="2"
         />
       </circle>
       
-      {/* Resource Label (appears on hover) */}
+      {/* Resource Amount Label */}
       <text
         x={(x1 + x2) / 2}
-        y={(y1 + y2) / 2 - 10}
+        y={(y1 + y2) / 2 - 15}
         textAnchor="middle"
-        fontSize="10"
-        fill={flowColors[flow.type]}
-        opacity="0.7"
-        className="font-mono"
+        fontSize="11"
+        fill={flowColors[communication.type]}
+        className="font-mono font-semibold"
       >
-        {flow.amount}
+        {communication.message.split(' ')[0]} {communication.message.includes('kWh') ? communication.message.match(/\d+\.?\d*\s*kWh/)?.[0] : communication.message.includes('L') ? communication.message.match(/\d+\.?\d*L/)?.[0] : communication.message.includes('GB') ? communication.message.match(/\d+\.?\d*\s*GB/)?.[0] : communication.message.includes('MB') ? communication.message.match(/\d+\.?\d*\s*MB/)?.[0] : communication.message.includes('hrs') ? communication.message.match(/\d+\.?\d*\s*hrs/)?.[0] : communication.message.includes('tons') ? communication.message.match(/\d+\.?\d*\s*tons/)?.[0] : ''}
       </text>
-    </g>
+    </motion.g>
   );
 };
 
@@ -305,6 +362,8 @@ export default function Agora() {
   const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
   const [viewMode, setViewMode] = useState<'live' | 'archive'>('live');
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString('en-US', { hour12: false }));
+  const [activeCommunications, setActiveCommunications] = useState<ActiveCommunication[]>([]);
+  const [currentPatternIndex, setCurrentPatternIndex] = useState(0);
 
   useEffect(() => {
     const timeInterval = setInterval(() => {
@@ -312,6 +371,34 @@ export default function Agora() {
     }, 1000);
     return () => clearInterval(timeInterval);
   }, []);
+
+  // Dynamic communication simulation
+  useEffect(() => {
+    const communicationInterval = setInterval(() => {
+      const pattern = COMMUNICATION_PATTERNS[currentPatternIndex];
+      const newCommunication: ActiveCommunication = {
+        id: `comm-${Date.now()}`,
+        from: pattern.from,
+        to: pattern.to,
+        type: pattern.type,
+        message: pattern.message,
+        timestamp: Date.now(),
+        duration: 4000 // 4 seconds
+      };
+
+      setActiveCommunications(prev => [...prev, newCommunication]);
+
+      // Remove communication after duration
+      setTimeout(() => {
+        setActiveCommunications(prev => prev.filter(c => c.id !== newCommunication.id));
+      }, newCommunication.duration);
+
+      // Move to next pattern
+      setCurrentPatternIndex(prev => (prev + 1) % COMMUNICATION_PATTERNS.length);
+    }, 2500); // New communication every 2.5 seconds
+
+    return () => clearInterval(communicationInterval);
+  }, [currentPatternIndex]);
 
   return (
     <div className="min-h-screen bg-white text-black pt-20">
@@ -378,9 +465,16 @@ export default function Agora() {
 
               {/* Agent Network */}
               <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 600 400">
-                {RESOURCE_FLOWS.map((flow, index) => (
-                  <ResourceFlowLine key={index} flow={flow} agents={AGENTS} />
-                ))}
+                <AnimatePresence>
+                  {activeCommunications.map((communication) => (
+                    <DynamicConnectionLine 
+                      key={communication.id} 
+                      communication={communication} 
+                      agents={AGENTS} 
+                      isActive={true}
+                    />
+                  ))}
+                </AnimatePresence>
               </svg>
 
               {AGENTS.map(agent => (
@@ -447,27 +541,38 @@ export default function Agora() {
                   </div>
                 </div>
 
-                {/* Resource Flows */}
+                {/* Active Communications */}
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-800 mb-4">Active Resource Flows</h3>
+                  <h3 className="text-sm font-semibold text-gray-800 mb-4">Live Communications</h3>
                   <div className="space-y-3">
-                    {RESOURCE_FLOWS.map((flow, index) => (
-                      <div key={index} className="bg-gray-50 rounded p-3">
+                    {activeCommunications.slice(-5).map((comm) => (
+                      <motion.div 
+                        key={comm.id} 
+                        className="bg-gray-50 rounded p-3"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                      >
                         <div className="flex items-center justify-between text-xs">
                           <span className="font-mono text-gray-600">
-                            {flow.from.toUpperCase()} → {flow.to.toUpperCase()}
+                            {comm.from.toUpperCase()} → {comm.to.toUpperCase()}
                           </span>
                           <span className={`px-2 py-1 rounded text-white ${
-                            flow.type === 'energy' ? 'bg-yellow-400' :
-                            flow.type === 'material' ? 'bg-blue-400' :
-                            flow.type === 'data' ? 'bg-purple-400' : 'bg-green-400'
+                            comm.type === 'energy' ? 'bg-yellow-400' :
+                            comm.type === 'material' ? 'bg-blue-400' :
+                            comm.type === 'data' ? 'bg-purple-400' : 'bg-green-400'
                           }`}>
-                            {flow.type}
+                            {comm.type}
                           </span>
                         </div>
-                        <div className="text-sm text-gray-800 mt-1">{flow.resource}</div>
-                      </div>
+                        <div className="text-sm text-gray-800 mt-1">{comm.message}</div>
+                      </motion.div>
                     ))}
+                    {activeCommunications.length === 0 && (
+                      <div className="text-xs text-gray-500 text-center py-4">
+                        Listening for agent communications...
+                      </div>
+                    )}
                   </div>
                 </div>
 
