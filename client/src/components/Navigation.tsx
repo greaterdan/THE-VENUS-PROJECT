@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
+import { SiX, SiGithub } from "react-icons/si";
 import docsIcon from "@assets/Untitled design_1754879488364.gif";
 import contributeIcon from "@assets/Untitled design (1)_1754880001361.gif";
 
@@ -111,11 +112,52 @@ export default function Navigation() {
                   </div>
                 )}
               </div>
+              
+              {/* Social Icons */}
+              <div className="flex items-center space-x-3 ml-4">
+                <a 
+                  href="https://x.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-white hover:text-venus-lime transition-colors"
+                >
+                  <SiX className="h-5 w-5" />
+                </a>
+                <a 
+                  href="https://github.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-white hover:text-venus-lime transition-colors"
+                >
+                  <SiGithub className="h-5 w-5" />
+                </a>
+              </div>
             </div>
           </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
+          {/* Mobile Navigation - Social Icons and Menu */}
+          <div className="md:hidden flex items-center space-x-4">
+            {/* Social Icons - Always visible on mobile */}
+            <div className="flex items-center space-x-3">
+              <a 
+                href="https://x.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-white hover:text-venus-lime transition-colors"
+              >
+                <SiX className="h-5 w-5" />
+              </a>
+              <a 
+                href="https://github.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-white hover:text-venus-lime transition-colors"
+              >
+                <SiGithub className="h-5 w-5" />
+              </a>
+            </div>
+            
+            {/* Mobile menu button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="text-white hover:text-venus-lime focus:outline-none"
