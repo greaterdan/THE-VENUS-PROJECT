@@ -50,27 +50,25 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
   useEffect(() => {
     let animationId: number;
     let translateX = 0;
-    const scrollSpeed = 0.5; // pixels per frame
+    const scrollSpeed = 0.08; // Much slower speed
     
     const animate = () => {
       if (scrollContainerRef.current) {
         translateX -= scrollSpeed;
-        // Reset position when first set completes one full cycle
-        if (translateX <= -50) { // 50% is where we reset for seamless loop
+        // Reset position when first set completes one full cycle - smoother reset
+        if (translateX <= -50) {
           translateX = 0;
         }
-        scrollContainerRef.current.style.transform = `translateX(${translateX}%)`;
+        // Use transform3d for hardware acceleration and smoother animation
+        scrollContainerRef.current.style.transform = `translate3d(${translateX}%, 0, 0)`;
       }
       animationId = requestAnimationFrame(animate);
     };
     
-    // Start animation after a short delay to ensure component is mounted
-    const timeoutId = setTimeout(() => {
-      animationId = requestAnimationFrame(animate);
-    }, 100);
+    // Start animation immediately when component mounts
+    animationId = requestAnimationFrame(animate);
     
     return () => {
-      clearTimeout(timeoutId);
       if (animationId) {
         cancelAnimationFrame(animationId);
       }
@@ -207,8 +205,11 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
         <div className="overflow-hidden">
             <div 
               ref={scrollContainerRef}
-              className="flex select-none"
-              style={{ transform: 'translateX(0%)' }}
+              className="flex select-none smooth-scroll-container"
+              style={{ 
+                transform: 'translate3d(0%, 0, 0)',
+                willChange: 'transform'
+              }}
             >
               {/* First set of logos */}
               <div className="flex space-x-20 items-center min-w-max">

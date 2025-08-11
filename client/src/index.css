@@ -184,21 +184,15 @@
   }
 }
 
-/* Scrolling logos animation */
-.animate-scroll {
-  animation: scroll 30s linear infinite;
+/* Smooth scrolling container */
+.smooth-scroll-container {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform;
 }
 
-.animate-scroll-fast {
-  animation: scroll 15s linear infinite;
-  animation-play-state: running !important;
-}
-
-@keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+.smooth-scroll-container * {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
