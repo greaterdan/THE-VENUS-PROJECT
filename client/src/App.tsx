@@ -66,9 +66,9 @@ function App() {
           
           <Router isLoaded={isLoaded} showContent={showContent} />
           
-          {/* Fixed Social Icons - Bottom Right */}
+          {/* Fixed Social Icons - Middle Right */}
           <div 
-            className={`fixed bottom-6 right-6 flex flex-col space-y-3 z-50 transition-opacity duration-3000 ease-out delay-2000 ${
+            className={`fixed top-1/2 right-6 transform -translate-y-1/2 flex flex-col space-y-3 z-50 transition-opacity duration-3000 ease-out delay-2000 ${
               showContent ? 'opacity-100' : 'opacity-0'
             }`}
           >
