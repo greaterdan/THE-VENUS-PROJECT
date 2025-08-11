@@ -56,7 +56,9 @@ export default function Navigation() {
     return false;
   };
 
-  // Navigation controlled by parent App.tsx fade animation
+  // Calculate navigation opacity based on scroll position
+  // Icons appear only after scrolling down with smooth fade
+  const navOpacity = location === "/" ? Math.min(1, scrollY / 100) : 1;
 
   const venusLinks = [
     { href: "/", label: "THE VENUS PROJECT" },
@@ -81,8 +83,11 @@ export default function Navigation() {
     <nav className="sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Left Logo - Home Link */}
-          <div className="flex items-center">
+          {/* Left Logo - Home Link - Appears on scroll */}
+          <div 
+            className="flex items-center transition-opacity duration-500 ease-in-out" 
+            style={{ opacity: navOpacity }}
+          >
             <Link href="/">
               <img 
                 src={venusLogo} 
@@ -92,8 +97,8 @@ export default function Navigation() {
             </Link>
           </div>
 
-          {/* Right Navigation Group - Desktop */}
-          <div className="hidden md:block opacity-100">
+          {/* Right Navigation Group - Desktop - Appears on scroll */}
+          <div className="hidden md:block transition-opacity duration-500 ease-in-out" style={{ opacity: navOpacity }}>
             <div className="flex items-baseline space-x-2">
               <div 
                 className="relative group" 
@@ -218,8 +223,8 @@ export default function Navigation() {
             </div>
           </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden opacity-100 ml-auto">
+          {/* Mobile menu button - Appears on scroll */}
+          <div className="md:hidden ml-auto transition-opacity duration-500 ease-in-out" style={{ opacity: navOpacity }}>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="text-black hover:text-venus-lime focus:outline-none transition-all duration-300"
