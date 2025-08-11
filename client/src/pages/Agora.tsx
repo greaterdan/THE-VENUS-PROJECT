@@ -209,7 +209,7 @@ export default function Agora() {
       
       {/* Enhanced Header */}
       <motion.div 
-        className="relative w-full z-50 bg-white border-b border-gray-200 mt-8"
+        className="relative w-full z-50 bg-white border-b border-gray-200 mt-7"
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
