@@ -19,6 +19,25 @@ export default function Navigation() {
   const contributeDropdownRef = useRef<HTMLDivElement>(null);
   const venusDropdownRef = useRef<HTMLDivElement>(null);
 
+  // Create click sound effect
+  const playClickSound = () => {
+    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.1);
+    
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.1);
+  };
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -104,6 +123,7 @@ export default function Navigation() {
                           className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-colors cursor-pointer ${
                             isActive(link.href) ? "text-venus-lime" : ""
                           }`}
+                          onClick={playClickSound}
                         >
                           {link.label}
                         </span>
@@ -134,6 +154,7 @@ export default function Navigation() {
                           className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-colors cursor-pointer ${
                             isActive(link.href) ? "text-venus-lime" : ""
                           }`}
+                          onClick={playClickSound}
                         >
                           {link.label}
                         </span>
@@ -164,6 +185,7 @@ export default function Navigation() {
                           className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-colors cursor-pointer ${
                             isActive(link.href) ? "text-venus-lime" : ""
                           }`}
+                          onClick={playClickSound}
                         >
                           {link.label}
                         </span>
@@ -194,6 +216,7 @@ export default function Navigation() {
                           className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-colors cursor-pointer ${
                             isActive(link.href) ? "text-venus-lime" : ""
                           }`}
+                          onClick={playClickSound}
                         >
                           {link.label}
                         </span>
@@ -232,7 +255,10 @@ export default function Navigation() {
                   className={`block px-3 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors cursor-pointer ${
                     isActive(link.href) ? "text-venus-lime" : ""
                   }`}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={() => {
+                    playClickSound();
+                    setMobileMenuOpen(false);
+                  }}
                 >
                   {link.label}
                 </span>
@@ -244,7 +270,10 @@ export default function Navigation() {
                   className={`block px-3 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors cursor-pointer ${
                     isActive(link.href) ? "text-venus-lime" : ""
                   }`}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={() => {
+                    playClickSound();
+                    setMobileMenuOpen(false);
+                  }}
                 >
                   {link.label}
                 </span>
@@ -256,7 +285,10 @@ export default function Navigation() {
                   className={`block px-3 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors cursor-pointer ${
                     isActive(link.href) ? "text-venus-lime" : ""
                   }`}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={() => {
+                    playClickSound();
+                    setMobileMenuOpen(false);
+                  }}
                 >
                   {link.label}
                 </span>
@@ -268,7 +300,10 @@ export default function Navigation() {
                   className={`block px-3 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors cursor-pointer ${
                     isActive(link.href) ? "text-venus-lime" : ""
                   }`}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={() => {
+                    playClickSound();
+                    setMobileMenuOpen(false);
+                  }}
                 >
                   {link.label}
                 </span>
