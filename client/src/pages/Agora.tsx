@@ -191,105 +191,116 @@ export default function Agora() {
       {/* Background Network Visualization */}
       <NetworkVisualization />
       
-      {/* Header */}
-      <div className="relative z-10 pt-20 pb-6 px-8 border-b border-gray-100">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-light tracking-wide text-black mb-1">
-                AGORA
-              </h1>
-              <p className="text-sm text-gray-500 font-mono">
-                Neural Network Communications Interface
-              </p>
+      <div className="flex h-screen pt-20">
+        
+        {/* Left Side - Chat Interface */}
+        <div className="w-2/3 flex flex-col border-r border-gray-100">
+          
+          {/* Header */}
+          <div className="px-6 py-3 border-b border-gray-100">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-xl font-light tracking-wide text-black">
+                  AGORA
+                </h1>
+                <p className="text-xs text-gray-500 font-mono">
+                  Neural Network Communications
+                </p>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-1">
+                  <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
+                  <span className="text-xs font-mono text-gray-600">
+                    {activeAgents} ACTIVE
+                  </span>
+                </div>
+                <div className="text-xs font-mono text-gray-400 bg-gray-50 px-2 py-1 rounded text-center">
+                  {currentTime}
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-xs font-mono text-gray-600">
-                  {activeAgents} ACTIVE
+          </div>
+
+          {/* Messages Container */}
+          <div className="flex-1 px-6 py-4 overflow-y-auto">
+            <div className="space-y-3">
+              {MESSAGES.map((message, index) => (
+                <motion.div
+                  key={message.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.05 }}
+                  className="group"
+                >
+                  <div className="flex items-start gap-3">
+                    
+                    {/* Agent Info */}
+                    <div className="flex-shrink-0 w-16">
+                      <div className="flex items-center gap-1 mb-0.5">
+                        <StatusIndicator status={message.status} />
+                        <span className="text-xs font-mono text-gray-500 uppercase">
+                          {message.agent}
+                        </span>
+                      </div>
+                      <div className="text-xs text-gray-400 font-mono">
+                        {message.time}
+                      </div>
+                    </div>
+                    
+                    {/* Message Content */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-xs font-medium text-gray-600 bg-gray-100 px-1.5 py-0.5 rounded">
+                          {message.domain}
+                        </span>
+                      </div>
+                      <div className="text-sm text-gray-800 leading-snug">
+                        <TypewriterEffect text={message.message} delay={index * 50} />
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+              <div ref={messagesEndRef} />
+            </div>
+          </div>
+
+          {/* System Status Footer */}
+          <div className="px-6 py-2 border-t border-gray-100 bg-gray-50/30">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4 text-xs text-gray-500">
+                <span className="flex items-center gap-1">
+                  <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+                  Operational
+                </span>
+                <span className="flex items-center gap-1">
+                  <div className="w-1 h-1 bg-green-400 rounded-full"></div>
+                  12ms
+                </span>
+                <span className="flex items-center gap-1">
+                  <div className="w-1 h-1 bg-blue-400 rounded-full"></div>
+                  94.7%
                 </span>
               </div>
-              <div className="text-xs font-mono text-gray-400 bg-gray-50 px-3 py-1 rounded">
+              <div className="text-xs font-mono text-gray-400">
                 {currentTime}
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Messages Container */}
-      <div className="relative z-10 px-8 py-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="space-y-6">
-            {MESSAGES.map((message, index) => (
-              <motion.div
-                key={message.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="group"
-              >
-                <div className="flex items-start gap-4">
-                  
-                  {/* Agent Info */}
-                  <div className="flex-shrink-0 w-20">
-                    <div className="flex items-center gap-2 mb-1">
-                      <StatusIndicator status={message.status} />
-                      <span className="text-xs font-mono text-gray-500 uppercase tracking-wider">
-                        {message.agent}
-                      </span>
-                    </div>
-                    <div className="text-xs text-gray-400 font-mono">
-                      {message.time}
-                    </div>
-                  </div>
-                  
-                  {/* Message Content */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-xs font-medium text-gray-600 bg-gray-100 px-2 py-1 rounded">
-                        {message.domain}
-                      </span>
-                    </div>
-                    <div className="text-gray-800 leading-relaxed">
-                      <TypewriterEffect text={message.message} delay={index * 100} />
-                    </div>
-                  </div>
-                  
-                  {/* Status Line */}
-                  <div className="flex-shrink-0">
-                    <div className="w-16 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent opacity-50"></div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-            <div ref={messagesEndRef} />
-          </div>
-        </div>
-      </div>
-
-      {/* System Status Footer */}
-      <div className="relative z-10 mt-12 border-t border-gray-100 bg-gray-50/50">
-        <div className="max-w-4xl mx-auto px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6 text-xs text-gray-500">
-              <span className="flex items-center gap-2">
-                <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-                System Status: Operational
-              </span>
-              <span className="flex items-center gap-2">
-                <div className="w-1 h-1 bg-green-400 rounded-full"></div>
-                Network Latency: 12ms
-              </span>
-              <span className="flex items-center gap-2">
-                <div className="w-1 h-1 bg-blue-400 rounded-full"></div>
-                Consensus: 94.7%
-              </span>
+        {/* Right Side - Visual Space */}
+        <div className="w-1/3 bg-gray-50/50 p-6">
+          <div className="text-center text-gray-400 mt-20">
+            <div className="mb-4">
+              <svg className="w-16 h-16 mx-auto opacity-30" viewBox="0 0 100 100" fill="none">
+                <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="2"/>
+                <circle cx="50" cy="50" r="25" stroke="currentColor" strokeWidth="1"/>
+                <circle cx="50" cy="50" r="10" stroke="currentColor" strokeWidth="1"/>
+              </svg>
             </div>
-            <div className="text-xs font-mono text-gray-400">
-              Last sync: {currentTime}
-            </div>
+            <p className="text-sm">Visual Analytics Space</p>
+            <p className="text-xs mt-1">Network topology, metrics, and system overview</p>
           </div>
         </div>
       </div>
