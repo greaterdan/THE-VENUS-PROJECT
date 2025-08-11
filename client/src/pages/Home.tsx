@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ScrollPortrait from "@/components/ScrollPortrait";
-import architectureBg from "@assets/fd7aa77a-6cf8-41b7-a61c-a2ea33400e8e_1754887176761.png";
+import architectureBg from "@assets/a70b7a21-b96d-4213-a4f2-b2679bc99ce6-1_1754887244088.png";
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
