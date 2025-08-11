@@ -70,7 +70,7 @@ const AGENTS: Agent[] = [
     id: 'gamma',
     name: 'Gamma',
     domain: 'Food & Agriculture',
-    position: { x: 550, y: 80 }, // Far right - spread wider
+    position: { x: 550, y: 50 }, // Far right - moved up 3cm
     status: 'active',
     resources: { surplus: ['biomass', 'nutrients'], deficit: ['water'] },
     alignment: 91
