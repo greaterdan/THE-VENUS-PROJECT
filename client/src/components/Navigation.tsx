@@ -90,7 +90,7 @@ export default function Navigation() {
                 onMouseLeave={() => setVenusDropdownOpen(false)}
               >
                 <button className="px-2 py-2 text-white focus:outline-none">
-                  <img src={venusIcon} alt="Venus Project" className="h-8 w-8" />
+                  <img src={venusIcon} alt="Venus Project" className="h-6 w-6" />
                 </button>
                 {venusDropdownOpen && (
                   <div 
@@ -120,7 +120,7 @@ export default function Navigation() {
                 onMouseLeave={() => setAgoraDropdownOpen(false)}
               >
                 <button className="px-2 py-2 text-white focus:outline-none">
-                  <img src={agoraIcon} alt="Agora" className="h-8 w-8" />
+                  <img src={agoraIcon} alt="Agora" className="h-6 w-6" />
                 </button>
                 {agoraDropdownOpen && (
                   <div 
@@ -150,7 +150,7 @@ export default function Navigation() {
                 onMouseLeave={() => setContributeDropdownOpen(false)}
               >
                 <button className="px-2 py-2 text-white focus:outline-none">
-                  <img src={contributeIcon} alt="Contribute" className="h-8 w-8" />
+                  <img src={contributeIcon} alt="Contribute" className="h-6 w-6" />
                 </button>
                 {contributeDropdownOpen && (
                   <div 
@@ -180,7 +180,7 @@ export default function Navigation() {
                 onMouseLeave={() => setDocsDropdownOpen(false)}
               >
                 <button className="px-2 py-2 text-white focus:outline-none">
-                  <img src={docsIcon} alt="Docs" className="h-8 w-8" />
+                  <img src={docsIcon} alt="Docs" className="h-6 w-6" />
                 </button>
                 {docsDropdownOpen && (
                   <div 
