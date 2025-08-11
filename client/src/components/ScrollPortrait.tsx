@@ -55,9 +55,9 @@ const ScrollPortrait = () => {
 
   return (
     <>
-      {/* Portrait */}
+      {/* Portrait - hidden on smaller screens */}
       <div 
-        className="fixed bottom-0 left-0 z-40"
+        className="fixed bottom-0 left-0 z-40 hidden lg:block"
         style={{ opacity: portraitOpacity }}
       >
         <img 
@@ -68,9 +68,9 @@ const ScrollPortrait = () => {
         />
       </div>
       
-      {/* Quote */}
+      {/* Quote - hidden on smaller screens */}
       {shouldShowQuote && (
-        <div className="fixed bottom-32 left-80 z-50 max-w-md">
+        <div className="fixed bottom-32 left-80 z-50 max-w-md hidden lg:block">
           <div className="bg-white p-6 rounded-lg shadow-xl">
             <blockquote className="text-xl italic text-black mb-4 leading-relaxed">
               "{displayedQuote}"
