@@ -72,17 +72,16 @@ function App() {
           
           <Router isLoaded={isLoaded} showContent={showContent} />
           
-          {/* Fixed Social Icons - Bottom Right with smooth delayed fade in */}
+          {/* Fixed Social Icons - Bottom Right - always visible for now */}
           <div 
-            className={`fixed bottom-6 right-6 flex flex-col space-y-3 z-50 transition-opacity duration-3000 ease-out delay-3000 ${
-              showContent ? 'opacity-100' : 'opacity-0'
-            }`}
+            className="fixed bottom-6 right-6 flex flex-col space-y-3 z-50 opacity-100"
           >
             <a 
               href="https://x.com" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-black hover:text-venus-lime transition-colors bg-white p-3 rounded-full shadow-lg hover:shadow-xl"
+              title="X (Twitter)"
             >
               <SiX className="h-5 w-5" />
             </a>
@@ -91,6 +90,7 @@ function App() {
               target="_blank" 
               rel="noopener noreferrer"
               className="text-black hover:text-venus-lime transition-colors bg-white p-3 rounded-full shadow-lg hover:shadow-xl"
+              title="GitHub"
             >
               <SiGithub className="h-5 w-5" />
             </a>
