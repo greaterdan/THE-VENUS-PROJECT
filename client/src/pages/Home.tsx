@@ -1,17 +1,68 @@
+import { useEffect, useState } from "react";
 import ScrollPortrait from "@/components/ScrollPortrait";
 
 export default function Home() {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const titleOpacity = Math.max(0, 1 - scrollY / 400);
+  const titleScale = Math.max(0.8, 1 - scrollY / 1000);
+  const titleTranslateY = -scrollY * 0.5;
+
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center">
-        <h1 className="text-6xl md:text-8xl font-bold text-black text-center tracking-tight">
+      <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <h1 
+          className="text-6xl md:text-8xl font-bold text-black text-center tracking-tight transition-all duration-300"
+          style={{
+            opacity: titleOpacity,
+            transform: `translateY(${titleTranslateY}px) scale(${titleScale})`,
+          }}
+        >
           THE VENUS PROJECT
         </h1>
+        
+        {/* Gradient overlay for smooth transition */}
+        <div 
+          className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent pointer-events-none"
+          style={{
+            opacity: Math.min(1, scrollY / 200)
+          }}
+        />
+        
+        {/* Scroll indicator */}
+        <div 
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-black animate-bounce"
+          style={{
+            opacity: Math.max(0, 1 - scrollY / 200)
+          }}
+        >
+          <div className="flex flex-col items-center">
+            <span className="text-sm mb-2">Scroll to explore</span>
+            <div className="w-px h-8 bg-black"></div>
+          </div>
+        </div>
       </div>
       
-      {/* Add extra content to enable scrolling */}
-      <div className="min-h-screen bg-white p-8">
-        <div className="max-w-4xl mx-auto">
+      {/* Transition section */}
+      <div 
+        className="min-h-screen bg-white p-8 relative"
+        style={{
+          transform: `translateY(${-scrollY * 0.1}px)`,
+        }}
+      >
+        <div 
+          className="max-w-4xl mx-auto"
+          style={{
+            opacity: Math.min(1, Math.max(0, (scrollY - 200) / 300)),
+            transform: `translateY(${Math.max(0, 100 - (scrollY - 200) * 0.3)}px)`,
+          }}
+        >
           <h2 className="text-4xl font-bold text-black mb-8">Vision for Tomorrow</h2>
           <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
             <p>
