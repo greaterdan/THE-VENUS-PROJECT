@@ -2,7 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import ScrollPortrait from "@/components/ScrollPortrait";
 import architectureBg from "@assets/a70b7a21-b96d-4213-a4f2-b2679bc99ce6-1_1754887244088.png";
 
-// Media logos imports
+// Main title logo and media logos imports
+import venusProjectTitleLogo from "@assets/0245_1754931914051.png";
 import fhmLogo from "@assets/Untitled design (1) copy 2_1754926356755.png";
 import digitLogo from "@assets/Untitled design (1) copy_1754926356755.png";
 import rtLogo from "@assets/Untitled design (1)_1754926356755.png";
@@ -78,18 +79,18 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
         ></div>
         
         <div className="text-center px-4 relative z-20">
-          <h1 
-            className={`text-6xl md:text-8xl font-bold text-black tracking-tight drop-shadow-lg transition-all duration-1000 ease-out ${
+          <img 
+            src={venusProjectTitleLogo}
+            alt="The Venus Project"
+            className={`mx-auto max-w-4xl w-full h-auto drop-shadow-lg transition-all duration-1000 ease-out ${
               isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
             }`}
             style={{
               opacity: isLoaded ? titleOpacity : 0,
               transform: `translateY(${titleTranslateY}px) scale(${titleScale * (isLoaded ? 1 : 0.95)})`,
-              textShadow: '2px 2px 4px rgba(255,255,255,0.8)'
+              filter: 'drop-shadow(2px 2px 4px rgba(255,255,255,0.8))'
             }}
-          >
-            THE VENUS PROJECT
-          </h1>
+          />
         </div>
         
         {/* Gradient overlay for smooth transition */}
