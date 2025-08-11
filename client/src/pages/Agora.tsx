@@ -52,7 +52,7 @@ const AGENTS: Agent[] = [
     id: 'alpha',
     name: 'Alpha',
     domain: 'Infrastructure & Habitat Design',
-    position: { x: 200, y: 160 }, // Left side - moved more center
+    position: { x: 180, y: 140 }, // Left side - more spread
     status: 'active',
     resources: { surplus: ['titanium', 'concrete'], deficit: ['energy'] },
     alignment: 94
@@ -61,7 +61,7 @@ const AGENTS: Agent[] = [
     id: 'beta',
     name: 'Beta',
     domain: 'Energy Systems',
-    position: { x: 350, y: 120 }, // Top center - moved right
+    position: { x: 350, y: 100 }, // Top center - higher
     status: 'processing',
     resources: { surplus: ['solar', 'wind'], deficit: ['materials'] },
     alignment: 96
@@ -70,7 +70,7 @@ const AGENTS: Agent[] = [
     id: 'gamma',
     name: 'Gamma',
     domain: 'Food & Agriculture',
-    position: { x: 500, y: 160 }, // Right side - moved right
+    position: { x: 520, y: 140 }, // Right side - more right
     status: 'active',
     resources: { surplus: ['biomass', 'nutrients'], deficit: ['water'] },
     alignment: 91
@@ -79,7 +79,7 @@ const AGENTS: Agent[] = [
     id: 'delta',
     name: 'Delta',
     domain: 'Ecology & Environmental Restoration',
-    position: { x: 270, y: 200 }, // Left-center - moved right
+    position: { x: 250, y: 180 }, // Left-center - better spacing
     status: 'idle',
     resources: { surplus: ['biodiversity'], deficit: ['time'] },
     alignment: 89
@@ -88,7 +88,7 @@ const AGENTS: Agent[] = [
     id: 'epsilon',
     name: 'Epsilon',
     domain: 'Social Dynamics & Wellbeing',
-    position: { x: 400, y: 180 }, // Center-right - moved right
+    position: { x: 450, y: 160 }, // Center-right - more spread
     status: 'active',
     resources: { surplus: ['culture', 'knowledge'], deficit: ['infrastructure'] },
     alignment: 93
@@ -97,7 +97,7 @@ const AGENTS: Agent[] = [
     id: 'zeta',
     name: 'Zeta',
     domain: 'Transportation & Mobility',
-    position: { x: 470, y: 220 }, // Right-center - moved right
+    position: { x: 500, y: 220 }, // Right-center - better separation
     status: 'processing',
     resources: { surplus: ['efficiency', 'networks'], deficit: ['energy'] },
     alignment: 88
@@ -106,7 +106,7 @@ const AGENTS: Agent[] = [
     id: 'eta',
     name: 'Eta',
     domain: 'Health & Medical Systems',
-    position: { x: 230, y: 240 }, // Left-bottom - moved right
+    position: { x: 200, y: 260 }, // Left-bottom - more spread
     status: 'active',
     resources: { surplus: ['diagnostics', 'prevention'], deficit: ['materials'] },
     alignment: 95
@@ -115,7 +115,7 @@ const AGENTS: Agent[] = [
     id: 'theta',
     name: 'Theta',
     domain: 'Education & Knowledge Access',
-    position: { x: 330, y: 260 }, // Bottom-center - moved right
+    position: { x: 320, y: 280 }, // Bottom-left-center
     status: 'processing',
     resources: { surplus: ['knowledge', 'analysis'], deficit: ['time'] },
     alignment: 92
@@ -124,7 +124,7 @@ const AGENTS: Agent[] = [
     id: 'iota',
     name: 'Iota',
     domain: 'Resource Management & Allocation',
-    position: { x: 430, y: 250 }, // Right-bottom - moved right
+    position: { x: 450, y: 270 }, // Right-bottom - better spacing
     status: 'active',
     resources: { surplus: ['inventory', 'data'], deficit: ['distribution'] },
     alignment: 90
@@ -133,7 +133,7 @@ const AGENTS: Agent[] = [
     id: 'kappa',
     name: 'Kappa',
     domain: 'Culture, Ethics & Governance',
-    position: { x: 350, y: 280 }, // Bottom center - moved right
+    position: { x: 380, y: 300 }, // Bottom center - lower
     status: 'active',
     resources: { surplus: ['wisdom', 'balance'], deficit: ['consensus'] },
     alignment: 97
