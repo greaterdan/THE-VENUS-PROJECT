@@ -170,9 +170,10 @@ export default function Home() {
           <h2 className="text-4xl font-bold text-center text-black mb-16">
             Featured In
           </h2>
-          
-          {/* Scrolling logos container */}
-          <div className="overflow-hidden cursor-grab active:cursor-grabbing">
+        </div>
+        
+        {/* Scrolling logos container - full width */}
+        <div className="overflow-hidden cursor-grab active:cursor-grabbing">
             <div 
               ref={scrollContainerRef}
               className={`flex ${isDragging ? '' : 'animate-scroll'} select-none`}
@@ -232,7 +233,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </div>
       </div>
     </>
   );
