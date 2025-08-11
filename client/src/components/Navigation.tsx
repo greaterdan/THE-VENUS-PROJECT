@@ -113,20 +113,20 @@ export default function Navigation() {
               
               <div 
                 className="relative group" 
-                ref={contributeDropdownRef}
-                onMouseEnter={() => setContributeDropdownOpen(true)}
-                onMouseLeave={() => setContributeDropdownOpen(false)}
+                ref={agoraDropdownRef}
+                onMouseEnter={() => setAgoraDropdownOpen(true)}
+                onMouseLeave={() => setAgoraDropdownOpen(false)}
               >
                 <button className="px-2 py-2 text-white focus:outline-none">
-                  <img src={contributeIcon} alt="Contribute" className="h-8 w-8" />
+                  <img src={agoraIcon} alt="Agora" className="h-8 w-8" />
                 </button>
-                {contributeDropdownOpen && (
+                {agoraDropdownOpen && (
                   <div 
                     className="absolute right-0 top-full w-32 bg-white border border-venus-gray rounded-md shadow-lg z-50"
-                    onMouseEnter={() => setContributeDropdownOpen(true)}
-                    onMouseLeave={() => setContributeDropdownOpen(false)}
+                    onMouseEnter={() => setAgoraDropdownOpen(true)}
+                    onMouseLeave={() => setAgoraDropdownOpen(false)}
                   >
-                    {contributeLinks.map((link) => (
+                    {agoraLinks.map((link) => (
                       <Link key={link.href} href={link.href}>
                         <span
                           className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-colors cursor-pointer ${
@@ -143,20 +143,20 @@ export default function Navigation() {
               
               <div 
                 className="relative group" 
-                ref={agoraDropdownRef}
-                onMouseEnter={() => setAgoraDropdownOpen(true)}
-                onMouseLeave={() => setAgoraDropdownOpen(false)}
+                ref={contributeDropdownRef}
+                onMouseEnter={() => setContributeDropdownOpen(true)}
+                onMouseLeave={() => setContributeDropdownOpen(false)}
               >
                 <button className="px-2 py-2 text-white focus:outline-none">
-                  <img src={agoraIcon} alt="Agora" className="h-8 w-8" />
+                  <img src={contributeIcon} alt="Contribute" className="h-8 w-8" />
                 </button>
-                {agoraDropdownOpen && (
+                {contributeDropdownOpen && (
                   <div 
                     className="absolute right-0 top-full w-32 bg-white border border-venus-gray rounded-md shadow-lg z-50"
-                    onMouseEnter={() => setAgoraDropdownOpen(true)}
-                    onMouseLeave={() => setAgoraDropdownOpen(false)}
+                    onMouseEnter={() => setContributeDropdownOpen(true)}
+                    onMouseLeave={() => setContributeDropdownOpen(false)}
                   >
-                    {agoraLinks.map((link) => (
+                    {contributeLinks.map((link) => (
                       <Link key={link.href} href={link.href}>
                         <span
                           className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-colors cursor-pointer ${
