@@ -89,7 +89,7 @@ function App() {
               <SiGithub className="h-5 w-5" />
             </a>
             <a 
-              href="https://instagram.com" 
+              href="https://www.instagram.com/thevenusproject/" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-black hover:text-venus-lime transition-colors bg-white p-3 rounded-full shadow-lg hover:shadow-xl"
