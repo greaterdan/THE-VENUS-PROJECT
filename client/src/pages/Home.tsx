@@ -26,16 +26,11 @@ export default function Home() {
   return (
     <>
       <div 
-        className="min-h-screen flex items-center justify-center relative overflow-hidden bg-white"
+        className="min-h-screen flex items-center justify-center relative overflow-hidden"
         style={{
-          backgroundImage: `url(${architectureBg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
+          background: `linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0.1)), url(${architectureBg}) center/cover no-repeat, #ffffff`
         }}
       >
-        {/* Light overlay for better text readability */}
-        <div className="absolute inset-0 bg-white bg-opacity-10"></div>
         
         <div className="text-center px-4 relative z-10">
           <h1 
