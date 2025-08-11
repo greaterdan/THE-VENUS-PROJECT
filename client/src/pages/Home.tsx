@@ -242,9 +242,8 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
                 willChange: 'transform'
               }}
             >
-              {/* First set of logos - Complete collection with all media outlets */}
+              {/* First set of logos */}
               <div className="flex space-x-20 items-center min-w-max">
-                {/* Original logos */}
                 <img src={fhmLogo} alt="FHM" className="h-20 object-contain" />
                 <img src={digitLogo} alt="Digit" className="h-20 object-contain" />
                 <img src={rtLogo} alt="RT" className="h-20 object-contain" />
@@ -263,8 +262,56 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
                 <img src={discoveryLogo} alt="Discovery Channel" className="h-20 object-contain" />
                 <img src={bbcTwoAltLogo} alt="BBC Two" className="h-20 object-contain" />
                 <img src={emLogo} alt="EM" className="h-20 object-contain" />
-                
-                {/* New logos */}
+              </div>
+              
+              {/* Duplicate set for seamless loop */}
+              <div className="flex space-x-20 items-center min-w-max ml-20">
+                <img src={fhmLogo} alt="FHM" className="h-20 object-contain" />
+                <img src={digitLogo} alt="Digit" className="h-20 object-contain" />
+                <img src={rtLogo} alt="RT" className="h-20 object-contain" />
+                <img src={aljazeeraLogo} alt="Al Jazeera" className="h-20 object-contain" />
+                <img src={avroLogo} alt="AVRO" className="h-20 object-contain" />
+                <img src={atvLogo} alt="ATV" className="h-20 object-contain" />
+                <img src={audibleLogo} alt="Audible" className="h-20 object-contain" />
+                <img src={bbcWorldLogo} alt="BBC World News" className="h-20 object-contain" />
+                <img src={bbcTwoLogo} alt="BBC Two" className="h-20 object-contain" />
+                <img src={abGroupeLogo} alt="AB Groupe" className="h-20 object-contain" />
+                <img src={bloombergLogo} alt="Bloomberg" className="h-20 object-contain" />
+                <img src={cbsLogo} alt="CBS" className="h-20 object-contain" />
+                <img src={viceLogo} alt="VICE" className="h-20 object-contain" />
+                <img src={abcLogo} alt="ABC" className="h-20 object-contain" />
+                <img src={fxLogo} alt="FX" className="h-20 object-contain" />
+                <img src={discoveryLogo} alt="Discovery Channel" className="h-20 object-contain" />
+                <img src={bbcTwoAltLogo} alt="BBC Two" className="h-20 object-contain" />
+                <img src={emLogo} alt="EM" className="h-20 object-contain" />
+              </div>
+            </div>
+          </div>
+      </div>
+
+      {/* New Featured In Section - Right to Left Scrolling */}
+      <div 
+        className={`bg-white py-16 transition-all duration-3000 ease-out delay-2400 ${
+          showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold text-center text-black mb-16">
+            Also Featured In
+          </h2>
+        </div>
+        
+        {/* Right to Left scrolling logos container */}
+        <div className="overflow-hidden">
+            <div 
+              className="flex select-none"
+              style={{
+                animation: 'scrollRightToLeft 60s linear infinite',
+                willChange: 'transform'
+              }}
+            >
+              {/* First set of new logos */}
+              <div className="flex space-x-20 items-center min-w-max">
                 <img src={cnnLogo} alt="CNN" className="h-20 object-contain" />
                 <img src={cnbcLogo} alt="CNBC" className="h-20 object-contain" />
                 <img src={foxNewsLogo} alt="Fox News" className="h-20 object-contain" />
@@ -284,27 +331,25 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
               
               {/* Duplicate set for seamless loop */}
               <div className="flex space-x-20 items-center min-w-max ml-20">
-                {/* Original logos */}
-                <img src={fhmLogo} alt="FHM" className="h-20 object-contain" />
-                <img src={digitLogo} alt="Digit" className="h-20 object-contain" />
-                <img src={rtLogo} alt="RT" className="h-20 object-contain" />
-                <img src={aljazeeraLogo} alt="Al Jazeera" className="h-20 object-contain" />
-                <img src={avroLogo} alt="AVRO" className="h-20 object-contain" />
-                <img src={atvLogo} alt="ATV" className="h-20 object-contain" />
-                <img src={audibleLogo} alt="Audible" className="h-20 object-contain" />
-                <img src={bbcWorldLogo} alt="BBC World News" className="h-20 object-contain" />
-                <img src={bbcTwoLogo} alt="BBC Two" className="h-20 object-contain" />
-                <img src={abGroupeLogo} alt="AB Groupe" className="h-20 object-contain" />
-                <img src={bloombergLogo} alt="Bloomberg" className="h-20 object-contain" />
-                <img src={cbsLogo} alt="CBS" className="h-20 object-contain" />
-                <img src={viceLogo} alt="VICE" className="h-20 object-contain" />
-                <img src={abcLogo} alt="ABC" className="h-20 object-contain" />
-                <img src={fxLogo} alt="FX" className="h-20 object-contain" />
-                <img src={discoveryLogo} alt="Discovery Channel" className="h-20 object-contain" />
-                <img src={bbcTwoAltLogo} alt="BBC Two" className="h-20 object-contain" />
-                <img src={emLogo} alt="EM" className="h-20 object-contain" />
-                
-                {/* New logos */}
+                <img src={cnnLogo} alt="CNN" className="h-20 object-contain" />
+                <img src={cnbcLogo} alt="CNBC" className="h-20 object-contain" />
+                <img src={foxNewsLogo} alt="Fox News" className="h-20 object-contain" />
+                <img src={nbcLogo} alt="NBC" className="h-20 object-contain" />
+                <img src={tedLogo} alt="TED" className="h-20 object-contain" />
+                <img src={netflixLogo} alt="Netflix" className="h-20 object-contain" />
+                <img src={starzLogo} alt="Starz" className="h-20 object-contain" />
+                <img src={espnLogo} alt="ESPN" className="h-20 object-contain" />
+                <img src={tf1Logo} alt="TF1" className="h-20 object-contain" />
+                <img src={tveLogo} alt="TVE" className="h-20 object-contain" />
+                <img src={yleLogo} alt="YLE" className="h-20 object-contain" />
+                <img src={domcLogo} alt="DOMC" className="h-20 object-contain" />
+                <img src={jmorgenLogo} alt="J.P. Morgan" className="h-20 object-contain" />
+                <img src={plainDealerLogo} alt="The Plain Dealer" className="h-20 object-contain" />
+                <img src={sunLogo} alt="The Sun" className="h-20 object-contain" />
+              </div>
+              
+              {/* Third set for extra seamless scrolling */}
+              <div className="flex space-x-20 items-center min-w-max ml-20">
                 <img src={cnnLogo} alt="CNN" className="h-20 object-contain" />
                 <img src={cnbcLogo} alt="CNBC" className="h-20 object-contain" />
                 <img src={foxNewsLogo} alt="Fox News" className="h-20 object-contain" />

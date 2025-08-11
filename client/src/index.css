@@ -197,6 +197,16 @@
   backface-visibility: hidden;
 }
 
+/* Right to left scrolling animation */
+@keyframes scrollRightToLeft {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
 /* Agora page animations */
 .animate-fadeIn {
   animation: fadeIn 0.8s ease-out forwards;
