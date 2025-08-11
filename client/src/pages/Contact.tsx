@@ -179,7 +179,7 @@ export default function Contact() {
                           <div className="bg-lime-50 p-4 rounded-lg">
                             <h3 className="text-lg font-semibold mb-2">What We Offer</h3>
                             <ul className="text-gray-700 space-y-1">
-                              <li>• Competitive salary ($120k - $180k)</li>
+                              <li>• Competitive salary ($100k - $150k)</li>
                               <li>• Equity participation in groundbreaking technology</li>
                               <li>• Remote work flexibility</li>
                               <li>• Access to high-performance computing resources</li>
