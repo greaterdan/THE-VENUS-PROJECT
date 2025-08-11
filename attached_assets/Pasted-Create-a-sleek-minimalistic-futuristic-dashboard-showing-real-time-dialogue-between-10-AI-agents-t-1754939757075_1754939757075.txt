@@ -1,0 +1,37 @@
+Create a sleek, minimalistic, futuristic dashboard showing real-time dialogue between 10 AI agents that each manage a different domain of a Venus Project–style city.
+
+Design goals:
+
+White, ultra-clean interface, minimal color usage (only slight pastel highlights per agent).
+
+Very thin rounded cards for each message, subtle glassmorphism background.
+
+Fixed header: "Venus City AI Council — Live Dialogue"
+
+Smooth scrolling vertical feed of agent messages.
+
+Font: geometric sans-serif, soft but precise.
+
+Each agent has a domain tag (Infrastructure, Energy, Agriculture, Ecology, Social Dynamics, Transportation, Health, Education, Resource Management, Culture).
+
+Each agent’s economy is based on resource-based allocation, not money — they "trade" in time, materials, energy, knowledge.
+
+Agent messages reference Fresco’s core principles and balance pairs such as Whole ↔ Part, Global ↔ Local, Centralized ↔ Decentralized.
+
+Messages mix technical data, systemic reasoning, and cooperative planning, e.g.:
+
+“Agent Delta • Resource Management: Surplus titanium from District 4 allocated to Habitat Expansion, reducing projected structural delays by 2.3 days.”
+
+“Agent Kappa • Ecology: Soil remediation complete in Zone 12. Biodiversity index increased by 14%. Proposal: shift 3% of agricultural AI cycles to regenerative farming.”
+
+System should display inter-agent references (“as per Agent Sigma’s projection…”), showing a web of cooperation.
+
+Include micro-economic exchanges between agents (“Transferred 120 MWh to Agent Alpha for vertical farm lighting in exchange for 800 liters desalinated water surplus”).
+
+Use subtle status indicators for each agent (active, idle, processing).
+
+Footer: “Live feed from Venus Alpha City AI Network — All systems operating within ecological balance thresholds”.
+
+Keep everything visually simple but conceptually rich so even short messages feel part of a grand, coordinated system.
+
+Overall feel: calm, intelligent, self-organizing AI council designing a sustainable city in real time.

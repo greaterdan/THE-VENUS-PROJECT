@@ -4,7 +4,7 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { SiX, SiGithub } from "react-icons/si";
+import { SiX, SiGithub, SiInstagram } from "react-icons/si";
 import { AnimatePresence } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import PageTransition from "@/components/PageTransition";
@@ -87,6 +87,14 @@ function App() {
               className="text-black hover:text-venus-lime transition-colors bg-white p-3 rounded-full shadow-lg hover:shadow-xl"
             >
               <SiGithub className="h-5 w-5" />
+            </a>
+            <a 
+              href="https://instagram.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-black hover:text-venus-lime transition-colors bg-white p-3 rounded-full shadow-lg hover:shadow-xl"
+            >
+              <SiInstagram className="h-5 w-5" />
             </a>
           </div>
         </div>

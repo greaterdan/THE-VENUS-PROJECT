@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import ScrollPortrait from "@/components/ScrollPortrait";
-import { Instagram } from "lucide-react";
 import architectureBg from "@assets/a70b7a21-b96d-4213-a4f2-b2679bc99ce6-1_1754887244088.png";
 
 // Main title logo and media logos imports
@@ -95,9 +94,6 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
   const titleOpacity = Math.max(0, 1 - scrollY / 400);
   const titleScale = Math.max(0.8, 1 - scrollY / 1000);
   const titleTranslateY = -scrollY * 0.5;
-  
-  // Instagram icon fade based on scroll
-  const instagramOpacity = Math.max(0.3, 1 - scrollY / 300);
 
   return (
     <>
@@ -274,23 +270,6 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
               </div>
             </div>
           </div>
-      </div>
-      
-      {/* Instagram Icon - Bottom Left */}
-      <div 
-        className="fixed bottom-6 left-6 z-50 transition-opacity duration-300"
-        style={{ 
-          opacity: instagramOpacity,
-        }}
-      >
-        <a 
-          href="https://instagram.com" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="flex items-center justify-center w-12 h-12 bg-black text-white rounded-full hover:bg-gray-800 transition-colors duration-300 shadow-lg"
-        >
-          <Instagram size={24} />
-        </a>
       </div>
     </>
   );
