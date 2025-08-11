@@ -78,7 +78,7 @@ export default function Navigation() {
               <div className="relative" ref={agoraDropdownRef}>
                 <button
                   onClick={() => setAgoraDropdownOpen(!agoraDropdownOpen)}
-                  className="px-1 py-2 text-white hover:opacity-80 transition-opacity focus:outline-none"
+                  className="px-2 py-2 text-white focus:outline-none nav-icon-hover"
                 >
                   <img src={agoraIcon} alt="Agora" className="h-8 w-8" />
                 </button>
@@ -102,7 +102,7 @@ export default function Navigation() {
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setDocsDropdownOpen(!docsDropdownOpen)}
-                  className="px-1 py-2 text-white hover:opacity-80 transition-opacity focus:outline-none"
+                  className="px-2 py-2 text-white focus:outline-none nav-icon-hover"
                 >
                   <img src={docsIcon} alt="Docs" className="h-8 w-8" />
                 </button>

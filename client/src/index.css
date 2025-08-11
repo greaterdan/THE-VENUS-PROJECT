@@ -137,4 +137,20 @@
   --tw-ring-color: var(--venus-lime);
 }
 
+.nav-icon-hover {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.nav-icon-hover:hover {
+  background-color: var(--venus-lime);
+  transform: scale(1.2);
+  box-shadow: 0 0 15px var(--venus-lime);
+  filter: brightness(1.2);
+}
+
+.nav-icon-hover:hover img {
+  filter: contrast(1.3) brightness(1.1);
+}
+
 
