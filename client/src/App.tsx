@@ -40,6 +40,7 @@ function App() {
   const [isLoaded, setIsLoaded] = useState(true);
   const [showContent, setShowContent] = useState(true);
   const [showSocialButtons, setShowSocialButtons] = useState(false);
+  const [location] = useLocation();
 
   useEffect(() => {
     // Show main title first
@@ -86,12 +87,13 @@ function App() {
           
           <Router isLoaded={isLoaded} showContent={showContent} />
           
-          {/* Fixed Social Icons - Middle Right */}
-          <div 
-            className={`fixed top-1/2 right-6 transform -translate-y-1/2 flex flex-col space-y-3 z-50 transition-all duration-300 ease-in-out ${
-              showSocialButtons ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
-            }`}
-          >
+          {/* Fixed Social Icons - Middle Right - Only on Home Page */}
+          {location === '/' && (
+            <div 
+              className={`fixed top-1/2 right-6 transform -translate-y-1/2 flex flex-col space-y-3 z-50 transition-all duration-300 ease-in-out ${
+                showSocialButtons ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
+              }`}
+            >
             <a 
               href="https://x.com" 
               target="_blank" 
@@ -140,7 +142,8 @@ function App() {
             >
               <SiYoutube className="h-5 w-5" />
             </a>
-          </div>
+            </div>
+          )}
         </div>
         <Toaster />
       </TooltipProvider>
