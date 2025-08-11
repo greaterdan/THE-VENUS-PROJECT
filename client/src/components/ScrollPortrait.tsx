@@ -20,7 +20,8 @@ const ScrollPortrait = () => {
       <img 
         src={portraitImage} 
         alt="Portrait" 
-        className="w-64 h-64 object-cover transition-transform duration-300"
+        className="object-cover transition-transform duration-300"
+        style={{ width: '320px', height: '320px' }}
       />
     </div>
   );
