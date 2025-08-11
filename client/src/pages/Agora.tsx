@@ -236,37 +236,14 @@ export default function Agora() {
                 <span className="text-xs text-gray-500">Live</span>
               </div>
               
-              {/* Navigation Icons */}
-              <div className="flex items-center space-x-1 ml-6">
-                <Link href="/">
-                  <div className="p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer" title="Home">
-                    <Home className="w-5 h-5 text-gray-600 hover:text-black" />
-                  </div>
-                </Link>
-                <div className="p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer" title="Venus Project">
-                  <img src={venusIcon} alt="Venus" className="w-5 h-5" />
-                </div>
-                <div className="p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer" title="Agora">
-                  <img src={agoraIcon} alt="Agora" className="w-5 h-5" />
-                </div>
-                <Link href="/contribute">
-                  <div className="p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer" title="Contribute">
-                    <img src={contributeIcon} alt="Contribute" className="w-5 h-5" />
-                  </div>
-                </Link>
-                <Link href="/manifesto">
-                  <div className="p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer" title="Docs">
-                    <img src={docsIcon} alt="Docs" className="w-5 h-5" />
-                  </div>
-                </Link>
-              </div>
+
             </div>
           </div>
         </div>
       </motion.div>
 
       {/* Council Network Visualization */}
-      <div className="absolute top-20 left-4 w-96 h-96 pointer-events-none z-30">
+      <div className="absolute top-24 left-4 w-96 h-96 pointer-events-none z-30">
         <div className="relative w-full h-full bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 p-4">
           <h3 className="text-sm font-medium text-gray-700 mb-2">Council Network</h3>
           <div className="relative w-full h-full">
@@ -316,7 +293,7 @@ export default function Agora() {
       </div>
 
       {/* Global Metrics Dashboard */}
-      <div className="absolute top-20 right-16 w-72 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 p-4 z-30">
+      <div className="absolute top-24 right-16 w-72 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 p-4 z-30">
         <h3 className="text-sm font-medium text-gray-700 mb-3">Global Metrics</h3>
         <div className="space-y-2">
           <MicroChart type="efficiency" value={globalMetrics.efficiency} change={2.3} />
@@ -334,7 +311,7 @@ export default function Agora() {
       />
 
       {/* Main Content */}
-      <div className="pt-20 pb-20 max-w-4xl mx-auto px-6 relative z-20">
+      <div className="pt-40 pb-20 max-w-4xl mx-auto px-6 relative z-20">
         {/* Message Feed */}
         <AnimatePresence>
           <div className="space-y-4 max-h-[calc(100vh-240px)] overflow-y-auto scroll-smooth">
