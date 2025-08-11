@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import portraitImage from "@assets/Untitled design (2)_1754881780219.png";
+import portraitImage from "@assets/Untitled design (3)_1754881967453.png";
 
 const ScrollPortrait = () => {
   const [scrollY, setScrollY] = useState(0);
