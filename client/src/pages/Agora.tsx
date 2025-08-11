@@ -241,7 +241,7 @@ export default function Agora() {
       </motion.div>
 
       {/* Council Network Visualization */}
-      <div className="absolute top-80 right-16 w-72 h-80 pointer-events-none z-30">
+      <div className="absolute top-80 right-20 w-64 h-64 pointer-events-none z-30">
         <div className="relative w-full h-full bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 p-4">
           <h3 className="text-sm font-medium text-gray-700 mb-2">Council Network</h3>
           <div className="relative w-full h-full">
