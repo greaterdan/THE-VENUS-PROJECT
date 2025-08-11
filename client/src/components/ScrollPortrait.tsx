@@ -1,27 +1,26 @@
 import { useState, useEffect } from "react";
-import portraitImage from "@assets/You Don't Say _1754881435980.png";
+import portraitImage from "@assets/Untitled design (2)_1754881780219.png";
 
 const ScrollPortrait = () => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      setIsVisible(scrollY > 200); // Show after scrolling 200px
-    };
-
+    const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  if (!isVisible) return null;
+  const opacity = Math.min(1, Math.max(0, (scrollY - 200) / 300));
 
   return (
-    <div className="fixed bottom-20 left-6 z-40">
+    <div 
+      className="fixed bottom-20 left-6 z-40"
+      style={{ opacity }}
+    >
       <img 
         src={portraitImage} 
         alt="Portrait" 
-        className="w-32 h-32 object-cover rounded-lg shadow-lg hover:scale-105 transition-transform duration-300"
+        className="w-40 h-40 object-cover transition-transform duration-300"
       />
     </div>
   );
