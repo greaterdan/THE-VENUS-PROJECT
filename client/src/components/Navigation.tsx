@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, MessageCircle } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import agoraIcon from "@assets/Untitled design_1754878809797.gif";
 
 export default function Navigation() {
   const [location] = useLocation();
@@ -76,9 +77,9 @@ export default function Navigation() {
               <div className="relative" ref={agoraDropdownRef}>
                 <button
                   onClick={() => setAgoraDropdownOpen(!agoraDropdownOpen)}
-                  className="px-2 py-2 text-white hover:text-venus-lime transition-colors focus:outline-none"
+                  className="px-2 py-2 text-white hover:opacity-80 transition-opacity focus:outline-none"
                 >
-                  <MessageCircle className="h-5 w-5 agora-icon" />
+                  <img src={agoraIcon} alt="Agora" className="h-5 w-5" />
                 </button>
                 {agoraDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-32 bg-white border border-venus-gray rounded-md shadow-lg z-50">
