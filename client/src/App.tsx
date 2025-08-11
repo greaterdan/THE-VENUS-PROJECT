@@ -4,7 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SiX, SiGithub } from "react-icons/si";
-import Navigation from "@/components/Navigation";
+
 import Home from "@/pages/Home";
 import Contribute from "@/pages/Contribute";
 import Manifesto from "@/pages/Manifesto";
@@ -34,7 +34,6 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <div className="min-h-screen bg-venus-bg text-foreground font-inter">
-          <Navigation />
           <Router />
           
           {/* Fixed Social Icons - Bottom Right */}
