@@ -16,6 +16,7 @@ export default function Navigation() {
   const [contributeDropdownOpen, setContributeDropdownOpen] = useState(false);
   const [venusDropdownOpen, setVenusDropdownOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const [glitchActive, setGlitchActive] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const agoraDropdownRef = useRef<HTMLDivElement>(null);
   const contributeDropdownRef = useRef<HTMLDivElement>(null);
@@ -44,9 +45,16 @@ export default function Navigation() {
     document.addEventListener("mousedown", handleClickOutside);
     window.addEventListener("scroll", handleScroll);
 
+    // Glitch effect timer - triggers every 5 seconds
+    const glitchInterval = setInterval(() => {
+      setGlitchActive(true);
+      setTimeout(() => setGlitchActive(false), 300); // Glitch lasts 300ms
+    }, 5000);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
       window.removeEventListener("scroll", handleScroll);
+      clearInterval(glitchInterval);
     };
   }, []);
 
@@ -107,7 +115,15 @@ export default function Navigation() {
                 onMouseLeave={() => setVenusDropdownOpen(false)}
               >
                 <button className="px-2 py-2 text-black focus:outline-none">
-                  <img src={venusIcon} alt="Venus Project" className="h-8 w-8" />
+                  <img 
+                    src={venusIcon} 
+                    alt="Venus Project" 
+                    className={`h-8 w-8 transition-all duration-100 ${glitchActive ? 'animate-glitch' : ''}`} 
+                    style={{
+                      filter: glitchActive ? 'hue-rotate(90deg) saturate(200%) contrast(150%)' : 'none',
+                      transform: glitchActive ? 'scale(1.05) skew(2deg)' : 'none'
+                    }}
+                  />
                 </button>
                 {venusDropdownOpen && (
                   <div 
@@ -137,7 +153,15 @@ export default function Navigation() {
                 onMouseLeave={() => setAgoraDropdownOpen(false)}
               >
                 <button className="px-2 py-2 text-black focus:outline-none">
-                  <img src={agoraIcon} alt="Agora" className="h-8 w-8" />
+                  <img 
+                    src={agoraIcon} 
+                    alt="Agora" 
+                    className={`h-8 w-8 transition-all duration-100 ${glitchActive ? 'animate-glitch' : ''}`} 
+                    style={{
+                      filter: glitchActive ? 'hue-rotate(180deg) saturate(200%) contrast(150%)' : 'none',
+                      transform: glitchActive ? 'scale(1.05) skew(-2deg)' : 'none'
+                    }}
+                  />
                 </button>
                 {agoraDropdownOpen && (
                   <div 
@@ -167,7 +191,15 @@ export default function Navigation() {
                 onMouseLeave={() => setContributeDropdownOpen(false)}
               >
                 <button className="px-2 py-2 text-black focus:outline-none">
-                  <img src={contributeIcon} alt="Contribute" className="h-8 w-8" />
+                  <img 
+                    src={contributeIcon} 
+                    alt="Contribute" 
+                    className={`h-8 w-8 transition-all duration-100 ${glitchActive ? 'animate-glitch' : ''}`} 
+                    style={{
+                      filter: glitchActive ? 'hue-rotate(270deg) saturate(200%) contrast(150%)' : 'none',
+                      transform: glitchActive ? 'scale(1.05) skew(1deg)' : 'none'
+                    }}
+                  />
                 </button>
                 {contributeDropdownOpen && (
                   <div 
@@ -197,7 +229,15 @@ export default function Navigation() {
                 onMouseLeave={() => setDocsDropdownOpen(false)}
               >
                 <button className="px-2 py-2 text-black focus:outline-none">
-                  <img src={docsIcon} alt="Docs" className="h-8 w-8" />
+                  <img 
+                    src={docsIcon} 
+                    alt="Docs" 
+                    className={`h-8 w-8 transition-all duration-100 ${glitchActive ? 'animate-glitch' : ''}`} 
+                    style={{
+                      filter: glitchActive ? 'hue-rotate(45deg) saturate(200%) contrast(150%)' : 'none',
+                      transform: glitchActive ? 'scale(1.05) skew(-1deg)' : 'none'
+                    }}
+                  />
                 </button>
                 {docsDropdownOpen && (
                   <div 
