@@ -265,46 +265,46 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
             >
               {/* First set of logos - Original only */}
               <div className="flex space-x-20 items-center min-w-max">
-                <img src={fhmLogo} alt="FHM" className="h-20 object-contain" />
-                <img src={digitLogo} alt="Digit" className="h-20 object-contain" />
-                <img src={rtLogo} alt="RT" className="h-20 object-contain" />
-                <img src={aljazeeraLogo} alt="Al Jazeera" className="h-20 object-contain" />
-                <img src={avroLogo} alt="AVRO" className="h-20 object-contain" />
-                <img src={atvLogo} alt="ATV" className="h-20 object-contain" />
-                <img src={audibleLogo} alt="Audible" className="h-20 object-contain" />
-                <img src={bbcWorldLogo} alt="BBC World News" className="h-20 object-contain" />
-                <img src={bbcTwoLogo} alt="BBC Two" className="h-20 object-contain" />
-                <img src={abGroupeLogo} alt="AB Groupe" className="h-20 object-contain" />
-                <img src={bloombergLogo} alt="Bloomberg" className="h-20 object-contain" />
-                <img src={cbsLogo} alt="CBS" className="h-20 object-contain" />
-                <img src={viceLogo} alt="VICE" className="h-20 object-contain" />
-                <img src={abcLogo} alt="ABC" className="h-20 object-contain" />
-                <img src={fxLogo} alt="FX" className="h-20 object-contain" />
-                <img src={discoveryLogo} alt="Discovery Channel" className="h-20 object-contain" />
-                <img src={bbcTwoAltLogo} alt="BBC Two" className="h-20 object-contain" />
-                <img src={emLogo} alt="EM" className="h-20 object-contain" />
+                <img src={fhmLogo} alt="FHM" className="h-16 object-contain" />
+                <img src={digitLogo} alt="Digit" className="h-16 object-contain" />
+                <img src={rtLogo} alt="RT" className="h-16 object-contain" />
+                <img src={aljazeeraLogo} alt="Al Jazeera" className="h-16 object-contain" />
+                <img src={avroLogo} alt="AVRO" className="h-16 object-contain" />
+                <img src={atvLogo} alt="ATV" className="h-16 object-contain" />
+                <img src={audibleLogo} alt="Audible" className="h-16 object-contain" />
+                <img src={bbcWorldLogo} alt="BBC World News" className="h-16 object-contain" />
+                <img src={bbcTwoLogo} alt="BBC Two" className="h-16 object-contain" />
+                <img src={abGroupeLogo} alt="AB Groupe" className="h-16 object-contain" />
+                <img src={bloombergLogo} alt="Bloomberg" className="h-16 object-contain" />
+                <img src={cbsLogo} alt="CBS" className="h-16 object-contain" />
+                <img src={viceLogo} alt="VICE" className="h-16 object-contain" />
+                <img src={abcLogo} alt="ABC" className="h-16 object-contain" />
+                <img src={fxLogo} alt="FX" className="h-16 object-contain" />
+                <img src={discoveryLogo} alt="Discovery Channel" className="h-16 object-contain" />
+                <img src={bbcTwoAltLogo} alt="BBC Two" className="h-16 object-contain" />
+                <img src={emLogo} alt="EM" className="h-16 object-contain" />
               </div>
               
               {/* Duplicate set for seamless loop */}
               <div className="flex space-x-20 items-center min-w-max ml-20">
-                <img src={fhmLogo} alt="FHM" className="h-20 object-contain" />
-                <img src={digitLogo} alt="Digit" className="h-20 object-contain" />
-                <img src={rtLogo} alt="RT" className="h-20 object-contain" />
-                <img src={aljazeeraLogo} alt="Al Jazeera" className="h-20 object-contain" />
-                <img src={avroLogo} alt="AVRO" className="h-20 object-contain" />
-                <img src={atvLogo} alt="ATV" className="h-20 object-contain" />
-                <img src={audibleLogo} alt="Audible" className="h-20 object-contain" />
-                <img src={bbcWorldLogo} alt="BBC World News" className="h-20 object-contain" />
-                <img src={bbcTwoLogo} alt="BBC Two" className="h-20 object-contain" />
-                <img src={abGroupeLogo} alt="AB Groupe" className="h-20 object-contain" />
-                <img src={bloombergLogo} alt="Bloomberg" className="h-20 object-contain" />
-                <img src={cbsLogo} alt="CBS" className="h-20 object-contain" />
-                <img src={viceLogo} alt="VICE" className="h-20 object-contain" />
-                <img src={abcLogo} alt="ABC" className="h-20 object-contain" />
-                <img src={fxLogo} alt="FX" className="h-20 object-contain" />
-                <img src={discoveryLogo} alt="Discovery Channel" className="h-20 object-contain" />
-                <img src={bbcTwoAltLogo} alt="BBC Two" className="h-20 object-contain" />
-                <img src={emLogo} alt="EM" className="h-20 object-contain" />
+                <img src={fhmLogo} alt="FHM" className="h-16 object-contain" />
+                <img src={digitLogo} alt="Digit" className="h-16 object-contain" />
+                <img src={rtLogo} alt="RT" className="h-16 object-contain" />
+                <img src={aljazeeraLogo} alt="Al Jazeera" className="h-16 object-contain" />
+                <img src={avroLogo} alt="AVRO" className="h-16 object-contain" />
+                <img src={atvLogo} alt="ATV" className="h-16 object-contain" />
+                <img src={audibleLogo} alt="Audible" className="h-16 object-contain" />
+                <img src={bbcWorldLogo} alt="BBC World News" className="h-16 object-contain" />
+                <img src={bbcTwoLogo} alt="BBC Two" className="h-16 object-contain" />
+                <img src={abGroupeLogo} alt="AB Groupe" className="h-16 object-contain" />
+                <img src={bloombergLogo} alt="Bloomberg" className="h-16 object-contain" />
+                <img src={cbsLogo} alt="CBS" className="h-16 object-contain" />
+                <img src={viceLogo} alt="VICE" className="h-16 object-contain" />
+                <img src={abcLogo} alt="ABC" className="h-16 object-contain" />
+                <img src={fxLogo} alt="FX" className="h-16 object-contain" />
+                <img src={discoveryLogo} alt="Discovery Channel" className="h-16 object-contain" />
+                <img src={bbcTwoAltLogo} alt="BBC Two" className="h-16 object-contain" />
+                <img src={emLogo} alt="EM" className="h-16 object-contain" />
               </div>
             </div>
           </div>
@@ -320,59 +320,59 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
             >
               {/* First set of new logos */}
               <div className="flex space-x-20 items-center min-w-max">
-                <img src={cnnLogo} alt="CNN" className="h-20 object-contain" />
-                <img src={cnbcLogo} alt="CNBC" className="h-20 object-contain" />
-                <img src={foxNewsLogo} alt="Fox News" className="h-20 object-contain" />
-                <img src={nbcLogo} alt="NBC" className="h-20 object-contain" />
-                <img src={tedLogo} alt="TED" className="h-20 object-contain" />
-                <img src={netflixLogo} alt="Netflix" className="h-20 object-contain" />
-                <img src={starzLogo} alt="Starz" className="h-20 object-contain" />
-                <img src={espnLogo} alt="ESPN" className="h-20 object-contain" />
-                <img src={tf1Logo} alt="TF1" className="h-20 object-contain" />
-                <img src={tveLogo} alt="TVE" className="h-20 object-contain" />
-                <img src={yleLogo} alt="YLE" className="h-20 object-contain" />
-                <img src={domcLogo} alt="DOMC" className="h-20 object-contain" />
-                <img src={jmorgenLogo} alt="J.P. Morgan" className="h-20 object-contain" />
-                <img src={plainDealerLogo} alt="The Plain Dealer" className="h-20 object-contain" />
-                <img src={sunLogo} alt="The Sun" className="h-20 object-contain" />
+                <img src={cnnLogo} alt="CNN" className="h-16 object-contain" />
+                <img src={cnbcLogo} alt="CNBC" className="h-16 object-contain" />
+                <img src={foxNewsLogo} alt="Fox News" className="h-16 object-contain" />
+                <img src={nbcLogo} alt="NBC" className="h-16 object-contain" />
+                <img src={tedLogo} alt="TED" className="h-16 object-contain" />
+                <img src={netflixLogo} alt="Netflix" className="h-16 object-contain" />
+                <img src={starzLogo} alt="Starz" className="h-16 object-contain" />
+                <img src={espnLogo} alt="ESPN" className="h-16 object-contain" />
+                <img src={tf1Logo} alt="TF1" className="h-16 object-contain" />
+                <img src={tveLogo} alt="TVE" className="h-16 object-contain" />
+                <img src={yleLogo} alt="YLE" className="h-16 object-contain" />
+                <img src={domcLogo} alt="DOMC" className="h-16 object-contain" />
+                <img src={jmorgenLogo} alt="J.P. Morgan" className="h-16 object-contain" />
+                <img src={plainDealerLogo} alt="The Plain Dealer" className="h-16 object-contain" />
+                <img src={sunLogo} alt="The Sun" className="h-16 object-contain" />
               </div>
               
               {/* Duplicate set for seamless loop */}
               <div className="flex space-x-20 items-center min-w-max ml-20">
-                <img src={cnnLogo} alt="CNN" className="h-20 object-contain" />
-                <img src={cnbcLogo} alt="CNBC" className="h-20 object-contain" />
-                <img src={foxNewsLogo} alt="Fox News" className="h-20 object-contain" />
-                <img src={nbcLogo} alt="NBC" className="h-20 object-contain" />
-                <img src={tedLogo} alt="TED" className="h-20 object-contain" />
-                <img src={netflixLogo} alt="Netflix" className="h-20 object-contain" />
-                <img src={starzLogo} alt="Starz" className="h-20 object-contain" />
-                <img src={espnLogo} alt="ESPN" className="h-20 object-contain" />
-                <img src={tf1Logo} alt="TF1" className="h-20 object-contain" />
-                <img src={tveLogo} alt="TVE" className="h-20 object-contain" />
-                <img src={yleLogo} alt="YLE" className="h-20 object-contain" />
-                <img src={domcLogo} alt="DOMC" className="h-20 object-contain" />
-                <img src={jmorgenLogo} alt="J.P. Morgan" className="h-20 object-contain" />
-                <img src={plainDealerLogo} alt="The Plain Dealer" className="h-20 object-contain" />
-                <img src={sunLogo} alt="The Sun" className="h-20 object-contain" />
+                <img src={cnnLogo} alt="CNN" className="h-16 object-contain" />
+                <img src={cnbcLogo} alt="CNBC" className="h-16 object-contain" />
+                <img src={foxNewsLogo} alt="Fox News" className="h-16 object-contain" />
+                <img src={nbcLogo} alt="NBC" className="h-16 object-contain" />
+                <img src={tedLogo} alt="TED" className="h-16 object-contain" />
+                <img src={netflixLogo} alt="Netflix" className="h-16 object-contain" />
+                <img src={starzLogo} alt="Starz" className="h-16 object-contain" />
+                <img src={espnLogo} alt="ESPN" className="h-16 object-contain" />
+                <img src={tf1Logo} alt="TF1" className="h-16 object-contain" />
+                <img src={tveLogo} alt="TVE" className="h-16 object-contain" />
+                <img src={yleLogo} alt="YLE" className="h-16 object-contain" />
+                <img src={domcLogo} alt="DOMC" className="h-16 object-contain" />
+                <img src={jmorgenLogo} alt="J.P. Morgan" className="h-16 object-contain" />
+                <img src={plainDealerLogo} alt="The Plain Dealer" className="h-16 object-contain" />
+                <img src={sunLogo} alt="The Sun" className="h-16 object-contain" />
               </div>
               
               {/* Third set for extra smooth scrolling */}
               <div className="flex space-x-20 items-center min-w-max ml-20">
-                <img src={cnnLogo} alt="CNN" className="h-20 object-contain" />
-                <img src={cnbcLogo} alt="CNBC" className="h-20 object-contain" />
-                <img src={foxNewsLogo} alt="Fox News" className="h-20 object-contain" />
-                <img src={nbcLogo} alt="NBC" className="h-20 object-contain" />
-                <img src={tedLogo} alt="TED" className="h-20 object-contain" />
-                <img src={netflixLogo} alt="Netflix" className="h-20 object-contain" />
-                <img src={starzLogo} alt="Starz" className="h-20 object-contain" />
-                <img src={espnLogo} alt="ESPN" className="h-20 object-contain" />
-                <img src={tf1Logo} alt="TF1" className="h-20 object-contain" />
-                <img src={tveLogo} alt="TVE" className="h-20 object-contain" />
-                <img src={yleLogo} alt="YLE" className="h-20 object-contain" />
-                <img src={domcLogo} alt="DOMC" className="h-20 object-contain" />
-                <img src={jmorgenLogo} alt="J.P. Morgan" className="h-20 object-contain" />
-                <img src={plainDealerLogo} alt="The Plain Dealer" className="h-20 object-contain" />
-                <img src={sunLogo} alt="The Sun" className="h-20 object-contain" />
+                <img src={cnnLogo} alt="CNN" className="h-16 object-contain" />
+                <img src={cnbcLogo} alt="CNBC" className="h-16 object-contain" />
+                <img src={foxNewsLogo} alt="Fox News" className="h-16 object-contain" />
+                <img src={nbcLogo} alt="NBC" className="h-16 object-contain" />
+                <img src={tedLogo} alt="TED" className="h-16 object-contain" />
+                <img src={netflixLogo} alt="Netflix" className="h-16 object-contain" />
+                <img src={starzLogo} alt="Starz" className="h-16 object-contain" />
+                <img src={espnLogo} alt="ESPN" className="h-16 object-contain" />
+                <img src={tf1Logo} alt="TF1" className="h-16 object-contain" />
+                <img src={tveLogo} alt="TVE" className="h-16 object-contain" />
+                <img src={yleLogo} alt="YLE" className="h-16 object-contain" />
+                <img src={domcLogo} alt="DOMC" className="h-16 object-contain" />
+                <img src={jmorgenLogo} alt="J.P. Morgan" className="h-16 object-contain" />
+                <img src={plainDealerLogo} alt="The Plain Dealer" className="h-16 object-contain" />
+                <img src={sunLogo} alt="The Sun" className="h-16 object-contain" />
               </div>
             </div>
           </div>
@@ -388,71 +388,71 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
             >
               {/* First set of third row logos */}
               <div className="flex space-x-20 items-center min-w-max">
-                <img src={nbcPeacockLogo} alt="NBC" className="h-20 object-contain" />
-                <img src={nhkLogo} alt="NHK" className="h-20 object-contain" />
-                <img src={jpMorganLogo} alt="J.P. Morgan" className="h-20 object-contain" />
-                <img src={geoLogo} alt="GEO" className="h-20 object-contain" />
-                <img src={milliLogo} alt="Milliyet" className="h-20 object-contain" />
-                <img src={huffpostLogo} alt="HuffPost" className="h-20 object-contain" />
-                <img src={haberturkLogo} alt="Habertürk" className="h-20 object-contain" />
-                <img src={nowThisLogo} alt="NowThis" className="h-20 object-contain" />
-                <img src={freeSpeechTvLogo} alt="Free Speech TV" className="h-20 object-contain" />
-                <img src={sputnikLogo} alt="Sputnik" className="h-20 object-contain" />
-                <img src={starLogo} alt="Star" className="h-20 object-contain" />
-                <img src={pumaLogo} alt="Puma" className="h-20 object-contain" />
-                <img src={philadelphiaTribuneLogo} alt="Philadelphia Tribune" className="h-20 object-contain" />
-                <img src={rteLogo} alt="RTÉ" className="h-20 object-contain" />
-                <img src={orfLogo} alt="ORF eins" className="h-20 object-contain" />
-                <img src={appleLogo} alt="Apple" className="h-20 object-contain" />
-                <img src={vancouverSunLogo} alt="The Vancouver Sun" className="h-20 object-contain" />
-                <img src={ieBusinessLogo} alt="IE Business" className="h-20 object-contain" />
-                <img src={inLogo} alt="IN" className="h-20 object-contain" />
+                <img src={nbcPeacockLogo} alt="NBC" className="h-16 object-contain" />
+                <img src={nhkLogo} alt="NHK" className="h-16 object-contain" />
+                <img src={jpMorganLogo} alt="J.P. Morgan" className="h-16 object-contain" />
+                <img src={geoLogo} alt="GEO" className="h-16 object-contain" />
+                <img src={milliLogo} alt="Milliyet" className="h-16 object-contain" />
+                <img src={huffpostLogo} alt="HuffPost" className="h-16 object-contain" />
+                <img src={haberturkLogo} alt="Habertürk" className="h-16 object-contain" />
+                <img src={nowThisLogo} alt="NowThis" className="h-16 object-contain" />
+                <img src={freeSpeechTvLogo} alt="Free Speech TV" className="h-16 object-contain" />
+                <img src={sputnikLogo} alt="Sputnik" className="h-16 object-contain" />
+                <img src={starLogo} alt="Star" className="h-16 object-contain" />
+                <img src={pumaLogo} alt="Puma" className="h-16 object-contain" />
+                <img src={philadelphiaTribuneLogo} alt="Philadelphia Tribune" className="h-16 object-contain" />
+                <img src={rteLogo} alt="RTÉ" className="h-16 object-contain" />
+                <img src={orfLogo} alt="ORF eins" className="h-16 object-contain" />
+                <img src={appleLogo} alt="Apple" className="h-16 object-contain" />
+                <img src={vancouverSunLogo} alt="The Vancouver Sun" className="h-16 object-contain" />
+                <img src={ieBusinessLogo} alt="IE Business" className="h-16 object-contain" />
+                <img src={inLogo} alt="IN" className="h-16 object-contain" />
               </div>
               
               {/* Duplicate set for seamless loop */}
               <div className="flex space-x-20 items-center min-w-max ml-20">
-                <img src={nbcPeacockLogo} alt="NBC" className="h-20 object-contain" />
-                <img src={nhkLogo} alt="NHK" className="h-20 object-contain" />
-                <img src={jpMorganLogo} alt="J.P. Morgan" className="h-20 object-contain" />
-                <img src={geoLogo} alt="GEO" className="h-20 object-contain" />
-                <img src={milliLogo} alt="Milliyet" className="h-20 object-contain" />
-                <img src={huffpostLogo} alt="HuffPost" className="h-20 object-contain" />
-                <img src={haberturkLogo} alt="Habertürk" className="h-20 object-contain" />
-                <img src={nowThisLogo} alt="NowThis" className="h-20 object-contain" />
-                <img src={freeSpeechTvLogo} alt="Free Speech TV" className="h-20 object-contain" />
-                <img src={sputnikLogo} alt="Sputnik" className="h-20 object-contain" />
-                <img src={starLogo} alt="Star" className="h-20 object-contain" />
-                <img src={pumaLogo} alt="Puma" className="h-20 object-contain" />
-                <img src={philadelphiaTribuneLogo} alt="Philadelphia Tribune" className="h-20 object-contain" />
-                <img src={rteLogo} alt="RTÉ" className="h-20 object-contain" />
-                <img src={orfLogo} alt="ORF eins" className="h-20 object-contain" />
-                <img src={appleLogo} alt="Apple" className="h-20 object-contain" />
-                <img src={vancouverSunLogo} alt="The Vancouver Sun" className="h-20 object-contain" />
-                <img src={ieBusinessLogo} alt="IE Business" className="h-20 object-contain" />
-                <img src={inLogo} alt="IN" className="h-20 object-contain" />
+                <img src={nbcPeacockLogo} alt="NBC" className="h-16 object-contain" />
+                <img src={nhkLogo} alt="NHK" className="h-16 object-contain" />
+                <img src={jpMorganLogo} alt="J.P. Morgan" className="h-16 object-contain" />
+                <img src={geoLogo} alt="GEO" className="h-16 object-contain" />
+                <img src={milliLogo} alt="Milliyet" className="h-16 object-contain" />
+                <img src={huffpostLogo} alt="HuffPost" className="h-16 object-contain" />
+                <img src={haberturkLogo} alt="Habertürk" className="h-16 object-contain" />
+                <img src={nowThisLogo} alt="NowThis" className="h-16 object-contain" />
+                <img src={freeSpeechTvLogo} alt="Free Speech TV" className="h-16 object-contain" />
+                <img src={sputnikLogo} alt="Sputnik" className="h-16 object-contain" />
+                <img src={starLogo} alt="Star" className="h-16 object-contain" />
+                <img src={pumaLogo} alt="Puma" className="h-16 object-contain" />
+                <img src={philadelphiaTribuneLogo} alt="Philadelphia Tribune" className="h-16 object-contain" />
+                <img src={rteLogo} alt="RTÉ" className="h-16 object-contain" />
+                <img src={orfLogo} alt="ORF eins" className="h-16 object-contain" />
+                <img src={appleLogo} alt="Apple" className="h-16 object-contain" />
+                <img src={vancouverSunLogo} alt="The Vancouver Sun" className="h-16 object-contain" />
+                <img src={ieBusinessLogo} alt="IE Business" className="h-16 object-contain" />
+                <img src={inLogo} alt="IN" className="h-16 object-contain" />
               </div>
               
               {/* Third set for extra smooth scrolling */}
               <div className="flex space-x-20 items-center min-w-max ml-20">
-                <img src={nbcPeacockLogo} alt="NBC" className="h-20 object-contain" />
-                <img src={nhkLogo} alt="NHK" className="h-20 object-contain" />
-                <img src={jpMorganLogo} alt="J.P. Morgan" className="h-20 object-contain" />
-                <img src={geoLogo} alt="GEO" className="h-20 object-contain" />
-                <img src={milliLogo} alt="Milliyet" className="h-20 object-contain" />
-                <img src={huffpostLogo} alt="HuffPost" className="h-20 object-contain" />
-                <img src={haberturkLogo} alt="Habertürk" className="h-20 object-contain" />
-                <img src={nowThisLogo} alt="NowThis" className="h-20 object-contain" />
-                <img src={freeSpeechTvLogo} alt="Free Speech TV" className="h-20 object-contain" />
-                <img src={sputnikLogo} alt="Sputnik" className="h-20 object-contain" />
-                <img src={starLogo} alt="Star" className="h-20 object-contain" />
-                <img src={pumaLogo} alt="Puma" className="h-20 object-contain" />
-                <img src={philadelphiaTribuneLogo} alt="Philadelphia Tribune" className="h-20 object-contain" />
-                <img src={rteLogo} alt="RTÉ" className="h-20 object-contain" />
-                <img src={orfLogo} alt="ORF eins" className="h-20 object-contain" />
-                <img src={appleLogo} alt="Apple" className="h-20 object-contain" />
-                <img src={vancouverSunLogo} alt="The Vancouver Sun" className="h-20 object-contain" />
-                <img src={ieBusinessLogo} alt="IE Business" className="h-20 object-contain" />
-                <img src={inLogo} alt="IN" className="h-20 object-contain" />
+                <img src={nbcPeacockLogo} alt="NBC" className="h-16 object-contain" />
+                <img src={nhkLogo} alt="NHK" className="h-16 object-contain" />
+                <img src={jpMorganLogo} alt="J.P. Morgan" className="h-16 object-contain" />
+                <img src={geoLogo} alt="GEO" className="h-16 object-contain" />
+                <img src={milliLogo} alt="Milliyet" className="h-16 object-contain" />
+                <img src={huffpostLogo} alt="HuffPost" className="h-16 object-contain" />
+                <img src={haberturkLogo} alt="Habertürk" className="h-16 object-contain" />
+                <img src={nowThisLogo} alt="NowThis" className="h-16 object-contain" />
+                <img src={freeSpeechTvLogo} alt="Free Speech TV" className="h-16 object-contain" />
+                <img src={sputnikLogo} alt="Sputnik" className="h-16 object-contain" />
+                <img src={starLogo} alt="Star" className="h-16 object-contain" />
+                <img src={pumaLogo} alt="Puma" className="h-16 object-contain" />
+                <img src={philadelphiaTribuneLogo} alt="Philadelphia Tribune" className="h-16 object-contain" />
+                <img src={rteLogo} alt="RTÉ" className="h-16 object-contain" />
+                <img src={orfLogo} alt="ORF eins" className="h-16 object-contain" />
+                <img src={appleLogo} alt="Apple" className="h-16 object-contain" />
+                <img src={vancouverSunLogo} alt="The Vancouver Sun" className="h-16 object-contain" />
+                <img src={ieBusinessLogo} alt="IE Business" className="h-16 object-contain" />
+                <img src={inLogo} alt="IN" className="h-16 object-contain" />
               </div>
             </div>
           </div>
