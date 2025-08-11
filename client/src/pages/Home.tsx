@@ -131,7 +131,7 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
         }}
       >
         <div 
-          className="max-w-4xl mx-auto bg-white pr-4 lg:pr-80"
+          className="w-full max-w-2xl ml-4 lg:ml-8 bg-white lg:mr-[680px]"
           style={{
             opacity: Math.min(1, Math.max(0, (scrollY - 200) / 300)),
             transform: `translateY(${Math.max(0, 100 - (scrollY - 200) * 0.3)}px)`,
