@@ -61,41 +61,34 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <div className="min-h-screen bg-venus-bg text-foreground font-inter">
-          {/* Navigation with delayed fade in */}
-          <div 
-            className={`transition-opacity duration-3000 ease-out delay-800 ${
-              showContent ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
+          {/* Navigation - always visible */}
+          <div className="opacity-100">
             <Navigation />
           </div>
           
           <Router isLoaded={isLoaded} showContent={showContent} />
           
-          {/* Fixed Social Icons - Bottom Right - highest z-index for visibility */}
+          {/* Fixed Social Icons - Bottom Right */}
           <div 
-            className="fixed bottom-6 right-6 flex flex-col space-y-3 opacity-100"
-            style={{ zIndex: 9999, position: 'fixed' }}
+            className={`fixed bottom-6 right-6 flex flex-col space-y-3 z-50 transition-opacity duration-3000 ease-out delay-2000 ${
+              showContent ? 'opacity-100' : 'opacity-0'
+            }`}
           >
-            {/* Debug element */}
-            <div className="bg-red-500 text-white p-2 text-xs">ICONS HERE</div>
             <a 
               href="https://x.com" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-black hover:text-venus-lime transition-colors bg-white p-3 rounded-full shadow-2xl hover:shadow-3xl border-2 border-gray-200"
-              title="X (Twitter)"
+              className="text-black hover:text-venus-lime transition-colors bg-white p-3 rounded-full shadow-lg hover:shadow-xl"
             >
-              <SiX className="h-6 w-6" />
+              <SiX className="h-5 w-5" />
             </a>
             <a 
               href="https://github.com" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-black hover:text-venus-lime transition-colors bg-white p-3 rounded-full shadow-2xl hover:shadow-3xl border-2 border-gray-200"
-              title="GitHub"
+              className="text-black hover:text-venus-lime transition-colors bg-white p-3 rounded-full shadow-lg hover:shadow-xl"
             >
-              <SiGithub className="h-6 w-6" />
+              <SiGithub className="h-5 w-5" />
             </a>
           </div>
         </div>
