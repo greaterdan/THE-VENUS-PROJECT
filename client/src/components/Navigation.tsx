@@ -60,11 +60,13 @@ export default function Navigation() {
           {/* Right Navigation Group - Desktop */}
           <div className="hidden md:block ml-auto">
             <div className="flex items-baseline space-x-2">
-              <div className="relative" ref={contributeDropdownRef}>
-                <button
-                  onClick={() => setContributeDropdownOpen(!contributeDropdownOpen)}
-                  className="px-2 py-2 text-white focus:outline-none"
-                >
+              <div 
+                className="relative group" 
+                ref={contributeDropdownRef}
+                onMouseEnter={() => setContributeDropdownOpen(true)}
+                onMouseLeave={() => setContributeDropdownOpen(false)}
+              >
+                <button className="px-2 py-2 text-white focus:outline-none">
                   <img src={contributeIcon} alt="Contribute" className="h-8 w-8" />
                 </button>
                 {contributeDropdownOpen && (
@@ -75,7 +77,6 @@ export default function Navigation() {
                           className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-colors cursor-pointer ${
                             isActive(link.href) ? "text-venus-lime" : ""
                           }`}
-                          onClick={() => setContributeDropdownOpen(false)}
                         >
                           {link.label}
                         </span>
@@ -85,11 +86,13 @@ export default function Navigation() {
                 )}
               </div>
               
-              <div className="relative" ref={dropdownRef}>
-                <button
-                  onClick={() => setDocsDropdownOpen(!docsDropdownOpen)}
-                  className="px-2 py-2 text-white focus:outline-none"
-                >
+              <div 
+                className="relative group" 
+                ref={dropdownRef}
+                onMouseEnter={() => setDocsDropdownOpen(true)}
+                onMouseLeave={() => setDocsDropdownOpen(false)}
+              >
+                <button className="px-2 py-2 text-white focus:outline-none">
                   <img src={docsIcon} alt="Docs" className="h-8 w-8" />
                 </button>
                 {docsDropdownOpen && (
@@ -100,7 +103,6 @@ export default function Navigation() {
                           className={`block px-4 py-2 text-sm hover:bg-gray-50 hover:text-venus-lime transition-colors cursor-pointer ${
                             isActive(link.href) ? "text-venus-lime" : ""
                           }`}
-                          onClick={() => setDocsDropdownOpen(false)}
                         >
                           {link.label}
                         </span>
