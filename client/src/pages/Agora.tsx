@@ -179,6 +179,14 @@ export default function Agora() {
     setResourceTransfers(transfers);
   }, []);
 
+  // Prevent body scrolling on Agora page
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
+
   const scrollToMessage = (markerId: string) => {
     const element = document.getElementById(`message-${markerId}`);
     if (element) {
@@ -192,7 +200,7 @@ export default function Agora() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/20 to-green-50/20 relative overflow-hidden">
+    <div className="h-screen bg-gradient-to-br from-gray-50 via-blue-50/20 to-green-50/20 relative overflow-hidden">
       {/* Background Grid Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,.02)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
       
