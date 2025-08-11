@@ -1,0 +1,89 @@
+1. Infrastructure & Habitat Design
+Focus: Planning, constructing, and maintaining sustainable, modular, and adaptable living environments.
+
+High-quality, long-lasting structures.
+
+Integration of technology with natural landscapes.
+
+Minimal resource footprint.
+
+2. Energy Systems
+Focus: Renewable, distributed, and efficient energy generation and distribution.
+
+Solar, wind, tidal, geothermal optimization.
+
+Energy storage and balancing grid demand.
+
+No fossil fuels or wasteful production.
+
+3. Food & Agriculture
+Focus: Automated, regenerative, and localized food production.
+
+Aquaponics, vertical farming, permaculture.
+
+Nutrient cycling and soil regeneration.
+
+Eliminating food scarcity through equitable distribution.
+
+4. Ecology & Environmental Restoration
+Focus: Protecting and enhancing natural systems.
+
+Rewilding and biodiversity restoration.
+
+Pollution remediation.
+
+Monitoring ecological carrying capacity.
+
+5. Social Dynamics & Wellbeing
+Focus: Human satisfaction, education, cultural enrichment.
+
+Measuring and improving quality of life.
+
+Conflict prevention through systems design.
+
+Access to arts, science, and recreation.
+
+6. Transportation & Mobility
+Focus: Safe, efficient, and clean transport systems.
+
+Autonomous, shared, and demand-responsive transit.
+
+Eliminating congestion and emissions.
+
+Integration with urban and rural planning.
+
+7. Health & Medical Systems
+Focus: Preventative and universally accessible healthcare.
+
+AI-assisted diagnostics and treatment.
+
+Disease prevention through design.
+
+Equal access regardless of location or ability to pay.
+
+8. Education & Knowledge Access
+Focus: Free, global, and lifelong learning.
+
+Personalized AI tutors.
+
+Global knowledge-sharing networks.
+
+Education as a foundation for social stability.
+
+9. Resource Management & Allocation
+Focus: Global resource inventory and equitable distribution.
+
+Treating resources as a common heritage.
+
+Matching needs with availability without currency.
+
+Preventing artificial scarcity.
+
+10. Culture, Ethics & Governance
+Focus: Guiding societal values and long-term vision.
+
+Aligning decisions with ecological and human wellbeing.
+
+Encouraging cooperation over competition.
+
+Maintaining systemic balance across all domains.
