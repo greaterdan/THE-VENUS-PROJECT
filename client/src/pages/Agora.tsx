@@ -43,7 +43,7 @@ interface ActiveConnection {
 
 
 
-// Center all agents in the middle of the map (viewBox is 600x400)
+// Position agents in network formation centered in the map (viewBox is 600x400)
 const mapCenterX = 300;
 const mapCenterY = 200;
 
@@ -52,7 +52,7 @@ const AGENTS: Agent[] = [
     id: 'alpha',
     name: 'Alpha',
     domain: 'Infrastructure & Habitat Design',
-    position: { x: 220, y: 150 },
+    position: { x: 150, y: 160 }, // Left side
     status: 'active',
     resources: { surplus: ['titanium', 'concrete'], deficit: ['energy'] },
     alignment: 94
@@ -61,7 +61,7 @@ const AGENTS: Agent[] = [
     id: 'beta',
     name: 'Beta',
     domain: 'Energy Systems',
-    position: { x: 300, y: 130 },
+    position: { x: 300, y: 120 }, // Top center
     status: 'processing',
     resources: { surplus: ['solar', 'wind'], deficit: ['materials'] },
     alignment: 96
@@ -70,7 +70,7 @@ const AGENTS: Agent[] = [
     id: 'gamma',
     name: 'Gamma',
     domain: 'Food & Agriculture',
-    position: { x: 380, y: 150 },
+    position: { x: 450, y: 160 }, // Right side
     status: 'active',
     resources: { surplus: ['biomass', 'nutrients'], deficit: ['water'] },
     alignment: 91
@@ -79,7 +79,7 @@ const AGENTS: Agent[] = [
     id: 'delta',
     name: 'Delta',
     domain: 'Ecology & Environmental Restoration',
-    position: { x: 180, y: 190 },
+    position: { x: 220, y: 200 }, // Left-center
     status: 'idle',
     resources: { surplus: ['biodiversity'], deficit: ['time'] },
     alignment: 89
@@ -88,7 +88,7 @@ const AGENTS: Agent[] = [
     id: 'epsilon',
     name: 'Epsilon',
     domain: 'Social Dynamics & Wellbeing',
-    position: { x: 260, y: 200 },
+    position: { x: 350, y: 180 }, // Center-right
     status: 'active',
     resources: { surplus: ['culture', 'knowledge'], deficit: ['infrastructure'] },
     alignment: 93
@@ -97,7 +97,7 @@ const AGENTS: Agent[] = [
     id: 'zeta',
     name: 'Zeta',
     domain: 'Transportation & Mobility',
-    position: { x: 340, y: 200 },
+    position: { x: 420, y: 220 }, // Right-center
     status: 'processing',
     resources: { surplus: ['efficiency', 'networks'], deficit: ['energy'] },
     alignment: 88
@@ -106,7 +106,7 @@ const AGENTS: Agent[] = [
     id: 'eta',
     name: 'Eta',
     domain: 'Health & Medical Systems',
-    position: { x: 420, y: 190 },
+    position: { x: 180, y: 240 }, // Left-bottom
     status: 'active',
     resources: { surplus: ['diagnostics', 'prevention'], deficit: ['materials'] },
     alignment: 95
@@ -115,7 +115,7 @@ const AGENTS: Agent[] = [
     id: 'theta',
     name: 'Theta',
     domain: 'Education & Knowledge Access',
-    position: { x: 220, y: 240 },
+    position: { x: 280, y: 260 }, // Bottom-center
     status: 'processing',
     resources: { surplus: ['knowledge', 'analysis'], deficit: ['time'] },
     alignment: 92
@@ -124,7 +124,7 @@ const AGENTS: Agent[] = [
     id: 'iota',
     name: 'Iota',
     domain: 'Resource Management & Allocation',
-    position: { x: 300, y: 260 },
+    position: { x: 380, y: 250 }, // Right-bottom
     status: 'active',
     resources: { surplus: ['inventory', 'data'], deficit: ['distribution'] },
     alignment: 90
@@ -133,7 +133,7 @@ const AGENTS: Agent[] = [
     id: 'kappa',
     name: 'Kappa',
     domain: 'Culture, Ethics & Governance',
-    position: { x: 380, y: 240 },
+    position: { x: 300, y: 280 }, // Bottom center
     status: 'active',
     resources: { surplus: ['wisdom', 'balance'], deficit: ['consensus'] },
     alignment: 97
@@ -191,30 +191,46 @@ const ARCHIVE_DECISIONS = [
 ];
 
 const AgentNode = ({ agent, isSelected, onClick }: { agent: Agent; isSelected: boolean; onClick: () => void }) => {
-  const statusColors = {
-    active: 'bg-green-400 shadow-green-200',
-    processing: 'bg-yellow-400 shadow-yellow-200',
-    idle: 'bg-gray-400 shadow-gray-200'
+  // Color coding based on agent type matching example image
+  const agentColors = {
+    alpha: 'bg-green-500',    // Infrastructure - Green
+    beta: 'bg-yellow-500',    // Energy - Yellow
+    gamma: 'bg-green-500',    // Agriculture - Green
+    delta: 'bg-gray-500',     // Ecology - Gray
+    epsilon: 'bg-green-500',  // Social - Green
+    zeta: 'bg-yellow-500',    // Transportation - Yellow
+    eta: 'bg-green-500',      // Health - Green
+    theta: 'bg-yellow-500',   // Education - Yellow
+    iota: 'bg-green-500',     // Resources - Green
+    kappa: 'bg-green-500'     // Governance - Green
   };
 
   return (
     <motion.div
       className={`absolute cursor-pointer`}
-      style={{ left: agent.position.x, top: agent.position.y }}
+      style={{ left: agent.position.x - 20, top: agent.position.y - 20 }} // Center the 40px circle
       whileHover={{ scale: 1.1 }}
       onClick={onClick}
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      transition={{ delay: 0.1 }}
     >
-      <div className={`w-8 h-8 rounded-full ${statusColors[agent.status]} shadow-lg flex items-center justify-center`}>
-        <div className="w-4 h-4 bg-white rounded-full flex items-center justify-center">
-          <span className="text-xs font-bold text-gray-700">{agent.name[0]}</span>
-        </div>
+      {/* Main agent circle */}
+      <div className={`w-10 h-10 rounded-full ${agentColors[agent.id as keyof typeof agentColors]} shadow-lg flex items-center justify-center border-2 border-white ${
+        isSelected ? 'ring-4 ring-lime-400' : ''
+      }`}>
+        <span className="text-white font-bold text-sm">{agent.name.charAt(0)}</span>
       </div>
-      {agent.status === 'active' && (
-        <div className="absolute inset-0 w-8 h-8 rounded-full bg-green-400 animate-ping opacity-20"></div>
-      )}
-      <div className="absolute top-10 left-1/2 transform -translate-x-1/2 text-xs font-mono text-gray-600 whitespace-nowrap">
+      
+      {/* Agent name label */}
+      <div className="absolute top-12 left-1/2 transform -translate-x-1/2 text-xs font-medium text-gray-600 whitespace-nowrap">
         {agent.name}
       </div>
+      
+      {/* Activity indicator for active agents */}
+      {agent.status === 'active' && (
+        <div className="absolute inset-0 w-10 h-10 rounded-full bg-green-400 animate-ping opacity-30"></div>
+      )}
     </motion.div>
   );
 };
@@ -245,11 +261,11 @@ const AnimatedConnectionLine = ({
     time: '⏱️'
   };
 
-  // Agent centers (32x32 nodes, so center is +16)
-  const fromX = fromAgent.position.x + 16;
-  const fromY = fromAgent.position.y + 16;
-  const toX = toAgent.position.x + 16;
-  const toY = toAgent.position.y + 16;
+  // Agent centers (40x40 nodes centered at position)
+  const fromX = fromAgent.position.x;
+  const fromY = fromAgent.position.y;
+  const toX = toAgent.position.x;
+  const toY = toAgent.position.y;
 
   // Calculate arrow direction
   const angle = Math.atan2(toY - fromY, toX - fromX);
@@ -263,65 +279,51 @@ const AnimatedConnectionLine = ({
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {/* Connection line */}
+      {/* Connection line - some solid, some dashed like in example */}
       <motion.line
         x1={fromX}
         y1={fromY}
         x2={toX}
         y2={toY}
-        stroke={colors[connection.type]}
-        strokeWidth="3"
+        stroke="#000000"
+        strokeWidth="2"
         strokeOpacity="0.8"
+        strokeDasharray={connection.type === 'data' || connection.type === 'time' ? "5,5" : "none"}
         initial={{ pathLength: 0 }}
         animate={{ pathLength: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
       />
       
-      {/* Directional arrow */}
-      <motion.polygon
-        points={`${arrowX},${arrowY} ${arrowX - 8 * Math.cos(angle - 0.5)},${arrowY - 8 * Math.sin(angle - 0.5)} ${arrowX - 8 * Math.cos(angle + 0.5)},${arrowY - 8 * Math.sin(angle + 0.5)}`}
+      {/* Resource flow data like in example */}
+      <motion.text
+        x={(fromX + toX) / 2}
+        y={(fromY + toY) / 2 - 8}
+        textAnchor="middle"
+        fontSize="12"
         fill={colors[connection.type]}
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 0.3, delay: 0.8 }}
-      />
+        className="font-mono font-bold"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5 }}
+      >
+        {connection.type === 'energy' ? '1600kWh' : 
+         connection.type === 'material' ? '24kg' :
+         connection.type === 'data' ? '156MB' : '45min'}
+      </motion.text>
       
-      {/* Resource particle */}
-      <circle
-        r="4"
+      {/* Small moving dot along the line */}
+      <motion.circle
+        r="3"
         fill={colors[connection.type]}
-        opacity="0.9"
+        opacity="0.8"
       >
         <animateMotion
           dur="2s"
           repeatCount="1"
           path={`M ${fromX},${fromY} L ${toX},${toY}`}
-          begin="0.2s"
+          begin="0.3s"
         />
-      </circle>
-      
-      {/* Resource icon and message */}
-      <text
-        x={(fromX + toX) / 2}
-        y={(fromY + toY) / 2 - 15}
-        textAnchor="middle"
-        fontSize="12"
-        opacity="0.9"
-      >
-        {icons[connection.type]}
-      </text>
-      
-      <text
-        x={(fromX + toX) / 2}
-        y={(fromY + toY) / 2 + 5}
-        textAnchor="middle"
-        fontSize="10"
-        fill={colors[connection.type]}
-        className="font-mono"
-        opacity="0.8"
-      >
-        {connection.message}
-      </text>
+      </motion.circle>
     </motion.g>
   );
 };
