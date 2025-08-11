@@ -37,8 +37,8 @@ function Router({ isLoaded, showContent }: { isLoaded: boolean; showContent: boo
 }
 
 function App() {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [showContent, setShowContent] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
+  const [showContent, setShowContent] = useState(true);
 
   useEffect(() => {
     // Show main title first

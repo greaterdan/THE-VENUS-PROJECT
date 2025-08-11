@@ -6,6 +6,7 @@ import agoraIcon from "@assets/Untitled design_1754878809797.gif";
 import docsIcon from "@assets/Untitled design_1754879488364.gif";
 import contributeIcon from "@assets/Untitled design (1)_1754880001361.gif";
 import venusIcon from "@assets/Untitled design (2)_1754882967112.gif";
+import venusLogo from "@assets/Untitled design (1)_1754930558468.png";
 
 export default function Navigation() {
   const [location] = useLocation();
@@ -79,9 +80,20 @@ export default function Navigation() {
   return (
     <nav className="sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center h-16">
+        <div className="flex items-center justify-between h-16">
+          {/* Left Logo - Home Link */}
+          <div className="flex items-center">
+            <Link href="/">
+              <img 
+                src={venusLogo} 
+                alt="Venus Project Home" 
+                className="h-10 w-10 hover:opacity-75 transition-opacity duration-300 cursor-pointer"
+              />
+            </Link>
+          </div>
+
           {/* Right Navigation Group - Desktop */}
-          <div className="hidden md:block ml-auto opacity-100">
+          <div className="hidden md:block opacity-100">
             <div className="flex items-baseline space-x-2">
               <div 
                 className="relative group" 
@@ -207,7 +219,7 @@ export default function Navigation() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden opacity-100">
+          <div className="md:hidden opacity-100 ml-auto">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="text-black hover:text-venus-lime focus:outline-none transition-all duration-300"
@@ -226,6 +238,16 @@ export default function Navigation() {
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-gray-200 bg-white">
           <div className="px-2 pt-2 pb-3 space-y-1">
+            {/* Mobile Home Link */}
+            <Link href="/">
+              <span
+                className="flex items-center px-3 py-2 text-sm font-medium text-black hover:text-venus-lime transition-colors cursor-pointer"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <img src={venusLogo} alt="Home" className="h-6 w-6 mr-3" />
+                Home
+              </span>
+            </Link>
             {venusLinks.map((link) => (
               <Link key={link.href} href={link.href}>
                 <span
