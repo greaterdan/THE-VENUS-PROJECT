@@ -209,12 +209,13 @@ export default function Agora() {
       
       {/* Enhanced Header */}
       <motion.div 
-        className="relative w-full z-50 bg-white border-b border-gray-200 mt-7"
+        className="relative w-full z-50 bg-white border-b border-gray-200 mt-6"
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
+        style={{ backgroundColor: '#ffffff' }}
       >
-        <div className="max-w-7xl mx-auto px-6 py-4">
+        <div className="max-w-7xl mx-auto px-6 py-4 bg-white" style={{ backgroundColor: '#ffffff' }}>
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <h1 className="text-2xl font-light tracking-wide text-gray-900">
