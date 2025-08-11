@@ -25,11 +25,11 @@ export default function Home() {
 
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      <div className="min-h-screen flex items-center justify-center relative overflow-hidden -mt-16 pt-16">
         {/* Multiple layer approach to handle PNG transparency */}
-        <div className="absolute inset-0 bg-gray-100"></div>
+        <div className="absolute -top-16 left-0 right-0 bottom-0 bg-gray-100"></div>
         <div 
-          className="absolute inset-0"
+          className="absolute -top-16 left-0 right-0 bottom-0"
           style={{
             backgroundImage: `url(${architectureBg})`,
             backgroundSize: 'cover',
@@ -37,7 +37,7 @@ export default function Home() {
             backgroundRepeat: 'no-repeat'
           }}
         ></div>
-        <div className="absolute inset-0 bg-white bg-opacity-10"></div>
+        <div className="absolute -top-16 left-0 right-0 bottom-0 bg-white bg-opacity-10"></div>
         
         <div className="text-center px-4 relative z-20">
           <h1 
