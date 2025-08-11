@@ -10,6 +10,7 @@ import Contribute from "@/pages/Contribute";
 import Manifesto from "@/pages/Manifesto";
 import Structure from "@/pages/Structure";
 import Agora from "@/pages/Agora";
+import Contact from "@/pages/Contact";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -20,6 +21,7 @@ function Router() {
       <Route path="/manifesto" component={Manifesto} />
       <Route path="/structure" component={Structure} />
       <Route path="/agora" component={Agora} />
+      <Route path="/contact" component={Contact} />
       <Route component={NotFound} />
     </Switch>
   );
