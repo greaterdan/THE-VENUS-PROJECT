@@ -93,7 +93,7 @@ export default function Navigation() {
                 onMouseLeave={() => setVenusDropdownOpen(false)}
               >
                 <button className="px-2 py-2 text-black focus:outline-none">
-                  <img src={venusIcon} alt="Venus Project" className="h-6 w-6" />
+                  <img src={venusIcon} alt="Venus Project" className="h-8 w-8" />
                 </button>
                 {venusDropdownOpen && (
                   <div 
@@ -123,7 +123,7 @@ export default function Navigation() {
                 onMouseLeave={() => setAgoraDropdownOpen(false)}
               >
                 <button className="px-2 py-2 text-black focus:outline-none">
-                  <img src={agoraIcon} alt="Agora" className="h-6 w-6" />
+                  <img src={agoraIcon} alt="Agora" className="h-8 w-8" />
                 </button>
                 {agoraDropdownOpen && (
                   <div 
@@ -153,7 +153,7 @@ export default function Navigation() {
                 onMouseLeave={() => setContributeDropdownOpen(false)}
               >
                 <button className="px-2 py-2 text-black focus:outline-none">
-                  <img src={contributeIcon} alt="Contribute" className="h-6 w-6" />
+                  <img src={contributeIcon} alt="Contribute" className="h-8 w-8" />
                 </button>
                 {contributeDropdownOpen && (
                   <div 
@@ -183,7 +183,7 @@ export default function Navigation() {
                 onMouseLeave={() => setDocsDropdownOpen(false)}
               >
                 <button className="px-2 py-2 text-black focus:outline-none">
-                  <img src={docsIcon} alt="Docs" className="h-6 w-6" />
+                  <img src={docsIcon} alt="Docs" className="h-8 w-8" />
                 </button>
                 {docsDropdownOpen && (
                   <div 
@@ -216,9 +216,9 @@ export default function Navigation() {
               className="text-black hover:text-venus-lime focus:outline-none transition-all duration-300"
             >
               {mobileMenuOpen ? (
-                <X className="h-6 w-6" />
+                <X className="h-8 w-8" />
               ) : (
-                <Menu className="h-6 w-6" />
+                <Menu className="h-8 w-8" />
               )}
             </button>
           </div>
