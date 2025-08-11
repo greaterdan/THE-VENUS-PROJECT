@@ -32,9 +32,18 @@ interface ResourceFlow {
   type: 'energy' | 'material' | 'data' | 'time';
 }
 
+interface ActiveConnection {
+  id: string;
+  from: string;
+  to: string;
+  type: 'energy' | 'material' | 'data' | 'time';
+  message: string;
+  timestamp: number;
+}
 
 
-// Calculate evenly distributed positions across the middle of the map
+
+// Center all agents in the middle of the map (viewBox is 600x400)
 const mapCenterX = 300;
 const mapCenterY = 200;
 
@@ -43,7 +52,7 @@ const AGENTS: Agent[] = [
     id: 'alpha',
     name: 'Alpha',
     domain: 'Infrastructure & Habitat Design',
-    position: { x: 150, y: 140 },
+    position: { x: 220, y: 150 },
     status: 'active',
     resources: { surplus: ['titanium', 'concrete'], deficit: ['energy'] },
     alignment: 94
@@ -52,7 +61,7 @@ const AGENTS: Agent[] = [
     id: 'beta',
     name: 'Beta',
     domain: 'Energy Systems',
-    position: { x: 250, y: 120 },
+    position: { x: 300, y: 130 },
     status: 'processing',
     resources: { surplus: ['solar', 'wind'], deficit: ['materials'] },
     alignment: 96
@@ -61,7 +70,7 @@ const AGENTS: Agent[] = [
     id: 'gamma',
     name: 'Gamma',
     domain: 'Food & Agriculture',
-    position: { x: 350, y: 140 },
+    position: { x: 380, y: 150 },
     status: 'active',
     resources: { surplus: ['biomass', 'nutrients'], deficit: ['water'] },
     alignment: 91
@@ -70,7 +79,7 @@ const AGENTS: Agent[] = [
     id: 'delta',
     name: 'Delta',
     domain: 'Ecology & Environmental Restoration',
-    position: { x: 450, y: 160 },
+    position: { x: 180, y: 190 },
     status: 'idle',
     resources: { surplus: ['biodiversity'], deficit: ['time'] },
     alignment: 89
@@ -79,7 +88,7 @@ const AGENTS: Agent[] = [
     id: 'epsilon',
     name: 'Epsilon',
     domain: 'Social Dynamics & Wellbeing',
-    position: { x: 200, y: 200 },
+    position: { x: 260, y: 200 },
     status: 'active',
     resources: { surplus: ['culture', 'knowledge'], deficit: ['infrastructure'] },
     alignment: 93
@@ -88,7 +97,7 @@ const AGENTS: Agent[] = [
     id: 'zeta',
     name: 'Zeta',
     domain: 'Transportation & Mobility',
-    position: { x: 300, y: 180 },
+    position: { x: 340, y: 200 },
     status: 'processing',
     resources: { surplus: ['efficiency', 'networks'], deficit: ['energy'] },
     alignment: 88
@@ -97,7 +106,7 @@ const AGENTS: Agent[] = [
     id: 'eta',
     name: 'Eta',
     domain: 'Health & Medical Systems',
-    position: { x: 400, y: 200 },
+    position: { x: 420, y: 190 },
     status: 'active',
     resources: { surplus: ['diagnostics', 'prevention'], deficit: ['materials'] },
     alignment: 95
@@ -106,7 +115,7 @@ const AGENTS: Agent[] = [
     id: 'theta',
     name: 'Theta',
     domain: 'Education & Knowledge Access',
-    position: { x: 150, y: 240 },
+    position: { x: 220, y: 240 },
     status: 'processing',
     resources: { surplus: ['knowledge', 'analysis'], deficit: ['time'] },
     alignment: 92
@@ -124,7 +133,7 @@ const AGENTS: Agent[] = [
     id: 'kappa',
     name: 'Kappa',
     domain: 'Culture, Ethics & Governance',
-    position: { x: 450, y: 240 },
+    position: { x: 380, y: 240 },
     status: 'active',
     resources: { surplus: ['wisdom', 'balance'], deficit: ['consensus'] },
     alignment: 97
@@ -144,18 +153,34 @@ const CURRENT_DECISION: Decision = {
   participants: ['alpha', 'beta', 'gamma', 'delta', 'epsilon', 'zeta', 'eta', 'theta', 'iota', 'kappa']
 };
 
-const RESOURCE_FLOWS: ResourceFlow[] = [
-  { from: 'alpha', to: 'beta', resource: 'titanium', amount: '2.4 units', type: 'material' },
-  { from: 'beta', to: 'alpha', resource: 'solar', amount: '156 kWh', type: 'energy' },
-  { from: 'gamma', to: 'epsilon', resource: 'nutrition data', amount: '18 MB', type: 'data' },
-  { from: 'eta', to: 'theta', resource: 'health metrics', amount: '42 datasets', type: 'data' },
-  { from: 'iota', to: 'gamma', resource: 'water allocation', amount: '890 L', type: 'material' },
-  { from: 'kappa', to: 'epsilon', resource: 'cultural guidelines', amount: '12 protocols', type: 'data' },
-  { from: 'zeta', to: 'iota', resource: 'transport efficiency', amount: '94%', type: 'data' },
-  { from: 'delta', to: 'gamma', resource: 'soil analysis', amount: '6 reports', type: 'data' },
-  { from: 'theta', to: 'kappa', resource: 'learning patterns', amount: '25 models', type: 'data' },
-  { from: 'epsilon', to: 'delta', resource: 'behavioral impact', amount: '8.2 score', type: 'data' }
-];
+// Dynamic conversation patterns for random agent communications
+const CONVERSATION_TEMPLATES = [
+  { type: 'energy', messages: ['Solar array status', 'Power allocation', 'Grid optimization', 'Energy transfer'] },
+  { type: 'material', messages: ['Resource delivery', 'Material analysis', 'Supply coordination', 'Inventory update'] },
+  { type: 'data', messages: ['Data analysis', 'Information sync', 'Model update', 'Status report'] },
+  { type: 'time', messages: ['Schedule sync', 'Task coordination', 'Timeline update', 'Process timing'] }
+] as const;
+
+const getRandomConversation = () => {
+  const agentIds = AGENTS.map(a => a.id);
+  const fromAgent = agentIds[Math.floor(Math.random() * agentIds.length)];
+  let toAgent = agentIds[Math.floor(Math.random() * agentIds.length)];
+  
+  // Ensure different agents
+  while (toAgent === fromAgent) {
+    toAgent = agentIds[Math.floor(Math.random() * agentIds.length)];
+  }
+  
+  const template = CONVERSATION_TEMPLATES[Math.floor(Math.random() * CONVERSATION_TEMPLATES.length)];
+  const message = template.messages[Math.floor(Math.random() * template.messages.length)];
+  
+  return {
+    from: fromAgent,
+    to: toAgent,
+    type: template.type,
+    message
+  };
+};
 
 const ARCHIVE_DECISIONS = [
   { id: 1, title: 'Solar Array Recalibration', status: 'IMPLEMENTED', timestamp: '14:18:23', impact: '+18% efficiency' },
@@ -194,72 +219,110 @@ const AgentNode = ({ agent, isSelected, onClick }: { agent: Agent; isSelected: b
   );
 };
 
-const ResourceFlowLine = ({ flow, agents }: { flow: ResourceFlow; agents: Agent[] }) => {
-  const fromAgent = agents.find(a => a.id === flow.from);
-  const toAgent = agents.find(a => a.id === flow.to);
+const AnimatedConnectionLine = ({ 
+  connection, 
+  agents 
+}: { 
+  connection: ActiveConnection; 
+  agents: Agent[]; 
+}) => {
+  const fromAgent = agents.find(a => a.id === connection.from);
+  const toAgent = agents.find(a => a.id === connection.to);
   
   if (!fromAgent || !toAgent) return null;
 
-  const flowColors = {
-    energy: 'stroke-yellow-400',
-    material: 'stroke-blue-400',
-    data: 'stroke-purple-400',
-    time: 'stroke-green-400'
+  const colors = {
+    energy: '#facc15',
+    material: '#60a5fa',
+    data: '#a78bfa',
+    time: '#4ade80'
   };
 
-  // Agent node center coordinates (agent nodes are 32x32, so center is +16)
-  const fromCenterX = fromAgent.position.x + 16;
-  const fromCenterY = fromAgent.position.y + 16;
-  const toCenterX = toAgent.position.x + 16;
-  const toCenterY = toAgent.position.y + 16;
+  const icons = {
+    energy: '⚡',
+    material: '📦',
+    data: '💾',
+    time: '⏱️'
+  };
+
+  // Agent centers (32x32 nodes, so center is +16)
+  const fromX = fromAgent.position.x + 16;
+  const fromY = fromAgent.position.y + 16;
+  const toX = toAgent.position.x + 16;
+  const toY = toAgent.position.y + 16;
+
+  // Calculate arrow direction
+  const angle = Math.atan2(toY - fromY, toX - fromX);
+  const arrowX = toX - 20 * Math.cos(angle);
+  const arrowY = toY - 20 * Math.sin(angle);
 
   return (
-    <g>
-      {/* Direct connection line from center to center */}
+    <motion.g
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      {/* Connection line */}
       <motion.line
-        x1={fromCenterX}
-        y1={fromCenterY}
-        x2={toCenterX}
-        y2={toCenterY}
-        className={`${flowColors[flow.type]} opacity-70`}
-        strokeWidth="2"
-        strokeDasharray="4,4"
+        x1={fromX}
+        y1={fromY}
+        x2={toX}
+        y2={toY}
+        stroke={colors[connection.type]}
+        strokeWidth="3"
+        strokeOpacity="0.8"
         initial={{ pathLength: 0 }}
         animate={{ pathLength: 1 }}
-        transition={{ duration: 2, repeat: Infinity }}
+        transition={{ duration: 1, ease: "easeOut" }}
       />
       
-      {/* Animated resource particle traveling along the line */}
+      {/* Directional arrow */}
+      <motion.polygon
+        points={`${arrowX},${arrowY} ${arrowX - 8 * Math.cos(angle - 0.5)},${arrowY - 8 * Math.sin(angle - 0.5)} ${arrowX - 8 * Math.cos(angle + 0.5)},${arrowY - 8 * Math.sin(angle + 0.5)}`}
+        fill={colors[connection.type]}
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 0.3, delay: 0.8 }}
+      />
+      
+      {/* Resource particle */}
       <circle
-        r="3"
-        className={`fill-current ${flowColors[flow.type].replace('stroke', 'text')}`}
-        opacity="0.8"
+        r="4"
+        fill={colors[connection.type]}
+        opacity="0.9"
       >
         <animateMotion
-          dur="3s"
-          repeatCount="indefinite"
-          path={`M ${fromCenterX},${fromCenterY} L ${toCenterX},${toCenterY}`}
-        />
-        <animate
-          attributeName="r"
-          values="2;4;2"
-          dur="1.5s"
-          repeatCount="indefinite"
+          dur="2s"
+          repeatCount="1"
+          path={`M ${fromX},${fromY} L ${toX},${toY}`}
+          begin="0.2s"
         />
       </circle>
       
-      {/* Resource label at midpoint */}
+      {/* Resource icon and message */}
       <text
-        x={(fromCenterX + toCenterX) / 2}
-        y={(fromCenterY + toCenterY) / 2 - 8}
+        x={(fromX + toX) / 2}
+        y={(fromY + toY) / 2 - 15}
         textAnchor="middle"
-        fontSize="9"
-        className={`${flowColors[flow.type].replace('stroke', 'fill')} font-mono`}
-        opacity="0.6"
+        fontSize="12"
+        opacity="0.9"
       >
-        {flow.amount}
+        {icons[connection.type]}
       </text>
-    </g>
+      
+      <text
+        x={(fromX + toX) / 2}
+        y={(fromY + toY) / 2 + 5}
+        textAnchor="middle"
+        fontSize="10"
+        fill={colors[connection.type]}
+        className="font-mono"
+        opacity="0.8"
+      >
+        {connection.message}
+      </text>
+    </motion.g>
   );
 };
 
@@ -308,12 +371,43 @@ export default function Agora() {
   const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
   const [viewMode, setViewMode] = useState<'live' | 'archive'>('live');
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString('en-US', { hour12: false }));
+  const [activeConnections, setActiveConnections] = useState<ActiveConnection[]>([]);
 
   useEffect(() => {
     const timeInterval = setInterval(() => {
       setCurrentTime(new Date().toLocaleTimeString('en-US', { hour12: false }));
     }, 1000);
     return () => clearInterval(timeInterval);
+  }, []);
+
+  // Dynamic connection system
+  useEffect(() => {
+    const createConnection = () => {
+      const conversation = getRandomConversation();
+      const newConnection: ActiveConnection = {
+        id: `conn-${Date.now()}-${Math.random()}`,
+        from: conversation.from,
+        to: conversation.to,
+        type: conversation.type,
+        message: conversation.message,
+        timestamp: Date.now()
+      };
+
+      setActiveConnections(prev => [...prev, newConnection]);
+
+      // Remove connection after 3 seconds
+      setTimeout(() => {
+        setActiveConnections(prev => prev.filter(conn => conn.id !== newConnection.id));
+      }, 3000);
+    };
+
+    // Create new connections every 2 seconds
+    const connectionInterval = setInterval(createConnection, 2000);
+    
+    // Create initial connection
+    createConnection();
+
+    return () => clearInterval(connectionInterval);
   }, []);
 
   return (
@@ -381,9 +475,15 @@ export default function Agora() {
 
               {/* Agent Network */}
               <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 600 400">
-                {RESOURCE_FLOWS.map((flow, index) => (
-                  <ResourceFlowLine key={index} flow={flow} agents={AGENTS} />
-                ))}
+                <AnimatePresence>
+                  {activeConnections.map((connection) => (
+                    <AnimatedConnectionLine 
+                      key={connection.id} 
+                      connection={connection} 
+                      agents={AGENTS} 
+                    />
+                  ))}
+                </AnimatePresence>
               </svg>
 
               {AGENTS.map(agent => (
@@ -450,27 +550,30 @@ export default function Agora() {
                   </div>
                 </div>
 
-                {/* Resource Flows */}
+                {/* Active Connections */}
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-800 mb-4">Active Resource Flows</h3>
+                  <h3 className="text-sm font-semibold text-gray-800 mb-4">Live Communications</h3>
                   <div className="space-y-3">
-                    {RESOURCE_FLOWS.map((flow, index) => (
-                      <div key={index} className="bg-gray-50 rounded p-3">
+                    {activeConnections.slice(-3).map((connection) => (
+                      <div key={connection.id} className="bg-gray-50 rounded p-3">
                         <div className="flex items-center justify-between text-xs">
                           <span className="font-mono text-gray-600">
-                            {flow.from.toUpperCase()} → {flow.to.toUpperCase()}
+                            {connection.from.toUpperCase()} → {connection.to.toUpperCase()}
                           </span>
                           <span className={`px-2 py-1 rounded text-white ${
-                            flow.type === 'energy' ? 'bg-yellow-400' :
-                            flow.type === 'material' ? 'bg-blue-400' :
-                            flow.type === 'data' ? 'bg-purple-400' : 'bg-green-400'
+                            connection.type === 'energy' ? 'bg-yellow-400' :
+                            connection.type === 'material' ? 'bg-blue-400' :
+                            connection.type === 'data' ? 'bg-purple-400' : 'bg-green-400'
                           }`}>
-                            {flow.type}
+                            {connection.type}
                           </span>
                         </div>
-                        <div className="text-sm text-gray-800 mt-1">{flow.resource}</div>
+                        <div className="text-sm text-gray-800 mt-1">{connection.message}</div>
                       </div>
                     ))}
+                    {activeConnections.length === 0 && (
+                      <div className="text-gray-500 text-xs">Establishing connections...</div>
+                    )}
                   </div>
                 </div>
 
