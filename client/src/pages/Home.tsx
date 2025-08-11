@@ -23,6 +23,23 @@ import discoveryLogo from "@assets/Untitled design copy 14_1754926356755.png";
 import bbcTwoAltLogo from "@assets/Untitled design copy_1754926356755.png";
 import emLogo from "@assets/Untitled design_1754926356755.png";
 
+// New media logos
+import domcLogo from "@assets/Untitled design (3) copy 2_1754942660088.png";
+import cnbcLogo from "@assets/Untitled design (3) copy 3_1754942660088.png";
+import foxNewsLogo from "@assets/Untitled design (3) copy 4_1754942660088.png";
+import jmorgenLogo from "@assets/Untitled design (3) copy_1754942660088.png";
+import cnnLogo from "@assets/Untitled design (3)_1754942660088.png";
+import netflixLogo from "@assets/Untitled design (4) copy 2_1754942660088.png";
+import plainDealerLogo from "@assets/Untitled design (4) copy 3_1754942660088.png";
+import sunLogo from "@assets/Untitled design (4) copy 4_1754942660088.png";
+import tedLogo from "@assets/Untitled design (4) copy 5_1754942660088.png";
+import tf1Logo from "@assets/Untitled design (4) copy 6_1754942660088.png";
+import tveLogo from "@assets/Untitled design (4) copy 7_1754942660088.png";
+import yleLogo from "@assets/Untitled design (4) copy 8_1754942660088.png";
+import nbcLogo from "@assets/Untitled design (4) copy 9_1754942660088.png";
+import starzLogo from "@assets/Untitled design (4) copy_1754942660088.png";
+import espnLogo from "@assets/Untitled design (4)_1754942660088.png";
+
 interface HomeProps {
   isLoaded?: boolean;
   showContent?: boolean;
@@ -225,8 +242,9 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
                 willChange: 'transform'
               }}
             >
-              {/* First set of logos */}
+              {/* First set of logos - Complete collection with all media outlets */}
               <div className="flex space-x-20 items-center min-w-max">
+                {/* Original logos */}
                 <img src={fhmLogo} alt="FHM" className="h-20 object-contain" />
                 <img src={digitLogo} alt="Digit" className="h-20 object-contain" />
                 <img src={rtLogo} alt="RT" className="h-20 object-contain" />
@@ -245,10 +263,28 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
                 <img src={discoveryLogo} alt="Discovery Channel" className="h-20 object-contain" />
                 <img src={bbcTwoAltLogo} alt="BBC Two" className="h-20 object-contain" />
                 <img src={emLogo} alt="EM" className="h-20 object-contain" />
+                
+                {/* New logos */}
+                <img src={cnnLogo} alt="CNN" className="h-20 object-contain" />
+                <img src={cnbcLogo} alt="CNBC" className="h-20 object-contain" />
+                <img src={foxNewsLogo} alt="Fox News" className="h-20 object-contain" />
+                <img src={nbcLogo} alt="NBC" className="h-20 object-contain" />
+                <img src={tedLogo} alt="TED" className="h-20 object-contain" />
+                <img src={netflixLogo} alt="Netflix" className="h-20 object-contain" />
+                <img src={starzLogo} alt="Starz" className="h-20 object-contain" />
+                <img src={espnLogo} alt="ESPN" className="h-20 object-contain" />
+                <img src={tf1Logo} alt="TF1" className="h-20 object-contain" />
+                <img src={tveLogo} alt="TVE" className="h-20 object-contain" />
+                <img src={yleLogo} alt="YLE" className="h-20 object-contain" />
+                <img src={domcLogo} alt="DOMC" className="h-20 object-contain" />
+                <img src={jmorgenLogo} alt="J.P. Morgan" className="h-20 object-contain" />
+                <img src={plainDealerLogo} alt="The Plain Dealer" className="h-20 object-contain" />
+                <img src={sunLogo} alt="The Sun" className="h-20 object-contain" />
               </div>
               
               {/* Duplicate set for seamless loop */}
               <div className="flex space-x-20 items-center min-w-max ml-20">
+                {/* Original logos */}
                 <img src={fhmLogo} alt="FHM" className="h-20 object-contain" />
                 <img src={digitLogo} alt="Digit" className="h-20 object-contain" />
                 <img src={rtLogo} alt="RT" className="h-20 object-contain" />
@@ -267,6 +303,23 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
                 <img src={discoveryLogo} alt="Discovery Channel" className="h-20 object-contain" />
                 <img src={bbcTwoAltLogo} alt="BBC Two" className="h-20 object-contain" />
                 <img src={emLogo} alt="EM" className="h-20 object-contain" />
+                
+                {/* New logos */}
+                <img src={cnnLogo} alt="CNN" className="h-20 object-contain" />
+                <img src={cnbcLogo} alt="CNBC" className="h-20 object-contain" />
+                <img src={foxNewsLogo} alt="Fox News" className="h-20 object-contain" />
+                <img src={nbcLogo} alt="NBC" className="h-20 object-contain" />
+                <img src={tedLogo} alt="TED" className="h-20 object-contain" />
+                <img src={netflixLogo} alt="Netflix" className="h-20 object-contain" />
+                <img src={starzLogo} alt="Starz" className="h-20 object-contain" />
+                <img src={espnLogo} alt="ESPN" className="h-20 object-contain" />
+                <img src={tf1Logo} alt="TF1" className="h-20 object-contain" />
+                <img src={tveLogo} alt="TVE" className="h-20 object-contain" />
+                <img src={yleLogo} alt="YLE" className="h-20 object-contain" />
+                <img src={domcLogo} alt="DOMC" className="h-20 object-contain" />
+                <img src={jmorgenLogo} alt="J.P. Morgan" className="h-20 object-contain" />
+                <img src={plainDealerLogo} alt="The Plain Dealer" className="h-20 object-contain" />
+                <img src={sunLogo} alt="The Sun" className="h-20 object-contain" />
               </div>
             </div>
           </div>
