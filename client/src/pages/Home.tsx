@@ -22,7 +22,12 @@ import discoveryLogo from "@assets/Untitled design copy 14_1754926356755.png";
 import bbcTwoAltLogo from "@assets/Untitled design copy_1754926356755.png";
 import emLogo from "@assets/Untitled design_1754926356755.png";
 
-export default function Home() {
+interface HomeProps {
+  isLoaded?: boolean;
+  showContent?: boolean;
+}
+
+export default function Home({ isLoaded = true, showContent = true }: HomeProps) {
   const [scrollY, setScrollY] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
@@ -71,9 +76,15 @@ export default function Home() {
     <>
       <div className="min-h-screen flex items-center justify-center relative overflow-hidden -mt-16 pt-16">
         {/* Multiple layer approach to handle PNG transparency */}
-        <div className="absolute -top-16 left-0 right-0 bottom-0 bg-gray-100"></div>
         <div 
-          className="absolute -top-16 left-0 right-0 bottom-0"
+          className={`absolute -top-16 left-0 right-0 bottom-0 bg-gray-100 transition-opacity duration-1000 ease-out delay-300 ${
+            showContent ? 'opacity-100' : 'opacity-0'
+          }`}
+        ></div>
+        <div 
+          className={`absolute -top-16 left-0 right-0 bottom-0 transition-opacity duration-1000 ease-out delay-500 ${
+            showContent ? 'opacity-100' : 'opacity-0'
+          }`}
           style={{
             backgroundImage: `url(${architectureBg})`,
             backgroundSize: 'cover',
@@ -81,14 +92,20 @@ export default function Home() {
             backgroundRepeat: 'no-repeat'
           }}
         ></div>
-        <div className="absolute -top-16 left-0 right-0 bottom-0 bg-white bg-opacity-10"></div>
+        <div 
+          className={`absolute -top-16 left-0 right-0 bottom-0 bg-white bg-opacity-10 transition-opacity duration-1000 ease-out delay-700 ${
+            showContent ? 'opacity-100' : 'opacity-0'
+          }`}
+        ></div>
         
         <div className="text-center px-4 relative z-20">
           <h1 
-            className="text-6xl md:text-8xl font-bold text-black tracking-tight transition-all duration-300 drop-shadow-lg"
+            className={`text-6xl md:text-8xl font-bold text-black tracking-tight drop-shadow-lg transition-all duration-1000 ease-out ${
+              isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+            }`}
             style={{
-              opacity: titleOpacity,
-              transform: `translateY(${titleTranslateY}px) scale(${titleScale})`,
+              opacity: isLoaded ? titleOpacity : 0,
+              transform: `translateY(${titleTranslateY}px) scale(${titleScale * (isLoaded ? 1 : 0.95)})`,
               textShadow: '2px 2px 4px rgba(255,255,255,0.8)'
             }}
           >
@@ -98,17 +115,21 @@ export default function Home() {
         
         {/* Gradient overlay for smooth transition */}
         <div 
-          className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none z-25"
+          className={`absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none z-25 transition-opacity duration-1000 ease-out delay-1200 ${
+            showContent ? 'opacity-100' : 'opacity-0'
+          }`}
           style={{
-            opacity: Math.min(1, scrollY / 100)
+            opacity: showContent ? Math.min(1, scrollY / 100) : 0
           }}
         />
         
         {/* Scroll indicator */}
         <div 
-          className="absolute bottom-1 left-1/2 transform -translate-x-1/2 text-black animate-bounce z-20"
+          className={`absolute bottom-1 left-1/2 transform -translate-x-1/2 text-black animate-bounce z-20 transition-opacity duration-1000 ease-out delay-1400 ${
+            showContent ? 'opacity-100' : 'opacity-0'
+          }`}
           style={{
-            opacity: Math.max(0, 1 - scrollY / 200),
+            opacity: showContent ? Math.max(0, 1 - scrollY / 200) : 0,
             textShadow: '2px 2px 4px rgba(255,255,255,0.8)'
           }}
         >
@@ -121,11 +142,13 @@ export default function Home() {
       
       {/* Transition section */}
       <div 
-        className="min-h-screen bg-white p-8 relative z-30"
+        className={`min-h-screen bg-white p-8 relative z-30 transition-all duration-1000 ease-out delay-1000 ${
+          showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}
         style={{
           transform: `translateY(${-scrollY * 0.1}px)`,
-          backgroundColor: 'white', // Ensure solid white background
-          boxShadow: '0 -20px 40px rgba(255,255,255,0.9)' // Additional white shadow at top
+          backgroundColor: 'white',
+          boxShadow: '0 -20px 40px rgba(255,255,255,0.9)'
         }}
       >
         <div 
@@ -165,7 +188,11 @@ export default function Home() {
       </div>
       
       {/* Featured In Section - Separate section */}
-      <div className="bg-white py-16">
+      <div 
+        className={`bg-white py-16 transition-all duration-1000 ease-out delay-1500 ${
+          showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold text-center text-black mb-16">
             Featured In

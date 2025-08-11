@@ -1,4 +1,5 @@
 import { Switch, Route, useLocation } from "wouter";
+import { useState, useEffect } from "react";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -16,13 +17,13 @@ import Contact from "@/pages/Contact";
 import NFTs from "@/pages/NFTs";
 import NotFound from "@/pages/not-found";
 
-function Router() {
+function Router({ isLoaded, showContent }: { isLoaded: boolean; showContent: boolean }) {
   const [location] = useLocation();
   
   return (
     <AnimatePresence mode="wait">
       <Switch key={location}>
-        <Route path="/" component={() => <PageTransition><Home /></PageTransition>} />
+        <Route path="/" component={() => <PageTransition><Home isLoaded={isLoaded} showContent={showContent} /></PageTransition>} />
         <Route path="/contribute" component={() => <PageTransition><Contribute /></PageTransition>} />
         <Route path="/manifesto" component={() => <PageTransition><Manifesto /></PageTransition>} />
         <Route path="/structure" component={() => <PageTransition><Structure /></PageTransition>} />
@@ -36,15 +37,47 @@ function Router() {
 }
 
 function App() {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [showContent, setShowContent] = useState(false);
+
+  useEffect(() => {
+    // Show main title first
+    const titleTimer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 500);
+
+    // Then show rest of content
+    const contentTimer = setTimeout(() => {
+      setShowContent(true);
+    }, 2000);
+
+    return () => {
+      clearTimeout(titleTimer);
+      clearTimeout(contentTimer);
+    };
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <div className="min-h-screen bg-venus-bg text-foreground font-inter">
-          <Navigation />
-          <Router />
+          {/* Navigation with delayed fade in */}
+          <div 
+            className={`transition-opacity duration-1000 ease-out ${
+              showContent ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <Navigation />
+          </div>
           
-          {/* Fixed Social Icons - Bottom Right */}
-          <div className="fixed bottom-6 right-6 flex flex-col space-y-3 z-50">
+          <Router isLoaded={isLoaded} showContent={showContent} />
+          
+          {/* Fixed Social Icons - Bottom Right with delayed fade in */}
+          <div 
+            className={`fixed bottom-6 right-6 flex flex-col space-y-3 z-50 transition-opacity duration-1000 ease-out delay-500 ${
+              showContent ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
             <a 
               href="https://x.com" 
               target="_blank" 
