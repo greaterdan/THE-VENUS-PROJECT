@@ -50,7 +50,7 @@ export default function Navigation() {
   return (
     <nav className="bg-black border-b border-gray-800 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 pr-8">
+        <div className="flex items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/">
@@ -61,7 +61,7 @@ export default function Navigation() {
           </div>
 
           {/* Right Navigation Group - Desktop */}
-          <div className="hidden md:block">
+          <div className="hidden md:block ml-auto">
             <div className="flex items-baseline space-x-2">
               {navLinks.map((link) => (
                 <Link key={link.href} href={link.href}>
