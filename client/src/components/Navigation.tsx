@@ -104,7 +104,7 @@ export default function Navigation() {
                     {venusLinks.map((link) => (
                       <Link key={link.href} href={link.href}>
                         <span
-                          className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-colors cursor-pointer ${
+                          className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-all duration-300 ease-out transform hover:translate-x-1 cursor-pointer ${
                             isActive(link.href) ? "text-venus-lime" : ""
                           }`}
                         >
@@ -134,7 +134,7 @@ export default function Navigation() {
                     {agoraLinks.map((link) => (
                       <Link key={link.href} href={link.href}>
                         <span
-                          className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-colors cursor-pointer ${
+                          className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-all duration-300 ease-out transform hover:translate-x-1 cursor-pointer ${
                             isActive(link.href) ? "text-venus-lime" : ""
                           }`}
                         >
@@ -164,7 +164,7 @@ export default function Navigation() {
                     {contributeLinks.map((link) => (
                       <Link key={link.href} href={link.href}>
                         <span
-                          className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-colors cursor-pointer ${
+                          className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-all duration-300 ease-out transform hover:translate-x-1 cursor-pointer ${
                             isActive(link.href) ? "text-venus-lime" : ""
                           }`}
                         >
@@ -194,7 +194,7 @@ export default function Navigation() {
                     {docsLinks.map((link) => (
                       <Link key={link.href} href={link.href}>
                         <span
-                          className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-colors cursor-pointer ${
+                          className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-all duration-300 ease-out transform hover:translate-x-1 cursor-pointer ${
                             isActive(link.href) ? "text-venus-lime" : ""
                           }`}
                         >
