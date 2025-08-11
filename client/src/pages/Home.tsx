@@ -46,6 +46,37 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
     setIsTyping(shouldStartTyping);
   }, [scrollY]);
 
+  // Force continuous scrolling with JavaScript
+  useEffect(() => {
+    let animationId: number;
+    let translateX = 0;
+    const scrollSpeed = 0.5; // pixels per frame
+    
+    const animate = () => {
+      if (scrollContainerRef.current) {
+        translateX -= scrollSpeed;
+        // Reset position when first set completes one full cycle
+        if (translateX <= -50) { // 50% is where we reset for seamless loop
+          translateX = 0;
+        }
+        scrollContainerRef.current.style.transform = `translateX(${translateX}%)`;
+      }
+      animationId = requestAnimationFrame(animate);
+    };
+    
+    // Start animation after a short delay to ensure component is mounted
+    const timeoutId = setTimeout(() => {
+      animationId = requestAnimationFrame(animate);
+    }, 100);
+    
+    return () => {
+      clearTimeout(timeoutId);
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    };
+  }, []);
+
 
 
   const titleOpacity = Math.max(0, 1 - scrollY / 400);
@@ -176,7 +207,8 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
         <div className="overflow-hidden">
             <div 
               ref={scrollContainerRef}
-              className="flex animate-scroll-fast select-none"
+              className="flex select-none"
+              style={{ transform: 'translateX(0%)' }}
             >
               {/* First set of logos */}
               <div className="flex space-x-20 items-center min-w-max">
