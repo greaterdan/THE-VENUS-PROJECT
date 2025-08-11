@@ -50,6 +50,7 @@ export default function Navigation() {
 
   const venusLinks = [
     { href: "/", label: "THE VENUS PROJECT" },
+    { href: "/nfts", label: "NFTs" },
   ];
 
   const contributeLinks = [

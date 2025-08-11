@@ -11,6 +11,7 @@ import Manifesto from "@/pages/Manifesto";
 import Structure from "@/pages/Structure";
 import Agora from "@/pages/Agora";
 import Contact from "@/pages/Contact";
+import NFTs from "@/pages/NFTs";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -22,6 +23,7 @@ function Router() {
       <Route path="/structure" component={Structure} />
       <Route path="/agora" component={Agora} />
       <Route path="/contact" component={Contact} />
+      <Route path="/nfts" component={NFTs} />
       <Route component={NotFound} />
     </Switch>
   );
