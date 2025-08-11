@@ -141,34 +141,7 @@ export default function Structure() {
               </div>
             </div>
 
-            <div className="bg-lime-50 p-8 rounded-lg border-2 border-lime-200">
-              <h2 className="text-2xl font-semibold mb-4">Implementation Status</h2>
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">Core Architecture</span>
-                  <span className="text-lime-700 font-semibold">95% Complete</span>
-                </div>
-                <div className="w-full bg-lime-200 rounded-full h-2">
-                  <div className="bg-lime-600 h-2 rounded-full" style={{width: '95%'}}></div>
-                </div>
-                
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">Agent Training</span>
-                  <span className="text-lime-700 font-semibold">78% Complete</span>
-                </div>
-                <div className="w-full bg-lime-200 rounded-full h-2">
-                  <div className="bg-lime-600 h-2 rounded-full" style={{width: '78%'}}></div>
-                </div>
 
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">Physical Integration</span>
-                  <span className="text-yellow-700 font-semibold">45% Complete</span>
-                </div>
-                <div className="w-full bg-yellow-200 rounded-full h-2">
-                  <div className="bg-yellow-600 h-2 rounded-full" style={{width: '45%'}}></div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
