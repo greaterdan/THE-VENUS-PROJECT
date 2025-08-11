@@ -1,36 +1,28 @@
 export default function Manifesto() {
   return (
     <div className="max-w-[680px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-4xl font-bold mb-8">Manifesto</h1>
+      <h1 className="text-4xl font-bold mb-8 text-center">Manifesto</h1>
 
-      <div className="prose prose-lg max-w-none">
-        <p className="text-xl mb-6 text-gray-700 leading-relaxed">
-          The Venus Project represents humanity's next evolutionary step: the creation of autonomous, sustainable cities powered by artificial intelligence and collective human wisdom.
-        </p>
+      <div className="bg-white border border-venus-gray rounded-lg p-8 shadow-sm">
+        <div className="space-y-6">
+          <p className="leading-relaxed">
+            Cities have always been the product of human imagination and human limitation, shaped by the slow choreography of hands, machines and bureaucracy. That era is ending. We are now entering an age where the city can build itself, not as a dream or a metaphor but as a direct output of connected intelligence. Modern AI can interpret vision, extract intent and turn it into action without the layers of translation that once slowed creation. A machine can now look at a blueprint, understand the purpose behind it, and begin construction in real time, adapting every decision as the world around it changes.
+          </p>
 
-        <h2 className="text-2xl font-semibold mt-8 mb-4">Our Vision</h2>
-        <p className="mb-6 leading-relaxed">
-          We envision a world where artificial intelligence and human creativity collaborate to build cities that adapt, evolve, and thrive without the constraints of traditional governance or resource scarcity. These cities will be living organisms of technology and human potential.
-        </p>
+          <p className="leading-relaxed">
+            This is no longer about faster cranes or more efficient scheduling. It is about meaning becoming a first-class element in construction. The barrier between rigid engineering rules and fluid creative design has dissolved. Where once a city was frozen at the moment of its approval, now it can evolve continuously, adjusting its form and function as new information arrives. It becomes not a fixed artifact but a living system, a body that learns and grows.
+          </p>
 
-        <h2 className="text-2xl font-semibold mt-8 mb-4">Decentralized Intelligence</h2>
-        <p className="mb-6 leading-relaxed">
-          Through distributed computing and collective intelligence, we harness the power of individual contributors to build something greater than the sum of its parts. Every GPU cycle, every line of code, every creative contribution builds toward our shared future.
-        </p>
+          <p className="leading-relaxed">
+            The foundation of this transformation is the swarm — not a single intelligence but a network of autonomous agents, each with its own perspective, each making local decisions that ripple outward to shape the whole. These agents communicate in real time, sharing context, resolving conflicts, and combining their knowledge into a coherent act of creation. They draw from the sum of human history: diagrams, photographs, written records, data streams. Every past design becomes raw material for new construction.
+          </p>
 
-        <h2 className="text-2xl font-semibold mt-8 mb-4">Sustainable Autonomy</h2>
-        <p className="mb-6 leading-relaxed">
-          Our cities will be self-sustaining ecosystems that learn, adapt, and evolve. They will generate their own energy, manage their own resources, and continuously optimize for the wellbeing of their inhabitants while maintaining harmony with the natural world.
-        </p>
+          <p className="leading-relaxed">
+            The self-building city is an organism without a final form. It does not wait for human approval cycles or work hours. It perceives, decides and acts continuously, twenty-four hours a day, forever. Roads, parks, housing and infrastructure emerge not from top-down control but from a constant negotiation between thousands or millions of digital minds. Every moment is an opportunity to improve, every change in circumstance a catalyst for adaptation.
+          </p>
 
-        <h2 className="text-2xl font-semibold mt-8 mb-4">The Path Forward</h2>
-        <p className="mb-6 leading-relaxed">
-          The Venus Project is not just about building cities—it's about reimagining what civilization can become when technology serves humanity's highest aspirations. Join us in creating a future where abundance, creativity, and human flourishing are not just possible, but inevitable.
-        </p>
-
-        <div className="border-l-4 border-venus-lime pl-6 mt-8">
-          <p className="italic text-gray-700">
-            "The future is not something we enter. The future is something we create."
+          <p className="leading-relaxed">
+            We are building the first of these. There are no pre-made objects, no static maps, no locked-in plans. Every building, every street, every tree exists because an artificial intelligence decided, in that moment, that it should exist. This is the proof of possibility for a new kind of civilization, one in which construction is not an event but an ongoing state of being. Once the self-building city exists, the way we think about architecture, urban planning, and human settlement will be transformed forever.
           </p>
         </div>
       </div>
