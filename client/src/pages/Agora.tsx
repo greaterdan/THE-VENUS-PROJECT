@@ -34,20 +34,16 @@ interface ResourceFlow {
 
 
 
-// Calculate circular positions for agents around center
-const centerX = 300;
-const centerY = 200;
-const radius = 120;
+// Calculate evenly distributed positions across the middle of the map
+const mapCenterX = 300;
+const mapCenterY = 200;
 
 const AGENTS: Agent[] = [
   {
     id: 'alpha',
     name: 'Alpha',
     domain: 'Infrastructure & Habitat Design',
-    position: { 
-      x: centerX + radius * Math.cos(0 * 2 * Math.PI / 10) - 16, 
-      y: centerY + radius * Math.sin(0 * 2 * Math.PI / 10) - 16 
-    },
+    position: { x: 150, y: 140 },
     status: 'active',
     resources: { surplus: ['titanium', 'concrete'], deficit: ['energy'] },
     alignment: 94
@@ -56,10 +52,7 @@ const AGENTS: Agent[] = [
     id: 'beta',
     name: 'Beta',
     domain: 'Energy Systems',
-    position: { 
-      x: centerX + radius * Math.cos(1 * 2 * Math.PI / 10) - 16, 
-      y: centerY + radius * Math.sin(1 * 2 * Math.PI / 10) - 16 
-    },
+    position: { x: 250, y: 120 },
     status: 'processing',
     resources: { surplus: ['solar', 'wind'], deficit: ['materials'] },
     alignment: 96
@@ -68,10 +61,7 @@ const AGENTS: Agent[] = [
     id: 'gamma',
     name: 'Gamma',
     domain: 'Food & Agriculture',
-    position: { 
-      x: centerX + radius * Math.cos(2 * 2 * Math.PI / 10) - 16, 
-      y: centerY + radius * Math.sin(2 * 2 * Math.PI / 10) - 16 
-    },
+    position: { x: 350, y: 140 },
     status: 'active',
     resources: { surplus: ['biomass', 'nutrients'], deficit: ['water'] },
     alignment: 91
@@ -80,10 +70,7 @@ const AGENTS: Agent[] = [
     id: 'delta',
     name: 'Delta',
     domain: 'Ecology & Environmental Restoration',
-    position: { 
-      x: centerX + radius * Math.cos(3 * 2 * Math.PI / 10) - 16, 
-      y: centerY + radius * Math.sin(3 * 2 * Math.PI / 10) - 16 
-    },
+    position: { x: 450, y: 160 },
     status: 'idle',
     resources: { surplus: ['biodiversity'], deficit: ['time'] },
     alignment: 89
@@ -92,10 +79,7 @@ const AGENTS: Agent[] = [
     id: 'epsilon',
     name: 'Epsilon',
     domain: 'Social Dynamics & Wellbeing',
-    position: { 
-      x: centerX + radius * Math.cos(4 * 2 * Math.PI / 10) - 16, 
-      y: centerY + radius * Math.sin(4 * 2 * Math.PI / 10) - 16 
-    },
+    position: { x: 200, y: 200 },
     status: 'active',
     resources: { surplus: ['culture', 'knowledge'], deficit: ['infrastructure'] },
     alignment: 93
@@ -104,10 +88,7 @@ const AGENTS: Agent[] = [
     id: 'zeta',
     name: 'Zeta',
     domain: 'Transportation & Mobility',
-    position: { 
-      x: centerX + radius * Math.cos(5 * 2 * Math.PI / 10) - 16, 
-      y: centerY + radius * Math.sin(5 * 2 * Math.PI / 10) - 16 
-    },
+    position: { x: 300, y: 180 },
     status: 'processing',
     resources: { surplus: ['efficiency', 'networks'], deficit: ['energy'] },
     alignment: 88
@@ -116,10 +97,7 @@ const AGENTS: Agent[] = [
     id: 'eta',
     name: 'Eta',
     domain: 'Health & Medical Systems',
-    position: { 
-      x: centerX + radius * Math.cos(6 * 2 * Math.PI / 10) - 16, 
-      y: centerY + radius * Math.sin(6 * 2 * Math.PI / 10) - 16 
-    },
+    position: { x: 400, y: 200 },
     status: 'active',
     resources: { surplus: ['diagnostics', 'prevention'], deficit: ['materials'] },
     alignment: 95
@@ -128,10 +106,7 @@ const AGENTS: Agent[] = [
     id: 'theta',
     name: 'Theta',
     domain: 'Education & Knowledge Access',
-    position: { 
-      x: centerX + radius * Math.cos(7 * 2 * Math.PI / 10) - 16, 
-      y: centerY + radius * Math.sin(7 * 2 * Math.PI / 10) - 16 
-    },
+    position: { x: 150, y: 240 },
     status: 'processing',
     resources: { surplus: ['knowledge', 'analysis'], deficit: ['time'] },
     alignment: 92
@@ -140,10 +115,7 @@ const AGENTS: Agent[] = [
     id: 'iota',
     name: 'Iota',
     domain: 'Resource Management & Allocation',
-    position: { 
-      x: centerX + radius * Math.cos(8 * 2 * Math.PI / 10) - 16, 
-      y: centerY + radius * Math.sin(8 * 2 * Math.PI / 10) - 16 
-    },
+    position: { x: 300, y: 260 },
     status: 'active',
     resources: { surplus: ['inventory', 'data'], deficit: ['distribution'] },
     alignment: 90
@@ -152,10 +124,7 @@ const AGENTS: Agent[] = [
     id: 'kappa',
     name: 'Kappa',
     domain: 'Culture, Ethics & Governance',
-    position: { 
-      x: centerX + radius * Math.cos(9 * 2 * Math.PI / 10) - 16, 
-      y: centerY + radius * Math.sin(9 * 2 * Math.PI / 10) - 16 
-    },
+    position: { x: 450, y: 240 },
     status: 'active',
     resources: { surplus: ['wisdom', 'balance'], deficit: ['consensus'] },
     alignment: 97
@@ -238,32 +207,58 @@ const ResourceFlowLine = ({ flow, agents }: { flow: ResourceFlow; agents: Agent[
     time: 'stroke-green-400'
   };
 
+  // Agent node center coordinates (agent nodes are 32x32, so center is +16)
+  const fromCenterX = fromAgent.position.x + 16;
+  const fromCenterY = fromAgent.position.y + 16;
+  const toCenterX = toAgent.position.x + 16;
+  const toCenterY = toAgent.position.y + 16;
+
   return (
     <g>
+      {/* Direct connection line from center to center */}
       <motion.line
-        x1={fromAgent.position.x + 16}
-        y1={fromAgent.position.y + 16}
-        x2={toAgent.position.x + 16}
-        y2={toAgent.position.y + 16}
-        className={`${flowColors[flow.type]} opacity-60`}
+        x1={fromCenterX}
+        y1={fromCenterY}
+        x2={toCenterX}
+        y2={toCenterY}
+        className={`${flowColors[flow.type]} opacity-70`}
         strokeWidth="2"
-        strokeDasharray="5,5"
+        strokeDasharray="4,4"
         initial={{ pathLength: 0 }}
         animate={{ pathLength: 1 }}
         transition={{ duration: 2, repeat: Infinity }}
       />
+      
+      {/* Animated resource particle traveling along the line */}
       <circle
-        cx={(fromAgent.position.x + toAgent.position.x) / 2 + 16}
-        cy={(fromAgent.position.y + toAgent.position.y) / 2 + 16}
         r="3"
         className={`fill-current ${flowColors[flow.type].replace('stroke', 'text')}`}
+        opacity="0.8"
       >
         <animateMotion
           dur="3s"
           repeatCount="indefinite"
-          path={`M ${fromAgent.position.x + 16} ${fromAgent.position.y + 16} L ${toAgent.position.x + 16} ${toAgent.position.y + 16}`}
+          path={`M ${fromCenterX},${fromCenterY} L ${toCenterX},${toCenterY}`}
+        />
+        <animate
+          attributeName="r"
+          values="2;4;2"
+          dur="1.5s"
+          repeatCount="indefinite"
         />
       </circle>
+      
+      {/* Resource label at midpoint */}
+      <text
+        x={(fromCenterX + toCenterX) / 2}
+        y={(fromCenterY + toCenterY) / 2 - 8}
+        textAnchor="middle"
+        fontSize="9"
+        className={`${flowColors[flow.type].replace('stroke', 'fill')} font-mono`}
+        opacity="0.6"
+      >
+        {flow.amount}
+      </text>
     </g>
   );
 };
