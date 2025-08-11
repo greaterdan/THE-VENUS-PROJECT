@@ -37,19 +37,19 @@ function Router({ isLoaded, showContent }: { isLoaded: boolean; showContent: boo
 }
 
 function App() {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [showContent, setShowContent] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
+  const [showContent, setShowContent] = useState(true);
 
   useEffect(() => {
     // Show main title first
     const titleTimer = setTimeout(() => {
       setIsLoaded(true);
-    }, 500);
+    }, 800);
 
     // Then show rest of content
     const contentTimer = setTimeout(() => {
       setShowContent(true);
-    }, 2000);
+    }, 1500);
 
     return () => {
       clearTimeout(titleTimer);
@@ -63,7 +63,7 @@ function App() {
         <div className="min-h-screen bg-venus-bg text-foreground font-inter">
           {/* Navigation with delayed fade in */}
           <div 
-            className={`transition-opacity duration-1000 ease-out ${
+            className={`transition-opacity duration-2000 ease-out delay-1000 ${
               showContent ? 'opacity-100' : 'opacity-0'
             }`}
           >
@@ -74,7 +74,7 @@ function App() {
           
           {/* Fixed Social Icons - Bottom Right with delayed fade in */}
           <div 
-            className={`fixed bottom-6 right-6 flex flex-col space-y-3 z-50 transition-opacity duration-1000 ease-out delay-500 ${
+            className={`fixed bottom-6 right-6 flex flex-col space-y-3 z-50 transition-opacity duration-2000 ease-out delay-2000 ${
               showContent ? 'opacity-100' : 'opacity-0'
             }`}
           >
