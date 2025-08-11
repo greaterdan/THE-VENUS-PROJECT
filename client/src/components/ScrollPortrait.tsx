@@ -14,14 +14,14 @@ const ScrollPortrait = () => {
 
   return (
     <div 
-      className="fixed bottom-20 left-6 z-40"
+      className="fixed bottom-0 left-0 z-40"
       style={{ opacity }}
     >
       <img 
         src={portraitImage} 
         alt="Portrait" 
         className="object-cover transition-transform duration-300"
-        style={{ width: '320px', height: '320px' }}
+        style={{ width: '640px', height: '640px' }}
       />
     </div>
   );
