@@ -135,65 +135,68 @@ export default function Home() {
             </p>
           </div>
           
-          {/* Featured In Section */}
-          <div className="mt-16">
-            <h3 className="text-3xl font-bold text-center text-black mb-12">
-              Featured In
-            </h3>
-            
-            {/* Scrolling logos container */}
-            <div className="overflow-hidden">
-              <div className="flex animate-scroll">
-                {/* First set of logos */}
-                <div className="flex space-x-16 items-center min-w-max">
-                  <img src={fhmLogo} alt="FHM" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={digitLogo} alt="Digit" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={rtLogo} alt="RT" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={aljazeeraLogo} alt="Al Jazeera" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={avroLogo} alt="AVRO" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={atvLogo} alt="ATV" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={audibleLogo} alt="Audible" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={bbcWorldLogo} alt="BBC World News" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={bbcTwoLogo} alt="BBC Two" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={abGroupeLogo} alt="AB Groupe" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={bloombergLogo} alt="Bloomberg" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={cbsLogo} alt="CBS" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={viceLogo} alt="VICE" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={abcLogo} alt="ABC" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={fxLogo} alt="FX" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={discoveryLogo} alt="Discovery Channel" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={bbcTwoAltLogo} alt="BBC Two" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={emLogo} alt="EM" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                </div>
-                
-                {/* Duplicate set for seamless loop */}
-                <div className="flex space-x-16 items-center min-w-max ml-16">
-                  <img src={fhmLogo} alt="FHM" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={digitLogo} alt="Digit" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={rtLogo} alt="RT" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={aljazeeraLogo} alt="Al Jazeera" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={avroLogo} alt="AVRO" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={atvLogo} alt="ATV" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={audibleLogo} alt="Audible" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={bbcWorldLogo} alt="BBC World News" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={bbcTwoLogo} alt="BBC Two" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={abGroupeLogo} alt="AB Groupe" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={bloombergLogo} alt="Bloomberg" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={cbsLogo} alt="CBS" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={viceLogo} alt="VICE" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={abcLogo} alt="ABC" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={fxLogo} alt="FX" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={discoveryLogo} alt="Discovery Channel" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={bbcTwoAltLogo} alt="BBC Two" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                  <img src={emLogo} alt="EM" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                </div>
+          {/* Portrait integrated in Vision section */}
+          <ScrollPortrait />
+        </div>
+      </div>
+      
+      {/* Featured In Section - Separate section */}
+      <div className="bg-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold text-center text-black mb-16">
+            Featured In
+          </h2>
+          
+          {/* Scrolling logos container */}
+          <div className="overflow-hidden">
+            <div className="flex animate-scroll">
+              {/* First set of logos */}
+              <div className="flex space-x-20 items-center min-w-max">
+                <img src={fhmLogo} alt="FHM" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={digitLogo} alt="Digit" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={rtLogo} alt="RT" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={aljazeeraLogo} alt="Al Jazeera" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={avroLogo} alt="AVRO" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={atvLogo} alt="ATV" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={audibleLogo} alt="Audible" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={bbcWorldLogo} alt="BBC World News" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={bbcTwoLogo} alt="BBC Two" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={abGroupeLogo} alt="AB Groupe" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={bloombergLogo} alt="Bloomberg" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={cbsLogo} alt="CBS" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={viceLogo} alt="VICE" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={abcLogo} alt="ABC" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={fxLogo} alt="FX" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={discoveryLogo} alt="Discovery Channel" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={bbcTwoAltLogo} alt="BBC Two" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={emLogo} alt="EM" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+              </div>
+              
+              {/* Duplicate set for seamless loop */}
+              <div className="flex space-x-20 items-center min-w-max ml-20">
+                <img src={fhmLogo} alt="FHM" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={digitLogo} alt="Digit" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={rtLogo} alt="RT" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={aljazeeraLogo} alt="Al Jazeera" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={avroLogo} alt="AVRO" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={atvLogo} alt="ATV" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={audibleLogo} alt="Audible" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={bbcWorldLogo} alt="BBC World News" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={bbcTwoLogo} alt="BBC Two" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={abGroupeLogo} alt="AB Groupe" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={bloombergLogo} alt="Bloomberg" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={cbsLogo} alt="CBS" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={viceLogo} alt="VICE" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={abcLogo} alt="ABC" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={fxLogo} alt="FX" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={discoveryLogo} alt="Discovery Channel" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={bbcTwoAltLogo} alt="BBC Two" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+                <img src={emLogo} alt="EM" className="h-20 object-contain grayscale hover:grayscale-0 transition-all duration-300" />
               </div>
             </div>
           </div>
         </div>
       </div>
-      
-      <ScrollPortrait />
     </>
   );
 }
