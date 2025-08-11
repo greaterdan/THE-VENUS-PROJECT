@@ -132,34 +132,25 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
         }}
       >
         <div 
-          className="w-full bg-white px-4 sm:px-6 lg:px-8 lg:pr-[700px]"
+          className="w-full bg-white px-4 sm:px-6 lg:px-8 lg:pr-[650px]"
           style={{
             opacity: Math.min(1, Math.max(0, (scrollY - 200) / 300)),
             transform: `translateY(${Math.max(0, 100 - (scrollY - 200) * 0.3)}px)`,
           }}
         >
-          <div className="max-w-2xl">
+          <div className="max-w-lg">
           <h2 className={`text-4xl font-bold text-black mb-8 ${isTyping ? "fade-in-up" : ""}`}>
             Vision for Tomorrow
           </h2>
           <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
             <p className={isTyping ? "fade-in-up" : ""} style={{ animationDelay: "0.2s" }}>
-              The cities of the future will not be dictated by a single blueprint or controlled from one center of power. They will grow from a balance between the whole and the part, the global and the local, the planned and the spontaneous.
+              Cities shaped not by control, but by balance. Where decentralized decision-making meets intelligent design.
             </p>
             <p className={isTyping ? "fade-in-up" : ""} style={{ animationDelay: "0.4s" }}>
-              Decentralization is at the heart of this vision. When decision-making is shared, ideas move more freely, and communities are trusted to shape their own environments, we unlock a deeper form of resilience. It is the interplay between top-down vision and bottom-up creativity that gives rise to systems which are both adaptive and enduring.
+              AI as partner, not master. Creating living urban organisms that learn, adapt, and evolve with their inhabitants.
             </p>
             <p className={isTyping ? "fade-in-up" : ""} style={{ animationDelay: "0.6s" }}>
-              Artificial intelligence will play a vital role, not as a master, but as a partner. By analyzing complex systems, AI can help us design spaces that are modular yet integrated, efficient yet humane, deeply rooted in tradition while always open to new discoveries. These are not static cities, but living organisms—capable of learning, evolving, and responding to the needs of their inhabitants.
-            </p>
-            <p className={isTyping ? "fade-in-up" : ""} style={{ animationDelay: "0.8s" }}>
-              In such a model, form works with function, innovation respects tradition, and speed is guided by timing. Technology becomes a tool for harmony, helping nature and human life coexist in balance rather than competition. Our approach blends rigorous analysis with creative synthesis, ensuring that every element serves both individual fulfillment and collective prosperity.
-            </p>
-            <p className={isTyping ? "fade-in-up" : ""} style={{ animationDelay: "1.0s" }}>
-              This is more than an architectural or technological challenge—it is a cultural shift. It is the recognition that progress does not come from control alone, but from the right mix of freedom and responsibility. By building cities on the principles of decentralization, cooperation, and adaptive design, we can create environments where every citizen not only survives, but thrives.
-            </p>
-            <p className={isTyping ? "fade-in-up" : ""} style={{ animationDelay: "1.2s" }}>
-              The path ahead is not about imposing a perfect design. It is about cultivating a system where innovation can emerge from anywhere, where diversity strengthens the whole, and where the future remains open, evolving alongside us.
+              A cultural shift toward sustainable prosperity. Where innovation emerges from anywhere, and the future remains open.
             </p>
           </div>
           </div>
