@@ -30,9 +30,6 @@ interface HomeProps {
 export default function Home({ isLoaded = true, showContent = true }: HomeProps) {
   const [scrollY, setScrollY] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
-  const [dragOffset, setDragOffset] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const paragraphText = "Cities have always been the product of human imagination and human limitation, shaped by the slow accumulation of decisions made by countless individuals over generations. But what if we could reimagine this process entirely?";
@@ -48,25 +45,7 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
     setIsTyping(shouldStartTyping);
   }, [scrollY]);
 
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    setDragStart(e.clientX);
-  };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return;
-    const diff = e.clientX - dragStart;
-    setDragOffset(prev => prev + diff * 0.5);
-    setDragStart(e.clientX);
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseLeave = () => {
-    setIsDragging(false);
-  };
 
   const titleOpacity = Math.max(0, 1 - scrollY / 400);
   const titleScale = Math.max(0.8, 1 - scrollY / 1000);
@@ -200,20 +179,10 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
         </div>
         
         {/* Scrolling logos container - full width */}
-        <div className="overflow-hidden cursor-grab active:cursor-grabbing">
+        <div className="overflow-hidden">
             <div 
               ref={scrollContainerRef}
-              className={`flex ${isDragging ? '' : 'animate-scroll'} select-none`}
-              style={{
-                transform: `translateX(${dragOffset}px)`,
-                animationPlayState: isDragging ? 'paused' : 'running'
-              }}
-              onMouseDown={handleMouseDown}
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseLeave}
-              onMouseEnter={(e) => !isDragging && (e.currentTarget.style.animationPlayState = 'paused')}
-              onMouseOut={(e) => !isDragging && (e.currentTarget.style.animationPlayState = 'running')}
+              className="flex animate-scroll-fast select-none"
             >
               {/* First set of logos */}
               <div className="flex space-x-20 items-center min-w-max">

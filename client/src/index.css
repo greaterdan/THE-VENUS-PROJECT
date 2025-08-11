@@ -189,6 +189,10 @@
   animation: scroll 30s linear infinite;
 }
 
+.animate-scroll-fast {
+  animation: scroll 15s linear infinite;
+}
+
 @keyframes scroll {
   0% {
     transform: translateX(0);
