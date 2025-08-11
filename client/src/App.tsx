@@ -59,13 +59,21 @@ function App() {
   }, []);
 
   useEffect(() => {
+    let ticking = false;
+    
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      // Show social buttons when user scrolls down 100px or more
-      setShowSocialButtons(scrollY > 100);
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          // Show social buttons when user scrolls down 50px or more
+          setShowSocialButtons(scrollY > 50);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -80,8 +88,8 @@ function App() {
           
           {/* Fixed Social Icons - Middle Right */}
           <div 
-            className={`fixed top-1/2 right-6 transform -translate-y-1/2 flex flex-col space-y-3 z-50 transition-opacity duration-500 ease-out ${
-              showSocialButtons ? 'opacity-100' : 'opacity-0'
+            className={`fixed top-1/2 right-6 transform -translate-y-1/2 flex flex-col space-y-3 z-50 transition-all duration-300 ease-in-out ${
+              showSocialButtons ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
             }`}
           >
             <a 
