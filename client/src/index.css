@@ -191,6 +191,7 @@
 
 .animate-scroll-fast {
   animation: scroll 15s linear infinite;
+  animation-play-state: running !important;
 }
 
 @keyframes scroll {
