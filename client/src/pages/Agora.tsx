@@ -200,13 +200,13 @@ export default function Agora() {
   };
 
   return (
-    <div className="h-screen bg-gradient-to-br from-gray-50 via-blue-50/20 to-green-50/20 relative overflow-hidden">
+    <div className="h-screen bg-gradient-to-br from-gray-900 via-blue-900/20 to-green-900/20 relative overflow-hidden">
       {/* Background Grid Pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,.02)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.05)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
       
       {/* Enhanced Header */}
       <motion.div 
-        className="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-xl border-b border-white/20"
+        className="fixed top-0 left-0 right-0 z-50 bg-gray-900/80 backdrop-blur-xl border-b border-gray-700/30"
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -214,21 +214,21 @@ export default function Agora() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <h1 className="text-2xl font-light tracking-wide text-gray-900">
+              <h1 className="text-2xl font-light tracking-wide text-white">
                 Venus City AI Council — Live Dialogue
               </h1>
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-sm text-gray-600">System: Ecological balance within safe thresholds</span>
+                <span className="text-sm text-gray-300">System: Ecological balance within safe thresholds</span>
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="text-sm font-mono text-gray-600">
+              <div className="text-sm font-mono text-gray-300">
                 {currentTime.toLocaleTimeString()}
               </div>
               <div className="flex items-center space-x-2">
                 <Activity className="w-4 h-4 text-green-500" />
-                <span className="text-xs text-gray-500">Live</span>
+                <span className="text-xs text-gray-400">Live</span>
               </div>
             </div>
           </div>
