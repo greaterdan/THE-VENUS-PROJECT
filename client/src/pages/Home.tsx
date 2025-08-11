@@ -49,26 +49,40 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
   // Force continuous scrolling with JavaScript
   useEffect(() => {
     let animationId: number;
-    let translateX = 0;
-    const scrollSpeed = 0.08; // Much slower speed
+    let position = 0;
+    const scrollSpeed = 1; // pixels per frame
+    let containerWidth = 0;
     
     const animate = () => {
       if (scrollContainerRef.current) {
-        translateX -= scrollSpeed;
-        // Reset position when first set completes one full cycle - smoother reset
-        if (translateX <= -50) {
-          translateX = 0;
+        // Get container width only once or when it changes
+        if (containerWidth === 0) {
+          const firstSet = scrollContainerRef.current.querySelector('div');
+          if (firstSet) {
+            containerWidth = firstSet.scrollWidth + 80; // include margin
+          }
         }
-        // Use transform3d for hardware acceleration and smoother animation
-        scrollContainerRef.current.style.transform = `translate3d(${translateX}%, 0, 0)`;
+        
+        position -= scrollSpeed;
+        
+        // Reset position smoothly when we've scrolled one full set
+        if (position <= -containerWidth) {
+          position = 0;
+        }
+        
+        // Use transform3d for hardware acceleration
+        scrollContainerRef.current.style.transform = `translate3d(${position}px, 0, 0)`;
       }
       animationId = requestAnimationFrame(animate);
     };
     
-    // Start animation immediately when component mounts
-    animationId = requestAnimationFrame(animate);
+    // Start animation after a small delay to ensure DOM is ready
+    const startTimer = setTimeout(() => {
+      animationId = requestAnimationFrame(animate);
+    }, 500);
     
     return () => {
+      clearTimeout(startTimer);
       if (animationId) {
         cancelAnimationFrame(animationId);
       }
@@ -207,7 +221,7 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
               ref={scrollContainerRef}
               className="flex select-none smooth-scroll-container"
               style={{ 
-                transform: 'translate3d(0%, 0, 0)',
+                transform: 'translate3d(0px, 0, 0)',
                 willChange: 'transform'
               }}
             >
