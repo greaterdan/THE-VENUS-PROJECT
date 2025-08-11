@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import { SiX, SiGithub } from "react-icons/si";
+import agoraIcon from "@assets/Untitled design_1754878809797.gif";
 import docsIcon from "@assets/Untitled design_1754879488364.gif";
 import contributeIcon from "@assets/Untitled design (1)_1754880001361.gif";
 
@@ -9,14 +10,19 @@ export default function Navigation() {
   const [location] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [docsDropdownOpen, setDocsDropdownOpen] = useState(false);
+  const [agoraDropdownOpen, setAgoraDropdownOpen] = useState(false);
   const [contributeDropdownOpen, setContributeDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const agoraDropdownRef = useRef<HTMLDivElement>(null);
   const contributeDropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setDocsDropdownOpen(false);
+      }
+      if (agoraDropdownRef.current && !agoraDropdownRef.current.contains(event.target as Node)) {
+        setAgoraDropdownOpen(false);
       }
       if (contributeDropdownRef.current && !contributeDropdownRef.current.contains(event.target as Node)) {
         setContributeDropdownOpen(false);
@@ -38,6 +44,10 @@ export default function Navigation() {
 
   const contributeLinks = [
     { href: "/contribute", label: "Contribute" },
+  ];
+
+  const agoraLinks = [
+    { href: "/agora", label: "Agora" },
   ];
 
   const docsLinks = [
@@ -73,6 +83,32 @@ export default function Navigation() {
                 {contributeDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-32 bg-white border border-venus-gray rounded-md shadow-lg z-50">
                     {contributeLinks.map((link) => (
+                      <Link key={link.href} href={link.href}>
+                        <span
+                          className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-colors cursor-pointer ${
+                            isActive(link.href) ? "text-venus-lime" : ""
+                          }`}
+                        >
+                          {link.label}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+              
+              <div 
+                className="relative group" 
+                ref={agoraDropdownRef}
+                onMouseEnter={() => setAgoraDropdownOpen(true)}
+                onMouseLeave={() => setAgoraDropdownOpen(false)}
+              >
+                <button className="px-2 py-2 text-white focus:outline-none">
+                  <img src={agoraIcon} alt="Agora" className="h-8 w-8" />
+                </button>
+                {agoraDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-32 bg-white border border-venus-gray rounded-md shadow-lg z-50">
+                    {agoraLinks.map((link) => (
                       <Link key={link.href} href={link.href}>
                         <span
                           className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-colors cursor-pointer ${
@@ -177,6 +213,18 @@ export default function Navigation() {
         <div className="md:hidden border-t border-gray-800 bg-black">
           <div className="px-2 pt-2 pb-3 space-y-1">
             {contributeLinks.map((link) => (
+              <Link key={link.href} href={link.href}>
+                <span
+                  className={`block px-3 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors cursor-pointer ${
+                    isActive(link.href) ? "text-venus-lime" : ""
+                  }`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {link.label}
+                </span>
+              </Link>
+            ))}
+            {agoraLinks.map((link) => (
               <Link key={link.href} href={link.href}>
                 <span
                   className={`block px-3 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors cursor-pointer ${
