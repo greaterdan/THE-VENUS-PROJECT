@@ -55,8 +55,8 @@ export default function Navigation() {
     return false;
   };
 
-  // Calculate navigation opacity based on scroll
-  const navOpacity = Math.max(0, 1 - scrollY / 100);
+  // Calculate navigation opacity based on scroll - invisible at start, appears when scrolling
+  const navOpacity = Math.min(1, scrollY / 100);
 
   const venusLinks = [
     { href: "/", label: "THE VENUS PROJECT" },
