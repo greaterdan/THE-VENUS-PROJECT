@@ -23,7 +23,7 @@ const ScrollPortrait = () => {
         className="object-cover transition-transform duration-300"
         style={{ width: '640px', height: '640px' }}
       />
-      <div className="mb-16 max-w-sm" style={{ marginLeft: '-200px' }}>
+      <div className="mb-16 max-w-sm" style={{ marginLeft: '-350px' }}>
         <blockquote className="text-xl italic text-black mb-4 leading-relaxed">
           "If we continue to use the same methods, we will get the same results."
         </blockquote>
