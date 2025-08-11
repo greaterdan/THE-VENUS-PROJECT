@@ -6,7 +6,7 @@ import agoraIcon from "@assets/Untitled design_1754878809797.gif";
 import docsIcon from "@assets/Untitled design_1754879488364.gif";
 import contributeIcon from "@assets/Untitled design (1)_1754880001361.gif";
 import venusIcon from "@assets/Untitled design (2)_1754882967112.gif";
-import venusLogo from "@assets/Untitled design (1)_1754930558468.png";
+import venusLogo from "@assets/Untitled design (2)_1754930655351.png";
 
 export default function Navigation() {
   const [location] = useLocation();
