@@ -26,7 +26,7 @@ export default function Home() {
   return (
     <>
       <div 
-        className="min-h-screen flex items-center justify-center relative overflow-hidden"
+        className="min-h-screen flex items-center justify-center relative overflow-hidden bg-white"
         style={{
           backgroundImage: `url(${architectureBg})`,
           backgroundSize: 'cover',
@@ -35,7 +35,7 @@ export default function Home() {
         }}
       >
         {/* Light overlay for better text readability */}
-        <div className="absolute inset-0 bg-white bg-opacity-20"></div>
+        <div className="absolute inset-0 bg-white bg-opacity-10"></div>
         
         <div className="text-center px-4 relative z-10">
           <h1 
