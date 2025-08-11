@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Activity, Brain, Circle, Zap, Cpu, Database, Network, Users, ArrowRight, TrendingUp, AlertTriangle, CheckCircle, Clock, MessageSquare, BarChart3 } from 'lucide-react';
 
@@ -241,7 +241,6 @@ const UrgencyBadge = ({ urgency }: { urgency: string }) => {
 
 export default function Agora() {
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
     // Only update time every second - no dynamic message generation to prevent crashes
@@ -254,9 +253,7 @@ export default function Agora() {
     };
   }, []);
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+  // Removed automatic scrolling that was causing issues
 
   return (
     <div className="min-h-screen bg-white text-black overflow-hidden">
@@ -299,7 +296,7 @@ export default function Agora() {
           </div>
           
           {/* Chat Messages */}
-          <div className="flex-1 overflow-y-auto space-y-4 pr-4">
+          <div className="flex-1 overflow-y-auto space-y-4 pr-4 scroll-smooth">
             {CHAT_MESSAGES.map((chat, index) => (
               <motion.div
                 key={chat.id}
@@ -362,7 +359,7 @@ export default function Agora() {
                 </div>
               </motion.div>
             ))}
-            <div ref={messagesEndRef} />
+
           </div>
         </div>
 
