@@ -54,9 +54,9 @@ export default function Home() {
         
         {/* Gradient overlay for smooth transition */}
         <div 
-          className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent pointer-events-none z-10"
+          className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none z-25"
           style={{
-            opacity: Math.min(1, scrollY / 200)
+            opacity: Math.min(1, scrollY / 100)
           }}
         />
         
@@ -77,13 +77,15 @@ export default function Home() {
       
       {/* Transition section */}
       <div 
-        className="min-h-screen bg-white p-8 relative"
+        className="min-h-screen bg-white p-8 relative z-30"
         style={{
           transform: `translateY(${-scrollY * 0.1}px)`,
+          backgroundColor: 'white', // Ensure solid white background
+          boxShadow: '0 -20px 40px rgba(255,255,255,0.9)' // Additional white shadow at top
         }}
       >
         <div 
-          className="max-w-4xl mx-auto"
+          className="max-w-4xl mx-auto bg-white"
           style={{
             opacity: Math.min(1, Math.max(0, (scrollY - 200) / 300)),
             transform: `translateY(${Math.max(0, 100 - (scrollY - 200) * 0.3)}px)`,
