@@ -65,15 +65,17 @@ const ScrollPortrait = () => {
       
       {/* Quote */}
       {shouldShowQuote && (
-        <div className="fixed bottom-16 left-80 z-50 max-w-sm">
-          <blockquote className="text-lg italic text-black mb-4 leading-relaxed bg-white/90 p-4 rounded-lg shadow-lg">
-            "{displayedQuote}"
-            {isTypingQuote && <span className="animate-pulse">|</span>}
-          </blockquote>
-          <cite className="text-base font-semibold text-black bg-white/90 px-4 py-2 rounded">
-            {displayedAuthor}
-            {isTypingAuthor && <span className="animate-pulse">|</span>}
-          </cite>
+        <div className="fixed bottom-32 left-96 z-50 max-w-md">
+          <div className="bg-white p-6 rounded-lg shadow-xl border-2 border-gray-200">
+            <blockquote className="text-xl italic text-black mb-4 leading-relaxed">
+              "{displayedQuote}"
+              {isTypingQuote && <span className="animate-pulse text-lime-500">|</span>}
+            </blockquote>
+            <cite className="text-lg font-semibold text-gray-700">
+              {displayedAuthor}
+              {isTypingAuthor && <span className="animate-pulse text-lime-500">|</span>}
+            </cite>
+          </div>
         </div>
       )}
     </>
