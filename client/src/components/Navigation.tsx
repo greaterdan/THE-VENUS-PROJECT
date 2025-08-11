@@ -69,7 +69,6 @@ export default function Navigation() {
   };
 
   const navLinks = [
-    { href: "/", label: "Home" },
     { href: "/contribute", label: "Contribute" },
   ];
 
