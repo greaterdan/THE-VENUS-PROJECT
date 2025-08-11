@@ -61,9 +61,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <div className="min-h-screen bg-venus-bg text-foreground font-inter">
-          {/* Navigation with smooth fade in after content loads */}
+          {/* Navigation with smooth fade in after background appears */}
           <div 
-            className={`transition-opacity duration-3000 ease-out delay-1000 ${
+            className={`transition-opacity duration-3000 ease-out delay-2500 ${
               showContent ? 'opacity-100' : 'opacity-0'
             }`}
           >

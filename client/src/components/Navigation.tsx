@@ -55,10 +55,7 @@ export default function Navigation() {
     return false;
   };
 
-  // Calculate navigation opacity based on scroll and location
-  // On landing page: invisible at start, appears when scrolling with smooth fade
-  // On other pages: always visible
-  const navOpacity = location === "/" ? Math.min(1, scrollY / 100) : 1;
+  // Navigation controlled by parent App.tsx fade animation
 
   const venusLinks = [
     { href: "/", label: "THE VENUS PROJECT" },
@@ -84,7 +81,7 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center h-16">
           {/* Right Navigation Group - Desktop */}
-          <div className="hidden md:block ml-auto transition-opacity duration-500 ease-in-out" style={{ opacity: navOpacity }}>
+          <div className="hidden md:block ml-auto opacity-100">
             <div className="flex items-baseline space-x-2">
               <div 
                 className="relative group" 
@@ -210,7 +207,7 @@ export default function Navigation() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden transition-opacity duration-500 ease-in-out" style={{ opacity: navOpacity }}>
+          <div className="md:hidden opacity-100">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="text-black hover:text-venus-lime focus:outline-none transition-all duration-300"
