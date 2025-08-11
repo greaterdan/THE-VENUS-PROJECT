@@ -36,8 +36,8 @@ const AGENTS: Agent[] = [
   {
     id: 'alpha',
     name: 'Alpha',
-    domain: 'Infrastructure',
-    position: { x: 150, y: 100 },
+    domain: 'Infrastructure & Habitat Design',
+    position: { x: 120, y: 80 },
     status: 'active',
     resources: { surplus: ['titanium', 'concrete'], deficit: ['energy'] },
     alignment: 94
@@ -45,8 +45,8 @@ const AGENTS: Agent[] = [
   {
     id: 'beta',
     name: 'Beta',
-    domain: 'Energy',
-    position: { x: 300, y: 80 },
+    domain: 'Energy Systems',
+    position: { x: 280, y: 60 },
     status: 'processing',
     resources: { surplus: ['solar', 'wind'], deficit: ['materials'] },
     alignment: 96
@@ -54,8 +54,8 @@ const AGENTS: Agent[] = [
   {
     id: 'gamma',
     name: 'Gamma',
-    domain: 'Agriculture',
-    position: { x: 450, y: 120 },
+    domain: 'Food & Agriculture',
+    position: { x: 440, y: 90 },
     status: 'active',
     resources: { surplus: ['biomass', 'nutrients'], deficit: ['water'] },
     alignment: 91
@@ -63,8 +63,8 @@ const AGENTS: Agent[] = [
   {
     id: 'delta',
     name: 'Delta',
-    domain: 'Ecology',
-    position: { x: 200, y: 200 },
+    domain: 'Ecology & Environmental Restoration',
+    position: { x: 180, y: 160 },
     status: 'idle',
     resources: { surplus: ['biodiversity'], deficit: ['time'] },
     alignment: 89
@@ -72,17 +72,62 @@ const AGENTS: Agent[] = [
   {
     id: 'epsilon',
     name: 'Epsilon',
-    domain: 'Social',
-    position: { x: 350, y: 180 },
+    domain: 'Social Dynamics & Wellbeing',
+    position: { x: 340, y: 140 },
     status: 'active',
     resources: { surplus: ['culture', 'knowledge'], deficit: ['infrastructure'] },
     alignment: 93
+  },
+  {
+    id: 'zeta',
+    name: 'Zeta',
+    domain: 'Transportation & Mobility',
+    position: { x: 500, y: 180 },
+    status: 'processing',
+    resources: { surplus: ['efficiency', 'networks'], deficit: ['energy'] },
+    alignment: 88
+  },
+  {
+    id: 'eta',
+    name: 'Eta',
+    domain: 'Health & Medical Systems',
+    position: { x: 100, y: 220 },
+    status: 'active',
+    resources: { surplus: ['diagnostics', 'prevention'], deficit: ['materials'] },
+    alignment: 95
+  },
+  {
+    id: 'theta',
+    name: 'Theta',
+    domain: 'Education & Knowledge Access',
+    position: { x: 260, y: 240 },
+    status: 'processing',
+    resources: { surplus: ['knowledge', 'analysis'], deficit: ['time'] },
+    alignment: 92
+  },
+  {
+    id: 'iota',
+    name: 'Iota',
+    domain: 'Resource Management & Allocation',
+    position: { x: 420, y: 260 },
+    status: 'active',
+    resources: { surplus: ['inventory', 'data'], deficit: ['distribution'] },
+    alignment: 90
+  },
+  {
+    id: 'kappa',
+    name: 'Kappa',
+    domain: 'Culture, Ethics & Governance',
+    position: { x: 300, y: 320 },
+    status: 'active',
+    resources: { surplus: ['wisdom', 'balance'], deficit: ['consensus'] },
+    alignment: 97
   }
 ];
 
 const CURRENT_DECISION: Decision = {
   id: 'habitat-expansion',
-  title: 'Habitat Expansion Protocol',
+  title: 'Sustainable Habitat Expansion Protocol',
   status: 'voting',
   impact: {
     ecological: 78,
@@ -90,14 +135,18 @@ const CURRENT_DECISION: Decision = {
     efficiency: 92
   },
   timeline: '72 hours',
-  participants: ['alpha', 'beta', 'gamma', 'epsilon']
+  participants: ['alpha', 'beta', 'gamma', 'delta', 'epsilon', 'zeta', 'eta', 'theta', 'iota', 'kappa']
 };
 
 const RESOURCE_FLOWS: ResourceFlow[] = [
   { from: 'alpha', to: 'beta', resource: '620kg titanium', amount: '620kg', type: 'material' },
   { from: 'beta', to: 'alpha', resource: '120 MWh', amount: '120 MWh', type: 'energy' },
   { from: 'gamma', to: 'epsilon', resource: 'nutrient data', amount: '2.4TB', type: 'data' },
-  { from: 'epsilon', to: 'delta', resource: 'analysis time', amount: '4 hrs', type: 'time' }
+  { from: 'epsilon', to: 'delta', resource: 'analysis time', amount: '4 hrs', type: 'time' },
+  { from: 'eta', to: 'theta', resource: 'health metrics', amount: '1.8TB', type: 'data' },
+  { from: 'zeta', to: 'alpha', resource: 'transport planning', amount: '6 hrs', type: 'time' },
+  { from: 'iota', to: 'gamma', resource: 'water allocation', amount: '450L', type: 'material' },
+  { from: 'kappa', to: 'epsilon', resource: 'cultural guidelines', amount: '120MB', type: 'data' }
 ];
 
 const ARCHIVE_DECISIONS = [
@@ -297,7 +346,7 @@ export default function Agora() {
               </div>
 
               {/* Agent Network */}
-              <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 600 400">
+              <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 620 400">
                 {RESOURCE_FLOWS.map((flow, index) => (
                   <ResourceFlowLine key={index} flow={flow} agents={AGENTS} />
                 ))}
@@ -401,7 +450,7 @@ export default function Agora() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Active Agents</span>
-                      <span className="font-mono">{AGENTS.filter(a => a.status === 'active').length}/5</span>
+                      <span className="font-mono">{AGENTS.filter(a => a.status === 'active').length}/10</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Response Latency</span>
