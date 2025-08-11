@@ -50,7 +50,7 @@ export default function Navigation() {
   return (
     <nav className="bg-black border-b border-gray-800 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-16 pr-8">
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/">
@@ -62,11 +62,11 @@ export default function Navigation() {
 
           {/* Right Navigation Group - Desktop */}
           <div className="hidden md:block">
-            <div className="flex items-baseline space-x-4">
+            <div className="flex items-baseline space-x-2">
               {navLinks.map((link) => (
                 <Link key={link.href} href={link.href}>
                   <span
-                    className={`px-2 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors cursor-pointer ${
+                    className={`px-1 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors cursor-pointer ${
                       isActive(link.href) ? "text-venus-lime" : ""
                     }`}
                   >
@@ -77,7 +77,7 @@ export default function Navigation() {
               <div className="relative" ref={agoraDropdownRef}>
                 <button
                   onClick={() => setAgoraDropdownOpen(!agoraDropdownOpen)}
-                  className="px-2 py-2 text-white hover:opacity-80 transition-opacity focus:outline-none"
+                  className="px-1 py-2 text-white hover:opacity-80 transition-opacity focus:outline-none"
                 >
                   <img src={agoraIcon} alt="Agora" className="h-8 w-8" />
                 </button>
@@ -101,7 +101,7 @@ export default function Navigation() {
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setDocsDropdownOpen(!docsDropdownOpen)}
-                  className="px-2 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors focus:outline-none"
+                  className="px-1 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors focus:outline-none"
                 >
                   Docs ↓
                 </button>
