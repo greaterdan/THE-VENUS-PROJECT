@@ -22,9 +22,43 @@ export default function Navigation() {
       }
     }
 
+    // Custom cursor glow effect
+    const cursorGlow = document.createElement('div');
+    cursorGlow.className = 'cursor-glow';
+    document.body.appendChild(cursorGlow);
+
+    const handleMouseMove = (e: MouseEvent) => {
+      cursorGlow.style.left = e.clientX + 'px';
+      cursorGlow.style.top = e.clientY + 'px';
+    };
+
+    const handleMouseEnter = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('.nav-icon-hover')) {
+        cursorGlow.classList.add('active');
+      }
+    };
+
+    const handleMouseLeave = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('.nav-icon-hover')) {
+        cursorGlow.classList.remove('active');
+      }
+    };
+
     document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseenter', handleMouseEnter, true);
+    document.addEventListener('mouseleave', handleMouseLeave, true);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseenter', handleMouseEnter, true);
+      document.removeEventListener('mouseleave', handleMouseLeave, true);
+      if (document.body.contains(cursorGlow)) {
+        document.body.removeChild(cursorGlow);
+      }
     };
   }, []);
 
