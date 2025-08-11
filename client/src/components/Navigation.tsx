@@ -148,52 +148,12 @@ export default function Navigation() {
                   </div>
                 )}
               </div>
-              
-              {/* Social Icons */}
-              <div className="flex items-center space-x-3 ml-4">
-                <a 
-                  href="https://x.com" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-white hover:text-venus-lime transition-colors"
-                >
-                  <SiX className="h-5 w-5" />
-                </a>
-                <a 
-                  href="https://github.com" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-white hover:text-venus-lime transition-colors"
-                >
-                  <SiGithub className="h-5 w-5" />
-                </a>
-              </div>
+
             </div>
           </div>
 
-          {/* Mobile Navigation - Social Icons and Menu */}
-          <div className="md:hidden flex items-center space-x-4">
-            {/* Social Icons - Always visible on mobile */}
-            <div className="flex items-center space-x-3">
-              <a 
-                href="https://x.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-white hover:text-venus-lime transition-colors"
-              >
-                <SiX className="h-5 w-5" />
-              </a>
-              <a 
-                href="https://github.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-white hover:text-venus-lime transition-colors"
-              >
-                <SiGithub className="h-5 w-5" />
-              </a>
-            </div>
-            
-            {/* Mobile menu button */}
+          {/* Mobile menu button */}
+          <div className="md:hidden">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="text-white hover:text-venus-lime focus:outline-none"
