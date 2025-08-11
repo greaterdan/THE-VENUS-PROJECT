@@ -55,8 +55,10 @@ export default function Navigation() {
     return false;
   };
 
-  // Navigation always visible
-  const navOpacity = 1;
+  // Calculate navigation opacity based on scroll and location
+  // On landing page: invisible at start, appears when scrolling with smooth fade
+  // On other pages: always visible
+  const navOpacity = location === "/" ? Math.min(1, scrollY / 100) : 1;
 
   const venusLinks = [
     { href: "/", label: "THE VENUS PROJECT" },
