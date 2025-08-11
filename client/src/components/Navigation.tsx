@@ -48,7 +48,7 @@ export default function Navigation() {
     // Glitch effect timer - triggers every 5 seconds
     const glitchInterval = setInterval(() => {
       setGlitchActive(true);
-      setTimeout(() => setGlitchActive(false), 300); // Glitch lasts 300ms
+      setTimeout(() => setGlitchActive(false), 400); // Glitch lasts 400ms
     }, 5000);
 
     return () => {
@@ -118,11 +118,7 @@ export default function Navigation() {
                   <img 
                     src={venusIcon} 
                     alt="Venus Project" 
-                    className={`h-8 w-8 transition-all duration-100 ${glitchActive ? 'animate-glitch' : ''}`} 
-                    style={{
-                      filter: glitchActive ? 'hue-rotate(90deg) saturate(200%) contrast(150%)' : 'none',
-                      transform: glitchActive ? 'scale(1.05) skew(2deg)' : 'none'
-                    }}
+                    className={`h-8 w-8 ${glitchActive ? 'animate-glitch' : ''}`}
                   />
                 </button>
                 {venusDropdownOpen && (
@@ -156,11 +152,7 @@ export default function Navigation() {
                   <img 
                     src={agoraIcon} 
                     alt="Agora" 
-                    className={`h-8 w-8 transition-all duration-100 ${glitchActive ? 'animate-glitch' : ''}`} 
-                    style={{
-                      filter: glitchActive ? 'hue-rotate(180deg) saturate(200%) contrast(150%)' : 'none',
-                      transform: glitchActive ? 'scale(1.05) skew(-2deg)' : 'none'
-                    }}
+                    className={`h-8 w-8 ${glitchActive ? 'animate-glitch' : ''}`}
                   />
                 </button>
                 {agoraDropdownOpen && (
@@ -194,11 +186,7 @@ export default function Navigation() {
                   <img 
                     src={contributeIcon} 
                     alt="Contribute" 
-                    className={`h-8 w-8 transition-all duration-100 ${glitchActive ? 'animate-glitch' : ''}`} 
-                    style={{
-                      filter: glitchActive ? 'hue-rotate(270deg) saturate(200%) contrast(150%)' : 'none',
-                      transform: glitchActive ? 'scale(1.05) skew(1deg)' : 'none'
-                    }}
+                    className={`h-8 w-8 ${glitchActive ? 'animate-glitch' : ''}`}
                   />
                 </button>
                 {contributeDropdownOpen && (
@@ -232,11 +220,7 @@ export default function Navigation() {
                   <img 
                     src={docsIcon} 
                     alt="Docs" 
-                    className={`h-8 w-8 transition-all duration-100 ${glitchActive ? 'animate-glitch' : ''}`} 
-                    style={{
-                      filter: glitchActive ? 'hue-rotate(45deg) saturate(200%) contrast(150%)' : 'none',
-                      transform: glitchActive ? 'scale(1.05) skew(-1deg)' : 'none'
-                    }}
+                    className={`h-8 w-8 ${glitchActive ? 'animate-glitch' : ''}`}
                   />
                 </button>
                 {docsDropdownOpen && (
