@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0 0% 98.04%);
+  --foreground: hsl(0 0% 0%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(0 0% 0%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(0 0% 0%);
+  --primary: hsl(0 0% 0%);
+  --primary-foreground: hsl(0 0% 100%);
+  --secondary: hsl(0 0% 96.08%);
+  --secondary-foreground: hsl(0 0% 0%);
+  --muted: hsl(0 0% 96.08%);
+  --muted-foreground: hsl(0 0% 45.1%);
+  --accent: hsl(119 100% 73.33%);
+  --accent-foreground: hsl(0 0% 0%);
+  --destructive: hsl(0 84.2% 60.2%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(0 0% 92.94%);
+  --input: hsl(0 0% 92.94%);
+  --ring: hsl(119 100% 73.33%);
+  --chart-1: hsl(203.8863 88.2845% 53.1373%);
+  --chart-2: hsl(159.7826 100% 36.0784%);
+  --chart-3: hsl(42.0290 92.8251% 56.2745%);
+  --chart-4: hsl(147.1429 78.5047% 41.9608%);
+  --chart-5: hsl(341.4894 75.2000% 50.9804%);
+  --sidebar: hsl(0 0% 100%);
+  --sidebar-foreground: hsl(0 0% 0%);
+  --sidebar-primary: hsl(0 0% 0%);
+  --sidebar-primary-foreground: hsl(0 0% 100%);
+  --sidebar-accent: hsl(0 0% 96.08%);
+  --sidebar-accent-foreground: hsl(0 0% 0%);
+  --sidebar-border: hsl(0 0% 92.94%);
+  --sidebar-ring: hsl(119 100% 73.33%);
+  --venus-bg: hsl(0 0% 98.04%);
+  --venus-lime: hsl(119 100% 73.33%);
+  --venus-gray: hsl(0 0% 92.94%);
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-serif: Georgia, serif;
+  --font-mono: Menlo, monospace;
+  --radius: 0.5rem;
+  --shadow-2xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00);
+  --shadow-xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00);
+  --shadow-sm: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 1px 2px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+  --shadow: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 1px 2px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+  --shadow-md: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 2px 4px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+  --shadow-lg: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 4px 6px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+  --shadow-xl: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 8px 10px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+  --shadow-2xl: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00);
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+}
+
+.dark {
+  --background: hsl(0 0% 3.9%);
+  --foreground: hsl(0 0% 98%);
+  --card: hsl(0 0% 3.9%);
+  --card-foreground: hsl(0 0% 98%);
+  --popover: hsl(0 0% 3.9%);
+  --popover-foreground: hsl(0 0% 98%);
+  --primary: hsl(0 0% 98%);
+  --primary-foreground: hsl(0 0% 9%);
+  --secondary: hsl(0 0% 14.9%);
+  --secondary-foreground: hsl(0 0% 98%);
+  --muted: hsl(0 0% 14.9%);
+  --muted-foreground: hsl(0 0% 63.9%);
+  --accent: hsl(119 100% 73.33%);
+  --accent-foreground: hsl(0 0% 9%);
+  --destructive: hsl(0 62.8% 30.6%);
+  --destructive-foreground: hsl(0 0% 98%);
+  --border: hsl(0 0% 14.9%);
+  --input: hsl(0 0% 14.9%);
+  --ring: hsl(119 100% 73.33%);
+  --chart-1: hsl(220 70% 50%);
+  --chart-2: hsl(160 60% 45%);
+  --chart-3: hsl(30 80% 55%);
+  --chart-4: hsl(280 65% 60%);
+  --chart-5: hsl(340 75% 55%);
+  --venus-bg: hsl(0 0% 3.9%);
+  --venus-lime: hsl(119 100% 73.33%);
+  --venus-gray: hsl(0 0% 14.9%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-venus-bg text-foreground;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+}
+
+.venus-bg {
+  background-color: var(--venus-bg);
+}
+
+.venus-lime {
+  color: var(--venus-lime);
+}
+
+.venus-gray {
+  color: var(--venus-gray);
+}
+
+.bg-venus-lime {
+  background-color: var(--venus-lime);
+}
+
+.bg-venus-gray {
+  background-color: var(--venus-gray);
+}
+
+.border-venus-gray {
+  border-color: var(--venus-gray);
+}
+
+.hover\:text-venus-lime:hover {
+  color: var(--venus-lime);
+}
+
+.hover\:bg-venus-lime:hover {
+  background-color: var(--venus-lime);
+}
+
+.hover\:border-venus-lime:hover {
+  border-color: var(--venus-lime);
+}
+
+.focus\:ring-venus-lime:focus {
+  --tw-ring-color: var(--venus-lime);
+}
