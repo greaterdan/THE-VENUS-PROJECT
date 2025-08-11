@@ -51,9 +51,9 @@ export default function Navigation() {
             </Link>
           </div>
 
-          {/* Center Navigation - Desktop */}
+          {/* Right Navigation Group - Desktop */}
           <div className="hidden md:block">
-            <div className="ml-6 flex items-baseline space-x-4">
+            <div className="flex items-baseline space-x-4">
               {navLinks.map((link) => (
                 <Link key={link.href} href={link.href}>
                   <span
@@ -65,33 +65,31 @@ export default function Navigation() {
                   </span>
                 </Link>
               ))}
-            </div>
-          </div>
-
-          {/* Right Dropdown - Desktop */}
-          <div className="hidden md:block relative" ref={dropdownRef}>
-            <button
-              onClick={() => setDocsDropdownOpen(!docsDropdownOpen)}
-              className="px-2 py-2 text-sm font-medium hover:text-venus-lime transition-colors focus:outline-none"
-            >
-              Docs ↓
-            </button>
-            {docsDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white border border-venus-gray rounded-md shadow-lg z-50">
-                {docsLinks.map((link) => (
-                  <Link key={link.href} href={link.href}>
-                    <span
-                      className={`block px-4 py-2 text-sm hover:bg-gray-50 hover:text-venus-lime transition-colors cursor-pointer ${
-                        isActive(link.href) ? "text-venus-lime" : ""
-                      }`}
-                      onClick={() => setDocsDropdownOpen(false)}
-                    >
-                      {link.label}
-                    </span>
-                  </Link>
-                ))}
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setDocsDropdownOpen(!docsDropdownOpen)}
+                  className="px-2 py-2 text-sm font-medium hover:text-venus-lime transition-colors focus:outline-none"
+                >
+                  Docs ↓
+                </button>
+                {docsDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white border border-venus-gray rounded-md shadow-lg z-50">
+                    {docsLinks.map((link) => (
+                      <Link key={link.href} href={link.href}>
+                        <span
+                          className={`block px-4 py-2 text-sm hover:bg-gray-50 hover:text-venus-lime transition-colors cursor-pointer ${
+                            isActive(link.href) ? "text-venus-lime" : ""
+                          }`}
+                          onClick={() => setDocsDropdownOpen(false)}
+                        >
+                          {link.label}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
 
           {/* Mobile menu button */}
