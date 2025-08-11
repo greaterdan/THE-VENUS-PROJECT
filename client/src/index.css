@@ -207,6 +207,16 @@
   }
 }
 
+/* Left to right scrolling animation */
+@keyframes scrollLeftToRight {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
 /* Agora page animations */
 .animate-fadeIn {
   animation: fadeIn 0.8s ease-out forwards;
