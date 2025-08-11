@@ -138,19 +138,34 @@
 }
 
 .nav-icon-hover {
-  transition: all 0.3s ease;
-  border-radius: 8px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .nav-icon-hover:hover {
-  background-color: var(--venus-lime);
-  transform: scale(1.2);
-  box-shadow: 0 0 15px var(--venus-lime);
-  filter: brightness(1.2);
+  cursor: pointer;
 }
 
-.nav-icon-hover:hover img {
-  filter: contrast(1.3) brightness(1.1);
+.nav-icon-hover::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, var(--venus-lime) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.nav-icon-hover:hover::before {
+  width: 60px;
+  height: 60px;
+  opacity: 0.3;
 }
 
 
