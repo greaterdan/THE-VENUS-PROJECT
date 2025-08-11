@@ -62,7 +62,7 @@ export default function Home() {
         
         {/* Scroll indicator */}
         <div 
-          className="absolute bottom-20 left-1/2 transform -translate-x-1/2 text-black animate-bounce z-20"
+          className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-black animate-bounce z-20"
           style={{
             opacity: Math.max(0, 1 - scrollY / 200),
             textShadow: '2px 2px 4px rgba(255,255,255,0.8)'
