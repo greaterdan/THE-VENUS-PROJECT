@@ -137,6 +137,49 @@
   --tw-ring-color: var(--venus-lime);
 }
 
+.lime-hover:hover {
+  color: #84cc16;
+  transition: color 0.3s ease;
+}
 
+.typewriter {
+  overflow: hidden;
+  border-right: 3px solid #84cc16;
+  white-space: nowrap;
+  margin: 0 auto;
+  letter-spacing: 0.1em;
+  animation: 
+    typing 3.5s steps(40, end),
+    blink-caret 0.75s step-end infinite;
+}
 
+@keyframes typing {
+  from { 
+    width: 0 
+  }
+  to { 
+    width: 100% 
+  }
+}
 
+@keyframes blink-caret {
+  from, to { 
+    border-color: transparent 
+  }
+  50% { 
+    border-color: #84cc16; 
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

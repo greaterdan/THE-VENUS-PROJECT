@@ -3,12 +3,20 @@ import ScrollPortrait from "@/components/ScrollPortrait";
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
+  const [isTyping, setIsTyping] = useState(false);
+
+  const paragraphText = "Cities have always been the product of human imagination and human limitation, shaped by the slow accumulation of decisions made by countless individuals over generations. But what if we could reimagine this process entirely?";
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const shouldStartTyping = scrollY > 400;
+    setIsTyping(shouldStartTyping);
+  }, [scrollY]);
 
   const titleOpacity = Math.max(0, 1 - scrollY / 400);
   const titleScale = Math.max(0.8, 1 - scrollY / 1000);
@@ -63,23 +71,25 @@ export default function Home() {
             transform: `translateY(${Math.max(0, 100 - (scrollY - 200) * 0.3)}px)`,
           }}
         >
-          <h2 className="text-4xl font-bold text-black mb-8">Vision for Tomorrow</h2>
+          <h2 className={`text-4xl font-bold text-black mb-8 ${isTyping ? "fade-in-up" : ""}`}>
+            Vision for Tomorrow
+          </h2>
           <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
-            <p>
+            <p className={isTyping ? "fade-in-up" : ""} style={{ animationDelay: "0.2s" }}>
               Cities have always been the product of human imagination and human limitation, shaped by the slow 
               accumulation of decisions made by countless individuals over generations. But what if we could 
               reimagine this process entirely?
             </p>
-            <p>
+            <p className={isTyping ? "fade-in-up" : ""} style={{ animationDelay: "0.4s" }}>
               The Venus Project represents a new paradigm in urban development, where artificial intelligence 
               and human creativity converge to create sustainable, efficient, and beautiful living spaces 
               that serve all of humanity.
             </p>
-            <p>
+            <p className={isTyping ? "fade-in-up" : ""} style={{ animationDelay: "0.6s" }}>
               Through advanced AI systems and distributed computing, we're building the foundation for cities 
               that adapt, learn, and evolve with their inhabitants, creating harmony between technology and nature.
             </p>
-            <p>
+            <p className={isTyping ? "fade-in-up" : ""} style={{ animationDelay: "0.8s" }}>
               Join us in this revolutionary journey toward a sustainable future where every citizen thrives 
               in an environment designed for both individual fulfillment and collective prosperity.
             </p>
