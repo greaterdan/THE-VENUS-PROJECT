@@ -68,13 +68,13 @@ export default function Navigation() {
   ];
 
   return (
-    <nav className="bg-black sticky top-0 z-50">
+    <nav className="sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/">
-              <span className="text-xl font-bold tracking-tight cursor-pointer text-white hover:text-venus-lime transition-colors">
+              <span className="text-xl font-bold tracking-tight cursor-pointer text-black hover:text-venus-lime transition-colors">
                 THE VENUS PROJECT
               </span>
             </Link>
@@ -89,7 +89,7 @@ export default function Navigation() {
                 onMouseEnter={() => setVenusDropdownOpen(true)}
                 onMouseLeave={() => setVenusDropdownOpen(false)}
               >
-                <button className="px-2 py-2 text-white focus:outline-none">
+                <button className="px-2 py-2 text-black focus:outline-none">
                   <img src={venusIcon} alt="Venus Project" className="h-6 w-6" />
                 </button>
                 {venusDropdownOpen && (
@@ -119,7 +119,7 @@ export default function Navigation() {
                 onMouseEnter={() => setAgoraDropdownOpen(true)}
                 onMouseLeave={() => setAgoraDropdownOpen(false)}
               >
-                <button className="px-2 py-2 text-white focus:outline-none">
+                <button className="px-2 py-2 text-black focus:outline-none">
                   <img src={agoraIcon} alt="Agora" className="h-6 w-6" />
                 </button>
                 {agoraDropdownOpen && (
@@ -149,7 +149,7 @@ export default function Navigation() {
                 onMouseEnter={() => setContributeDropdownOpen(true)}
                 onMouseLeave={() => setContributeDropdownOpen(false)}
               >
-                <button className="px-2 py-2 text-white focus:outline-none">
+                <button className="px-2 py-2 text-black focus:outline-none">
                   <img src={contributeIcon} alt="Contribute" className="h-6 w-6" />
                 </button>
                 {contributeDropdownOpen && (
@@ -179,7 +179,7 @@ export default function Navigation() {
                 onMouseEnter={() => setDocsDropdownOpen(true)}
                 onMouseLeave={() => setDocsDropdownOpen(false)}
               >
-                <button className="px-2 py-2 text-white focus:outline-none">
+                <button className="px-2 py-2 text-black focus:outline-none">
                   <img src={docsIcon} alt="Docs" className="h-6 w-6" />
                 </button>
                 {docsDropdownOpen && (
@@ -210,7 +210,7 @@ export default function Navigation() {
           <div className="md:hidden">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-white hover:text-venus-lime focus:outline-none"
+              className="text-black hover:text-venus-lime focus:outline-none"
             >
               {mobileMenuOpen ? (
                 <X className="h-6 w-6" />
@@ -224,12 +224,12 @@ export default function Navigation() {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-gray-800 bg-black">
+        <div className="md:hidden border-t border-gray-200 bg-white">
           <div className="px-2 pt-2 pb-3 space-y-1">
             {venusLinks.map((link) => (
               <Link key={link.href} href={link.href}>
                 <span
-                  className={`block px-3 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors cursor-pointer ${
+                  className={`block px-3 py-2 text-sm font-medium text-black hover:text-venus-lime transition-colors cursor-pointer ${
                     isActive(link.href) ? "text-venus-lime" : ""
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
@@ -241,7 +241,7 @@ export default function Navigation() {
             {contributeLinks.map((link) => (
               <Link key={link.href} href={link.href}>
                 <span
-                  className={`block px-3 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors cursor-pointer ${
+                  className={`block px-3 py-2 text-sm font-medium text-black hover:text-venus-lime transition-colors cursor-pointer ${
                     isActive(link.href) ? "text-venus-lime" : ""
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
@@ -253,7 +253,7 @@ export default function Navigation() {
             {agoraLinks.map((link) => (
               <Link key={link.href} href={link.href}>
                 <span
-                  className={`block px-3 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors cursor-pointer ${
+                  className={`block px-3 py-2 text-sm font-medium text-black hover:text-venus-lime transition-colors cursor-pointer ${
                     isActive(link.href) ? "text-venus-lime" : ""
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
@@ -265,7 +265,7 @@ export default function Navigation() {
             {docsLinks.map((link) => (
               <Link key={link.href} href={link.href}>
                 <span
-                  className={`block px-3 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors cursor-pointer ${
+                  className={`block px-3 py-2 text-sm font-medium text-black hover:text-venus-lime transition-colors cursor-pointer ${
                     isActive(link.href) ? "text-venus-lime" : ""
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
