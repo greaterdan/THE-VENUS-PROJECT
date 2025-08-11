@@ -1,10 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'wouter';
 import AgentNode from '@/components/AgentNode';
 import ResourceFlow from '@/components/ResourceFlow';
 import MicroChart from '@/components/MicroChart';
 import TimelineRibbon from '@/components/TimelineRibbon';
-import { Activity, Wifi, Leaf, TrendingUp, Users, Zap, ArrowRight, Circle } from 'lucide-react';
+import { Activity, Wifi, Leaf, TrendingUp, Users, Zap, ArrowRight, Circle, Home } from 'lucide-react';
+import agoraIcon from "@assets/Untitled design_1754878809797.gif";
+import docsIcon from "@assets/Untitled design_1754879488364.gif";
+import contributeIcon from "@assets/Untitled design (1)_1754880001361.gif";
+import venusIcon from "@assets/Untitled design (2)_1754882967112.gif";
 
 interface Agent {
   id: string;
@@ -229,6 +234,31 @@ export default function Agora() {
               <div className="flex items-center space-x-2">
                 <Activity className="w-4 h-4 text-green-500" />
                 <span className="text-xs text-gray-500">Live</span>
+              </div>
+              
+              {/* Navigation Icons */}
+              <div className="flex items-center space-x-1 ml-6">
+                <Link href="/">
+                  <div className="p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer" title="Home">
+                    <Home className="w-5 h-5 text-gray-600 hover:text-black" />
+                  </div>
+                </Link>
+                <div className="p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer" title="Venus Project">
+                  <img src={venusIcon} alt="Venus" className="w-5 h-5" />
+                </div>
+                <div className="p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer" title="Agora">
+                  <img src={agoraIcon} alt="Agora" className="w-5 h-5" />
+                </div>
+                <Link href="/contribute">
+                  <div className="p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer" title="Contribute">
+                    <img src={contributeIcon} alt="Contribute" className="w-5 h-5" />
+                  </div>
+                </Link>
+                <Link href="/manifesto">
+                  <div className="p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer" title="Docs">
+                    <img src={docsIcon} alt="Docs" className="w-5 h-5" />
+                  </div>
+                </Link>
               </div>
             </div>
           </div>
