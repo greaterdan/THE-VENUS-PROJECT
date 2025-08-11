@@ -82,8 +82,8 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <div className="min-h-screen bg-venus-bg text-foreground font-inter">
-          {/* Navigation - controlled by scroll position */}
-          <Navigation />
+          {/* Navigation - controlled by scroll position - Hidden on Agora page */}
+          {location !== '/agora' && <Navigation />}
           
           <Router isLoaded={isLoaded} showContent={showContent} />
           
