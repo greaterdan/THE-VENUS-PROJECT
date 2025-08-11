@@ -205,9 +205,7 @@ export default function Agora() {
   };
 
   return (
-    <div className="h-screen bg-gradient-to-br from-gray-50 via-blue-50/20 to-green-50/20 relative overflow-hidden">
-      {/* Background Grid Pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,.02)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
+    <div className="h-screen bg-white relative overflow-hidden">
       
       {/* Enhanced Header */}
       <motion.div 
