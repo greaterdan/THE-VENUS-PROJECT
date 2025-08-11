@@ -14,6 +14,7 @@ export default function Navigation() {
   const [agoraDropdownOpen, setAgoraDropdownOpen] = useState(false);
   const [contributeDropdownOpen, setContributeDropdownOpen] = useState(false);
   const [venusDropdownOpen, setVenusDropdownOpen] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const agoraDropdownRef = useRef<HTMLDivElement>(null);
   const contributeDropdownRef = useRef<HTMLDivElement>(null);
@@ -35,10 +36,16 @@ export default function Navigation() {
       }
     }
 
+    function handleScroll() {
+      setScrollY(window.scrollY);
+    }
+
     document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -47,6 +54,9 @@ export default function Navigation() {
     if (path !== "/" && location.startsWith(path)) return true;
     return false;
   };
+
+  // Calculate navigation opacity based on scroll
+  const navOpacity = Math.max(0, 1 - scrollY / 100);
 
   const venusLinks = [
     { href: "/", label: "THE VENUS PROJECT" },
@@ -72,16 +82,16 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center h-16">
           {/* Logo */}
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0" style={{ opacity: navOpacity }}>
             <Link href="/">
-              <span className="text-xl font-bold tracking-tight cursor-pointer text-black hover:text-venus-lime transition-colors">
+              <span className="text-xl font-bold tracking-tight cursor-pointer text-black hover:text-venus-lime transition-all duration-300">
                 THE VENUS PROJECT
               </span>
             </Link>
           </div>
 
           {/* Right Navigation Group - Desktop */}
-          <div className="hidden md:block ml-auto">
+          <div className="hidden md:block ml-auto" style={{ opacity: navOpacity }}>
             <div className="flex items-baseline space-x-2">
               <div 
                 className="relative group" 
@@ -207,10 +217,10 @@ export default function Navigation() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="md:hidden" style={{ opacity: navOpacity }}>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-black hover:text-venus-lime focus:outline-none"
+              className="text-black hover:text-venus-lime focus:outline-none transition-all duration-300"
             >
               {mobileMenuOpen ? (
                 <X className="h-6 w-6" />
