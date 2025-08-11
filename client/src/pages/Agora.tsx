@@ -52,7 +52,7 @@ const AGENTS: Agent[] = [
     id: 'alpha',
     name: 'Alpha',
     domain: 'Infrastructure & Habitat Design',
-    position: { x: 150, y: 80 }, // Far left - spread wider
+    position: { x: 150, y: 40 }, // Far left - moved up 4cm
     status: 'active',
     resources: { surplus: ['titanium', 'concrete'], deficit: ['energy'] },
     alignment: 94
