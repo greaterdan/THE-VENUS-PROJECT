@@ -81,15 +81,6 @@ export default function Navigation() {
     <nav className="sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center h-16">
-          {/* Logo */}
-          <div className="flex-shrink-0" style={{ opacity: navOpacity }}>
-            <Link href="/">
-              <span className="text-xl font-bold tracking-tight cursor-pointer text-black hover:text-venus-lime transition-all duration-300">
-                THE VENUS PROJECT
-              </span>
-            </Link>
-          </div>
-
           {/* Right Navigation Group - Desktop */}
           <div className="hidden md:block ml-auto" style={{ opacity: navOpacity }}>
             <div className="flex items-baseline space-x-2">
