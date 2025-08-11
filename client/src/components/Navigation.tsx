@@ -92,7 +92,7 @@ export default function Navigation() {
                 </button>
                 {venusDropdownOpen && (
                   <div 
-                    className="absolute right-0 mt-2 w-48 bg-white border border-venus-gray rounded-md shadow-lg z-50"
+                    className="absolute right-0 top-full w-48 bg-white border border-venus-gray rounded-md shadow-lg z-50"
                     onMouseEnter={() => setVenusDropdownOpen(true)}
                     onMouseLeave={() => setVenusDropdownOpen(false)}
                   >
@@ -122,7 +122,7 @@ export default function Navigation() {
                 </button>
                 {contributeDropdownOpen && (
                   <div 
-                    className="absolute right-0 mt-2 w-32 bg-white border border-venus-gray rounded-md shadow-lg z-50"
+                    className="absolute right-0 top-full w-32 bg-white border border-venus-gray rounded-md shadow-lg z-50"
                     onMouseEnter={() => setContributeDropdownOpen(true)}
                     onMouseLeave={() => setContributeDropdownOpen(false)}
                   >
@@ -152,7 +152,7 @@ export default function Navigation() {
                 </button>
                 {agoraDropdownOpen && (
                   <div 
-                    className="absolute right-0 mt-2 w-32 bg-white border border-venus-gray rounded-md shadow-lg z-50"
+                    className="absolute right-0 top-full w-32 bg-white border border-venus-gray rounded-md shadow-lg z-50"
                     onMouseEnter={() => setAgoraDropdownOpen(true)}
                     onMouseLeave={() => setAgoraDropdownOpen(false)}
                   >
@@ -182,7 +182,7 @@ export default function Navigation() {
                 </button>
                 {docsDropdownOpen && (
                   <div 
-                    className="absolute right-0 mt-2 w-48 bg-white border border-venus-gray rounded-md shadow-lg z-50"
+                    className="absolute right-0 top-full w-48 bg-white border border-venus-gray rounded-md shadow-lg z-50"
                     onMouseEnter={() => setDocsDropdownOpen(true)}
                     onMouseLeave={() => setDocsDropdownOpen(false)}
                   >
