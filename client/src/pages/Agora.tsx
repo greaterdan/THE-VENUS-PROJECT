@@ -490,19 +490,7 @@ export default function Agora() {
             {/* Live Decision Map */}
             <div className="w-2/3 relative bg-gray-50/30 border-r border-gray-200">
               
-              {/* Decision Center */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-                <div className="bg-white/95 backdrop-blur-sm rounded-lg shadow-lg border-2 border-lime-500 p-3 w-56">
-                  <div className="text-center">
-                    <div className="w-3 h-3 bg-lime-500 rounded-full mx-auto mb-2 animate-pulse"></div>
-                    <h3 className="font-semibold text-xs text-gray-800">{CURRENT_DECISION.title}</h3>
-                    <p className="text-xs text-gray-500 uppercase tracking-wider mt-1">{CURRENT_DECISION.status}</p>
-                    <div className="mt-2 text-xs text-gray-600">
-                      Timeline: <span className="font-mono">{CURRENT_DECISION.timeline}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+
 
               {/* Agent Network - everything in SVG for proper coordination */}
               <svg className="absolute inset-0 w-full h-full" viewBox="0 0 600 400">
