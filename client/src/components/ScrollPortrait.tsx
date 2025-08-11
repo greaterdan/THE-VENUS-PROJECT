@@ -21,7 +21,7 @@ const ScrollPortrait = () => {
       <img 
         src={portraitImage} 
         alt="Portrait" 
-        className="w-24 h-24 object-cover rounded-lg shadow-lg animate-pulse hover:scale-105 transition-transform duration-300"
+        className="w-32 h-32 object-cover rounded-lg shadow-lg hover:scale-105 transition-transform duration-300"
       />
     </div>
   );
