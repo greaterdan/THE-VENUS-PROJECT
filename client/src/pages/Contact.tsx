@@ -12,7 +12,7 @@ export default function Contact() {
             feedback, and collaboration opportunities.
           </p>
           
-          <div className="grid md:grid-cols-2 gap-12 mt-12">
+          <div className="grid md:grid-cols-3 gap-12 mt-12">
             <div>
               <h2 className="text-3xl font-semibold mb-6">General Inquiries</h2>
               <div className="space-y-4">
@@ -49,6 +49,25 @@ export default function Contact() {
                 <div>
                   <h3 className="text-lg font-medium text-gray-900">Partnerships</h3>
                   <p className="text-gray-600">partnerships@thevenusproject.com</p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-3xl font-semibold mb-6">Work for Us</h2>
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-lg font-medium text-gray-900">Careers</h3>
+                  <p className="text-gray-600">careers@thevenusproject.com</p>
+                </div>
+                <div>
+                  <h3 className="text-lg font-medium text-gray-900">Current Opening</h3>
+                  <h4 className="font-semibold text-gray-900 mt-3">Reinforcement Learning Engineer</h4>
+                  <p className="text-gray-600 text-sm">
+                    Implements learning agents in simulations and real-world applications. 
+                    Join our team to develop AI systems that optimize sustainable city planning 
+                    and resource management.
+                  </p>
                 </div>
               </div>
             </div>
