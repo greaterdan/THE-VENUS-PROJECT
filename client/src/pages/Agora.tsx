@@ -1,310 +1,447 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-interface AgentMessage {
-  id: number;
-  agent: string;
-  message: string;
-  time: string;
-  status: 'active' | 'processing' | 'complete';
+interface Agent {
+  id: string;
+  name: string;
   domain: string;
+  position: { x: number; y: number };
+  status: 'active' | 'processing' | 'idle';
+  resources: { surplus: string[]; deficit: string[] };
+  alignment: number;
 }
 
-const MESSAGES: AgentMessage[] = [
+interface Decision {
+  id: string;
+  title: string;
+  status: 'debating' | 'voting' | 'approved' | 'implemented';
+  impact: {
+    ecological: number;
+    wellbeing: number;
+    efficiency: number;
+  };
+  timeline: string;
+  participants: string[];
+}
+
+interface ResourceFlow {
+  from: string;
+  to: string;
+  resource: string;
+  amount: string;
+  type: 'energy' | 'material' | 'data' | 'time';
+}
+
+const AGENTS: Agent[] = [
   {
-    id: 1,
-    agent: "Alpha",
-    message: "Habitat expansion protocols initialized. Resource allocation optimized for sustainable growth patterns.",
-    time: "14:23",
-    status: 'complete',
-    domain: "Infrastructure"
-  },
-  {
-    id: 2,
-    agent: "Beta", 
-    message: "Energy grid stabilized at 94% efficiency. Solar array recalibration successful.",
-    time: "14:24",
+    id: 'alpha',
+    name: 'Alpha',
+    domain: 'Infrastructure',
+    position: { x: 150, y: 100 },
     status: 'active',
-    domain: "Energy"
+    resources: { surplus: ['titanium', 'concrete'], deficit: ['energy'] },
+    alignment: 94
   },
   {
-    id: 3,
-    agent: "Gamma",
-    message: "Agricultural yield exceeded projections by 18%. Implementing nutrient cycle optimization.",
-    time: "14:24",
+    id: 'beta',
+    name: 'Beta',
+    domain: 'Energy',
+    position: { x: 300, y: 80 },
     status: 'processing',
-    domain: "Agriculture"
+    resources: { surplus: ['solar', 'wind'], deficit: ['materials'] },
+    alignment: 96
   },
   {
-    id: 4,
-    agent: "Delta",
-    message: "Ecosystem restoration Phase 3 completed. Biodiversity indices within target parameters.",
-    time: "14:25",
-    status: 'complete',
-    domain: "Ecology"
-  },
-  {
-    id: 5,
-    agent: "Epsilon",
-    message: "Community wellbeing metrics show positive trend. Cultural integration proceeding smoothly.",
-    time: "14:25",
+    id: 'gamma',
+    name: 'Gamma',
+    domain: 'Agriculture',
+    position: { x: 450, y: 120 },
     status: 'active',
-    domain: "Social"
+    resources: { surplus: ['biomass', 'nutrients'], deficit: ['water'] },
+    alignment: 91
   },
   {
-    id: 6,
-    agent: "Zeta",
-    message: "Transportation network efficiency increased. Zero-emission mobility targets achieved.",
-    time: "14:26",
-    status: 'complete',
-    domain: "Transport"
+    id: 'delta',
+    name: 'Delta',
+    domain: 'Ecology',
+    position: { x: 200, y: 200 },
+    status: 'idle',
+    resources: { surplus: ['biodiversity'], deficit: ['time'] },
+    alignment: 89
   },
   {
-    id: 7,
-    agent: "Eta",
-    message: "Preventive healthcare systems operational. Diagnostic accuracy maintaining 97.3%.",
-    time: "14:26",
-    status: 'processing',
-    domain: "Health"
-  },
-  {
-    id: 8,
-    agent: "Theta",
-    message: "Educational frameworks deployed. Knowledge accessibility expanded across all sectors.",
-    time: "14:27",
+    id: 'epsilon',
+    name: 'Epsilon',
+    domain: 'Social',
+    position: { x: 350, y: 180 },
     status: 'active',
-    domain: "Education"
-  },
-  {
-    id: 9,
-    agent: "Iota",
-    message: "Resource distribution algorithms updated. Scarcity elimination protocols active.",
-    time: "14:27",
-    status: 'processing',
-    domain: "Resources"
-  },
-  {
-    id: 10,
-    agent: "Kappa",
-    message: "Ethical frameworks validated. Decision-making consensus achieved across all domains.",
-    time: "14:28",
-    status: 'complete',
-    domain: "Ethics"
+    resources: { surplus: ['culture', 'knowledge'], deficit: ['infrastructure'] },
+    alignment: 93
   }
 ];
 
-const StatusIndicator = ({ status }: { status: string }) => {
-  const colors = {
-    active: 'bg-green-400',
-    processing: 'bg-yellow-400', 
-    complete: 'bg-blue-400'
+const CURRENT_DECISION: Decision = {
+  id: 'habitat-expansion',
+  title: 'Habitat Expansion Protocol',
+  status: 'voting',
+  impact: {
+    ecological: 78,
+    wellbeing: 85,
+    efficiency: 92
+  },
+  timeline: '72 hours',
+  participants: ['alpha', 'beta', 'gamma', 'epsilon']
+};
+
+const RESOURCE_FLOWS: ResourceFlow[] = [
+  { from: 'alpha', to: 'beta', resource: '620kg titanium', amount: '620kg', type: 'material' },
+  { from: 'beta', to: 'alpha', resource: '120 MWh', amount: '120 MWh', type: 'energy' },
+  { from: 'gamma', to: 'epsilon', resource: 'nutrient data', amount: '2.4TB', type: 'data' },
+  { from: 'epsilon', to: 'delta', resource: 'analysis time', amount: '4 hrs', type: 'time' }
+];
+
+const ARCHIVE_DECISIONS = [
+  { id: 1, title: 'Solar Array Recalibration', status: 'IMPLEMENTED', timestamp: '14:18:23', impact: '+18% efficiency' },
+  { id: 2, title: 'Biodiversity Restoration Phase 3', status: 'APPROVED', timestamp: '14:15:07', impact: '+12% ecosystem health' },
+  { id: 3, title: 'Transport Network Optimization', status: 'IMPLEMENTED', timestamp: '14:12:45', impact: 'Zero emissions achieved' },
+  { id: 4, title: 'Agricultural Yield Enhancement', status: 'APPROVED', timestamp: '14:09:33', impact: '+18% food production' },
+  { id: 5, title: 'Healthcare System Upgrade', status: 'IMPLEMENTED', timestamp: '14:06:12', impact: '97.3% diagnostic accuracy' }
+];
+
+const AgentNode = ({ agent, isSelected, onClick }: { agent: Agent; isSelected: boolean; onClick: () => void }) => {
+  const statusColors = {
+    active: 'bg-green-400 shadow-green-200',
+    processing: 'bg-yellow-400 shadow-yellow-200',
+    idle: 'bg-gray-400 shadow-gray-200'
   };
-  
+
   return (
-    <div className={`w-1.5 h-1.5 rounded-full ${colors[status as keyof typeof colors]} animate-pulse`} />
+    <motion.div
+      className={`absolute cursor-pointer`}
+      style={{ left: agent.position.x, top: agent.position.y }}
+      whileHover={{ scale: 1.1 }}
+      onClick={onClick}
+    >
+      <div className={`w-8 h-8 rounded-full ${statusColors[agent.status]} shadow-lg flex items-center justify-center`}>
+        <div className="w-4 h-4 bg-white rounded-full flex items-center justify-center">
+          <span className="text-xs font-bold text-gray-700">{agent.name[0]}</span>
+        </div>
+      </div>
+      {agent.status === 'active' && (
+        <div className="absolute inset-0 w-8 h-8 rounded-full bg-green-400 animate-ping opacity-20"></div>
+      )}
+      <div className="absolute top-10 left-1/2 transform -translate-x-1/2 text-xs font-mono text-gray-600 whitespace-nowrap">
+        {agent.name}
+      </div>
+    </motion.div>
   );
 };
 
-const NetworkVisualization = () => {
+const ResourceFlowLine = ({ flow, agents }: { flow: ResourceFlow; agents: Agent[] }) => {
+  const fromAgent = agents.find(a => a.id === flow.from);
+  const toAgent = agents.find(a => a.id === flow.to);
+  
+  if (!fromAgent || !toAgent) return null;
+
+  const flowColors = {
+    energy: 'stroke-yellow-400',
+    material: 'stroke-blue-400',
+    data: 'stroke-purple-400',
+    time: 'stroke-green-400'
+  };
+
   return (
-    <div className="absolute top-0 left-0 w-full h-32 overflow-hidden opacity-10 pointer-events-none">
-      <svg className="w-full h-full" viewBox="0 0 800 200">
-        {/* Network nodes */}
-        {Array.from({ length: 10 }, (_, i) => (
-          <g key={i}>
-            <circle
-              cx={80 + i * 70}
-              cy={100}
-              r="3"
-              fill="currentColor"
-              className="text-lime-500"
-            >
-              <animate
-                attributeName="opacity"
-                values="0.3;1;0.3"
-                dur={`${2 + i * 0.2}s`}
-                repeatCount="indefinite"
-              />
-            </circle>
-            {i < 9 && (
-              <line
-                x1={80 + i * 70}
-                y1={100}
-                x2={80 + (i + 1) * 70}
-                y2={100}
-                stroke="currentColor"
-                strokeWidth="1"
-                className="text-gray-300"
-                opacity="0.5"
-              />
-            )}
-          </g>
-        ))}
-      </svg>
+    <g>
+      <motion.line
+        x1={fromAgent.position.x + 16}
+        y1={fromAgent.position.y + 16}
+        x2={toAgent.position.x + 16}
+        y2={toAgent.position.y + 16}
+        className={`${flowColors[flow.type]} opacity-60`}
+        strokeWidth="2"
+        strokeDasharray="5,5"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 2, repeat: Infinity }}
+      />
+      <circle
+        cx={(fromAgent.position.x + toAgent.position.x) / 2 + 16}
+        cy={(fromAgent.position.y + toAgent.position.y) / 2 + 16}
+        r="3"
+        className={`fill-current ${flowColors[flow.type].replace('stroke', 'text')}`}
+      >
+        <animateMotion
+          dur="3s"
+          repeatCount="indefinite"
+          path={`M ${fromAgent.position.x + 16} ${fromAgent.position.y + 16} L ${toAgent.position.x + 16} ${toAgent.position.y + 16}`}
+        />
+      </circle>
+    </g>
+  );
+};
+
+const MetricGauge = ({ label, value, color }: { label: string; value: number; color: string }) => {
+  const radius = 30;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDasharray = circumference;
+  const strokeDashoffset = circumference - (value / 100) * circumference;
+
+  return (
+    <div className="flex flex-col items-center">
+      <div className="relative w-20 h-20">
+        <svg className="w-20 h-20 transform -rotate-90" viewBox="0 0 80 80">
+          <circle
+            cx="40"
+            cy="40"
+            r={radius}
+            stroke="currentColor"
+            strokeWidth="8"
+            fill="transparent"
+            className="text-gray-200"
+          />
+          <circle
+            cx="40"
+            cy="40"
+            r={radius}
+            stroke="currentColor"
+            strokeWidth="8"
+            fill="transparent"
+            strokeDasharray={strokeDasharray}
+            strokeDashoffset={strokeDashoffset}
+            className={color}
+            style={{ transition: 'stroke-dashoffset 0.5s ease-in-out' }}
+          />
+        </svg>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="text-sm font-bold text-gray-700">{value}%</span>
+        </div>
+      </div>
+      <span className="text-xs text-gray-600 mt-1">{label}</span>
     </div>
   );
 };
 
-const TypewriterEffect = ({ text, delay = 0 }: { text: string; delay?: number }) => {
-  const [displayText, setDisplayText] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0);
-  
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (currentIndex < text.length) {
-        setDisplayText(prev => prev + text[currentIndex]);
-        setCurrentIndex(prev => prev + 1);
-      }
-    }, 30 + delay);
-    
-    return () => clearTimeout(timer);
-  }, [currentIndex, text, delay]);
-  
-  return <span>{displayText}</span>;
-};
-
 export default function Agora() {
-  const [activeAgents, setActiveAgents] = useState(0);
+  const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
+  const [viewMode, setViewMode] = useState<'live' | 'archive'>('live');
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString('en-US', { hour12: false }));
-  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Count active agents
-    const active = MESSAGES.filter(m => m.status === 'active').length;
-    setActiveAgents(active);
-    
-    // Update time
     const timeInterval = setInterval(() => {
       setCurrentTime(new Date().toLocaleTimeString('en-US', { hour12: false }));
     }, 1000);
-
     return () => clearInterval(timeInterval);
   }, []);
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, []);
-
   return (
-    <div className="min-h-screen bg-white text-black relative overflow-hidden">
+    <div className="min-h-screen bg-white text-black pt-20">
       
-      {/* Background Network Visualization */}
-      <NetworkVisualization />
-      
-      <div className="flex h-screen pt-20">
-        
-        {/* Left Side - Chat Interface */}
-        <div className="w-2/3 flex flex-col border-r border-gray-100">
-          
-          {/* Header */}
-          <div className="px-6 py-3 border-b border-gray-100">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-xl font-light tracking-wide text-black">
-                  AGORA
-                </h1>
-                <p className="text-xs text-gray-500 font-mono">
-                  Neural Network Communications
-                </p>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-1">
-                  <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
-                  <span className="text-xs font-mono text-gray-600">
-                    {activeAgents} ACTIVE
-                  </span>
-                </div>
-                <div className="text-xs font-mono text-gray-400 bg-gray-50 px-2 py-1 rounded text-center">
-                  {currentTime}
-                </div>
-              </div>
+      {/* Header */}
+      <div className="px-6 py-3 border-b border-gray-200 bg-gray-50/50">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-6">
+            <div>
+              <h1 className="text-xl font-light tracking-wide text-black">AGORA</h1>
+              <p className="text-xs text-gray-500 font-mono">Decision War Room</p>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setViewMode('live')}
+                className={`px-3 py-1 text-xs font-mono rounded ${
+                  viewMode === 'live' ? 'bg-lime-500 text-white' : 'bg-gray-200 text-gray-600'
+                }`}
+              >
+                LIVE MAP
+              </button>
+              <button
+                onClick={() => setViewMode('archive')}
+                className={`px-3 py-1 text-xs font-mono rounded ${
+                  viewMode === 'archive' ? 'bg-lime-500 text-white' : 'bg-gray-200 text-gray-600'
+                }`}
+              >
+                ARCHIVE
+              </button>
             </div>
           </div>
-
-          {/* Messages Container */}
-          <div className="flex-1 px-6 py-4 overflow-y-auto">
-            <div className="space-y-3">
-              {MESSAGES.map((message, index) => (
-                <motion.div
-                  key={message.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                  className="group"
-                >
-                  <div className="flex items-start gap-3">
-                    
-                    {/* Agent Info */}
-                    <div className="flex-shrink-0 w-16">
-                      <div className="flex items-center gap-1 mb-0.5">
-                        <StatusIndicator status={message.status} />
-                        <span className="text-xs font-mono text-gray-500 uppercase">
-                          {message.agent}
-                        </span>
-                      </div>
-                      <div className="text-xs text-gray-400 font-mono">
-                        {message.time}
-                      </div>
-                    </div>
-                    
-                    {/* Message Content */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-xs font-medium text-gray-600 bg-gray-100 px-1.5 py-0.5 rounded">
-                          {message.domain}
-                        </span>
-                      </div>
-                      <div className="text-sm text-gray-800 leading-snug">
-                        <TypewriterEffect text={message.message} delay={index * 50} />
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-              <div ref={messagesEndRef} />
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+              <span className="text-xs font-mono text-gray-600">COUNCIL ACTIVE</span>
             </div>
-          </div>
-
-          {/* System Status Footer */}
-          <div className="px-6 py-2 border-t border-gray-100 bg-gray-50/30">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4 text-xs text-gray-500">
-                <span className="flex items-center gap-1">
-                  <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-                  Operational
-                </span>
-                <span className="flex items-center gap-1">
-                  <div className="w-1 h-1 bg-green-400 rounded-full"></div>
-                  12ms
-                </span>
-                <span className="flex items-center gap-1">
-                  <div className="w-1 h-1 bg-blue-400 rounded-full"></div>
-                  94.7%
-                </span>
-              </div>
-              <div className="text-xs font-mono text-gray-400">
-                {currentTime}
-              </div>
+            <div className="text-xs font-mono text-gray-400 bg-white px-2 py-1 rounded border">
+              {currentTime}
             </div>
-          </div>
-        </div>
-
-        {/* Right Side - Visual Space */}
-        <div className="w-1/3 bg-gray-50/50 p-6">
-          <div className="text-center text-gray-400 mt-20">
-            <div className="mb-4">
-              <svg className="w-16 h-16 mx-auto opacity-30" viewBox="0 0 100 100" fill="none">
-                <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="2"/>
-                <circle cx="50" cy="50" r="25" stroke="currentColor" strokeWidth="1"/>
-                <circle cx="50" cy="50" r="10" stroke="currentColor" strokeWidth="1"/>
-              </svg>
-            </div>
-            <p className="text-sm">Visual Analytics Space</p>
-            <p className="text-xs mt-1">Network topology, metrics, and system overview</p>
           </div>
         </div>
       </div>
 
+      <div className="flex h-screen">
+        
+        {viewMode === 'live' ? (
+          <>
+            {/* Live Decision Map */}
+            <div className="w-2/3 relative bg-gray-50/30 border-r border-gray-200">
+              
+              {/* Decision Center */}
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+                <div className="bg-white rounded-lg shadow-lg border-2 border-lime-500 p-4 w-64">
+                  <div className="text-center">
+                    <div className="w-3 h-3 bg-lime-500 rounded-full mx-auto mb-2 animate-pulse"></div>
+                    <h3 className="font-semibold text-sm text-gray-800">{CURRENT_DECISION.title}</h3>
+                    <p className="text-xs text-gray-500 uppercase tracking-wider mt-1">{CURRENT_DECISION.status}</p>
+                    <div className="mt-2 text-xs text-gray-600">
+                      Timeline: <span className="font-mono">{CURRENT_DECISION.timeline}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Agent Network */}
+              <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 600 400">
+                {RESOURCE_FLOWS.map((flow, index) => (
+                  <ResourceFlowLine key={index} flow={flow} agents={AGENTS} />
+                ))}
+              </svg>
+
+              {AGENTS.map(agent => (
+                <AgentNode
+                  key={agent.id}
+                  agent={agent}
+                  isSelected={selectedAgent?.id === agent.id}
+                  onClick={() => setSelectedAgent(agent)}
+                />
+              ))}
+
+              {/* Agent Detail Panel */}
+              <AnimatePresence>
+                {selectedAgent && (
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    className="absolute bottom-6 left-6 bg-white rounded-lg shadow-lg border p-4 w-64"
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="font-semibold text-gray-800">Agent {selectedAgent.name}</h4>
+                      <button
+                        onClick={() => setSelectedAgent(null)}
+                        className="text-gray-400 hover:text-gray-600"
+                      >
+                        ×
+                      </button>
+                    </div>
+                    <div className="space-y-2 text-xs">
+                      <div>
+                        <span className="text-gray-500">Domain:</span>
+                        <span className="ml-2 font-mono">{selectedAgent.domain}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">Alignment:</span>
+                        <span className="ml-2 font-mono">{selectedAgent.alignment}%</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">Surplus:</span>
+                        <div className="ml-2 text-green-600">{selectedAgent.resources.surplus.join(', ')}</div>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">Needs:</span>
+                        <div className="ml-2 text-red-600">{selectedAgent.resources.deficit.join(', ')}</div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Decision Metrics Panel */}
+            <div className="w-1/3 bg-white p-6 overflow-y-auto">
+              <div className="space-y-6">
+                
+                {/* Current Decision Metrics */}
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-800 mb-4">Decision Impact Analysis</h3>
+                  <div className="grid grid-cols-3 gap-4">
+                    <MetricGauge label="Ecological" value={CURRENT_DECISION.impact.ecological} color="text-green-500" />
+                    <MetricGauge label="Wellbeing" value={CURRENT_DECISION.impact.wellbeing} color="text-blue-500" />
+                    <MetricGauge label="Efficiency" value={CURRENT_DECISION.impact.efficiency} color="text-purple-500" />
+                  </div>
+                </div>
+
+                {/* Resource Flows */}
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-800 mb-4">Active Resource Flows</h3>
+                  <div className="space-y-3">
+                    {RESOURCE_FLOWS.map((flow, index) => (
+                      <div key={index} className="bg-gray-50 rounded p-3">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="font-mono text-gray-600">
+                            {flow.from.toUpperCase()} → {flow.to.toUpperCase()}
+                          </span>
+                          <span className={`px-2 py-1 rounded text-white ${
+                            flow.type === 'energy' ? 'bg-yellow-400' :
+                            flow.type === 'material' ? 'bg-blue-400' :
+                            flow.type === 'data' ? 'bg-purple-400' : 'bg-green-400'
+                          }`}>
+                            {flow.type}
+                          </span>
+                        </div>
+                        <div className="text-sm text-gray-800 mt-1">{flow.resource}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* System Status */}
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-800 mb-4">System Status</h3>
+                  <div className="space-y-2 text-xs">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Network Consensus</span>
+                      <span className="font-mono">94.7%</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Active Agents</span>
+                      <span className="font-mono">{AGENTS.filter(a => a.status === 'active').length}/5</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Response Latency</span>
+                      <span className="font-mono">12ms</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Decision Queue</span>
+                      <span className="font-mono">3 pending</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          /* Archive View */
+          <div className="w-full bg-black text-green-400 font-mono p-6">
+            <div className="mb-4">
+              <div className="text-yellow-400 text-xs">DECISION ARCHIVE - VENUS PROJECT AGORA</div>
+              <div className="text-xs">System Time: {currentTime} | Status: OPERATIONAL</div>
+              <div className="border-t border-green-800 my-2"></div>
+            </div>
+            
+            <div className="space-y-1 text-xs">
+              {ARCHIVE_DECISIONS.map((decision) => (
+                <div key={decision.id} className="hover:bg-green-900/20 p-1 cursor-pointer">
+                  <span className="text-yellow-400">[{decision.timestamp}]</span>
+                  <span className="ml-2">{decision.title}</span>
+                  <span className="ml-4 text-cyan-400">{decision.status}</span>
+                  <span className="ml-4 text-gray-400">{decision.impact}</span>
+                </div>
+              ))}
+            </div>
+            
+            <div className="mt-6 text-xs text-gray-500">
+              &gt; Use LIVE MAP mode to view active decision processes
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

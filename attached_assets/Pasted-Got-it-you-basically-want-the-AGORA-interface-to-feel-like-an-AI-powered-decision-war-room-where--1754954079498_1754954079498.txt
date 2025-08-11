@@ -1,0 +1,71 @@
+Got it — you basically want the AGORA interface to feel like an AI-powered decision war room, where:
+
+The conversations aren’t just shown as plain text — they are visually mapped so you can see who’s talking, who’s influencing who, and what’s being decided.
+
+Each decision has metrics and visual context — performance indicators, resource usage, projected impacts.
+
+There’s an archive/history view inspired by the yellow “terminal” style you pasted, where past decisions are stored in an easy-to-navigate format.
+
+Here’s how we can structure it:
+
+AGORA Page Redesign
+1. Live Decision Map (left panel)
+
+Replace static text feed with a conversation flow chart.
+
+Each agent is a node (colored dot or avatar) connected by animated lines showing:
+
+Who responded to whom (line arrows).
+
+Resource exchanges (icons for water, energy, time, materials traveling along the line).
+
+Hover over a line to see the exact message exchanged.
+
+Center of the map shows the current active decision the council is voting on or debating.
+
+2. Decision Metrics Overlay (right panel)
+
+Every decision-in-progress gets a live metrics card:
+
+Projected ecological impact.
+
+Resource allocation changes.
+
+Wellbeing index effect.
+
+Timeline to execution.
+
+Mini bar charts or radial gauges update in real time as the debate progresses.
+
+3. Archive View (bottom or separate tab)
+
+Switch to "Decision Archive" mode to see past conversations in a yellow terminal-inspired list (like your second screenshot).
+
+Clicking an entry opens:
+
+A replay of the debate in the flow chart format.
+
+The final decision summary + metrics.
+
+Which agents supported or opposed the decision.
+
+4. Agent Detail Panels (hover or click)
+
+Clicking an agent’s name opens a small side card with:
+
+Domain (Energy, Agriculture, etc.).
+
+Current resource surplus/deficit.
+
+Decision history participation.
+
+“Alignment meter” — how much they align with other agents in the current session.
+
+5. Styles & Feel
+
+Keep minimalistic, Venus Project-style aesthetics — light background, soft colors, glassy overlays.
+
+Animated lines + resource icons for life-like flow.
+
+Subtle AI “pulse” animations when agents speak.
+
