@@ -14,7 +14,7 @@ const ScrollPortrait = () => {
 
   return (
     <div 
-      className="fixed bottom-0 left-0 z-40"
+      className="fixed bottom-0 left-0 z-40 flex items-end"
       style={{ opacity }}
     >
       <img 
@@ -23,6 +23,14 @@ const ScrollPortrait = () => {
         className="object-cover transition-transform duration-300"
         style={{ width: '640px', height: '640px' }}
       />
+      <div className="ml-8 mb-16 max-w-sm">
+        <blockquote className="text-xl italic text-black mb-4 leading-relaxed">
+          "If we continue to use the same methods, we will get the same results."
+        </blockquote>
+        <cite className="text-lg font-semibold text-black">
+          — Jacque Fresco
+        </cite>
+      </div>
     </div>
   );
 };
