@@ -11,10 +11,10 @@ export default function MicroChart({ type, value, change, className = '' }: Micr
   const isPositive = change > 0;
   
   const chartColors = {
-    efficiency: 'bg-blue-400',
-    wellbeing: 'bg-green-400',
-    biodiversity: 'bg-emerald-400',
-    resources: 'bg-orange-400'
+    efficiency: 'bg-blue-500',
+    wellbeing: 'bg-lime-500',
+    biodiversity: 'bg-emerald-500',
+    resources: 'bg-orange-500'
   };
 
   const generateSparkline = () => {
@@ -31,12 +31,12 @@ export default function MicroChart({ type, value, change, className = '' }: Micr
   const maxValue = Math.max(...sparklineData);
 
   return (
-    <div className={`inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg p-2 ${className}`}>
+    <div className={`inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-lg p-2 border border-lime-500/20 ${className}`}>
       <div className="flex flex-col">
-        <span className="text-xs font-medium text-gray-700 capitalize">{type}</span>
+        <span className="text-xs font-medium text-black capitalize">{type}</span>
         <div className="flex items-center gap-1">
-          <span className="text-sm font-bold text-gray-800">{value}%</span>
-          <span className={`text-xs ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
+          <span className="text-sm font-bold text-black">{value}%</span>
+          <span className={`text-xs ${isPositive ? 'text-lime-600' : 'text-red-600'}`}>
             {isPositive ? '+' : ''}{change.toFixed(1)}%
           </span>
         </div>

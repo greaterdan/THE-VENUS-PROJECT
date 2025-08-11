@@ -192,13 +192,13 @@ export default function Agora() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/20 to-green-50/20 relative overflow-hidden">
+    <div className="min-h-screen bg-white relative overflow-hidden">
       {/* Background Grid Pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,.02)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(132,204,22,.08)_1px,transparent_1px),linear-gradient(90deg,rgba(132,204,22,.08)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
       
       {/* Enhanced Header */}
       <motion.div 
-        className="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-xl border-b border-white/20"
+        className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-b border-lime-500/20"
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -206,21 +206,21 @@ export default function Agora() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <h1 className="text-2xl font-light tracking-wide text-gray-900">
+              <h1 className="text-2xl font-light tracking-wide text-black">
                 Venus City AI Council — Live Dialogue
               </h1>
               <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-sm text-gray-600">System: Ecological balance within safe thresholds</span>
+                <div className="w-2 h-2 bg-lime-500 rounded-full animate-pulse"></div>
+                <span className="text-sm text-black">System: Ecological balance within safe thresholds</span>
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="text-sm font-mono text-gray-600">
+              <div className="text-sm font-mono text-black">
                 {currentTime.toLocaleTimeString()}
               </div>
               <div className="flex items-center space-x-2">
-                <Activity className="w-4 h-4 text-green-500" />
-                <span className="text-xs text-gray-500">Live</span>
+                <Activity className="w-4 h-4 text-lime-500" />
+                <span className="text-xs text-black">Live</span>
               </div>
             </div>
           </div>
@@ -229,8 +229,8 @@ export default function Agora() {
 
       {/* Council Network Visualization */}
       <div className="fixed top-20 left-4 w-96 h-96 pointer-events-none z-30">
-        <div className="relative w-full h-full bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 p-4">
-          <h3 className="text-sm font-medium text-gray-700 mb-2">Council Network</h3>
+        <div className="relative w-full h-full bg-white/80 backdrop-blur-sm rounded-3xl border border-lime-500/20 p-4 shadow-lg">
+          <h3 className="text-sm font-medium text-black mb-2">Council Network</h3>
           <div className="relative w-full h-full">
             {/* Connection Lines */}
             <svg className="absolute inset-0 w-full h-full">
@@ -242,7 +242,7 @@ export default function Agora() {
                     y1={agent.position.y * 0.6}
                     x2={otherAgent.position.x * 0.6}
                     y2={otherAgent.position.y * 0.6}
-                    stroke="rgba(255,255,255,0.3)"
+                    stroke="rgba(132,204,22,0.3)"
                     strokeWidth="1"
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
@@ -278,8 +278,8 @@ export default function Agora() {
       </div>
 
       {/* Global Metrics Dashboard */}
-      <div className="fixed top-20 right-16 w-72 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 p-4 z-30">
-        <h3 className="text-sm font-medium text-gray-700 mb-3">Global Metrics</h3>
+      <div className="fixed top-20 right-16 w-72 bg-white/90 backdrop-blur-sm rounded-2xl border border-lime-500/20 p-4 z-30 shadow-lg">
+        <h3 className="text-sm font-medium text-black mb-3">Global Metrics</h3>
         <div className="space-y-2">
           <MicroChart type="efficiency" value={globalMetrics.efficiency} change={2.3} />
           <MicroChart type="wellbeing" value={globalMetrics.wellbeing} change={1.8} />
@@ -314,35 +314,35 @@ export default function Agora() {
                 }}
                 whileHover={{ scale: 1.02 }}
               >
-                <div className="bg-white/60 backdrop-blur-md border border-white/20 rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div className="bg-white/90 backdrop-blur-md border border-lime-500/20 rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center space-x-3">
                       <div className="flex items-center space-x-2">
                         <div className={`w-3 h-3 rounded-full ${
-                          message.status === 'active' ? 'bg-green-400 shadow-green-400/50' :
-                          message.status === 'processing' ? 'bg-yellow-400 shadow-yellow-400/50' :
-                          'bg-gray-300 shadow-gray-300/50'
+                          message.status === 'active' ? 'bg-lime-500 shadow-lime-500/50' :
+                          message.status === 'processing' ? 'bg-yellow-500 shadow-yellow-500/50' :
+                          'bg-gray-400 shadow-gray-400/50'
                         } shadow-lg ${message.urgencyLevel === 'high' ? 'animate-pulse' : ''}`}></div>
-                        <span className="font-semibold text-gray-900 text-sm">
+                        <span className="font-semibold text-black text-sm">
                           Agent {message.agent}
                         </span>
-                        <span className="text-gray-500 text-xs">•</span>
-                        <span className="text-gray-600 text-xs font-medium bg-gray-100 px-2 py-1 rounded-full">
+                        <span className="text-gray-400 text-xs">•</span>
+                        <span className="text-black text-xs font-medium bg-lime-50 px-2 py-1 rounded-full">
                           {message.domain}
                         </span>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <span className="text-xs font-mono text-gray-500">
+                      <span className="text-xs font-mono text-black">
                         {message.timestamp}
                       </span>
                       {message.urgencyLevel === 'high' && (
-                        <div className="w-2 h-2 bg-red-400 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-lime-500 rounded-full animate-bounce"></div>
                       )}
                     </div>
                   </div>
                   
-                  <p className="text-gray-800 text-sm leading-relaxed mb-4">
+                  <p className="text-black text-sm leading-relaxed mb-4">
                     {message.content}
                   </p>
 
@@ -383,7 +383,7 @@ export default function Agora() {
 
       {/* Enhanced Footer */}
       <motion.div 
-        className="fixed bottom-0 left-0 right-0 bg-white/70 backdrop-blur-xl border-t border-white/20 z-50"
+        className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-lime-500/20 z-50"
         initial={{ y: 100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
@@ -391,18 +391,18 @@ export default function Agora() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-6">
-              <p className="text-xs font-light text-gray-600">
+              <p className="text-xs font-light text-black">
                 Live feed from Venus Alpha City AI Network — Data integrity verified
               </p>
               <div className="flex items-center space-x-2">
-                <Leaf className="w-4 h-4 text-green-500" />
-                <span className="text-xs text-gray-600">Ecological Balance: Optimal</span>
+                <Leaf className="w-4 h-4 text-lime-500" />
+                <span className="text-xs text-black">Ecological Balance: Optimal</span>
               </div>
             </div>
             
             {/* Ecological Balance Gauge */}
             <div className="flex items-center space-x-3">
-              <span className="text-xs text-gray-600">Global Resource Health:</span>
+              <span className="text-xs text-black">Global Resource Health:</span>
               <div className="relative w-16 h-16">
                 <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 32 32">
                   <circle
@@ -417,7 +417,7 @@ export default function Agora() {
                     cx="16"
                     cy="16"
                     r="12"
-                    stroke="#10B981"
+                    stroke="#84cc16"
                     strokeWidth="3"
                     fill="none"
                     strokeLinecap="round"
@@ -427,7 +427,7 @@ export default function Agora() {
                   />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-xs font-bold text-green-600">
+                  <span className="text-xs font-bold text-lime-600">
                     {Math.round(globalMetrics.ecological)}%
                   </span>
                 </div>
