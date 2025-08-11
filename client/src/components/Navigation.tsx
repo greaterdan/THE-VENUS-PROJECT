@@ -79,7 +79,7 @@ export default function Navigation() {
                   onClick={() => setAgoraDropdownOpen(!agoraDropdownOpen)}
                   className="px-2 py-2 text-white hover:opacity-80 transition-opacity focus:outline-none"
                 >
-                  <img src={agoraIcon} alt="Agora" className="h-6 w-6" />
+                  <img src={agoraIcon} alt="Agora" className="h-8 w-8" />
                 </button>
                 {agoraDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-32 bg-white border border-venus-gray rounded-md shadow-lg z-50">
