@@ -5,6 +5,7 @@ import { SiX, SiGithub } from "react-icons/si";
 import agoraIcon from "@assets/Untitled design_1754878809797.gif";
 import docsIcon from "@assets/Untitled design_1754879488364.gif";
 import contributeIcon from "@assets/Untitled design (1)_1754880001361.gif";
+import venusIcon from "@assets/Untitled design (2)_1754882967112.gif";
 
 export default function Navigation() {
   const [location] = useLocation();
@@ -12,9 +13,11 @@ export default function Navigation() {
   const [docsDropdownOpen, setDocsDropdownOpen] = useState(false);
   const [agoraDropdownOpen, setAgoraDropdownOpen] = useState(false);
   const [contributeDropdownOpen, setContributeDropdownOpen] = useState(false);
+  const [venusDropdownOpen, setVenusDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const agoraDropdownRef = useRef<HTMLDivElement>(null);
   const contributeDropdownRef = useRef<HTMLDivElement>(null);
+  const venusDropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -26,6 +29,9 @@ export default function Navigation() {
       }
       if (contributeDropdownRef.current && !contributeDropdownRef.current.contains(event.target as Node)) {
         setContributeDropdownOpen(false);
+      }
+      if (venusDropdownRef.current && !venusDropdownRef.current.contains(event.target as Node)) {
+        setVenusDropdownOpen(false);
       }
     }
 
@@ -41,6 +47,10 @@ export default function Navigation() {
     if (path !== "/" && location.startsWith(path)) return true;
     return false;
   };
+
+  const venusLinks = [
+    { href: "/", label: "THE VENUS PROJECT" },
+  ];
 
   const contributeLinks = [
     { href: "/contribute", label: "Contribute" },
@@ -73,6 +83,36 @@ export default function Navigation() {
             <div className="flex items-baseline space-x-2">
               <div 
                 className="relative group" 
+                ref={venusDropdownRef}
+                onMouseEnter={() => setVenusDropdownOpen(true)}
+                onMouseLeave={() => setVenusDropdownOpen(false)}
+              >
+                <button className="px-2 py-2 text-white focus:outline-none">
+                  <img src={venusIcon} alt="Venus Project" className="h-8 w-8" />
+                </button>
+                {venusDropdownOpen && (
+                  <div 
+                    className="absolute right-0 mt-2 w-48 bg-white border border-venus-gray rounded-md shadow-lg z-50"
+                    onMouseEnter={() => setVenusDropdownOpen(true)}
+                    onMouseLeave={() => setVenusDropdownOpen(false)}
+                  >
+                    {venusLinks.map((link) => (
+                      <Link key={link.href} href={link.href}>
+                        <span
+                          className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-colors cursor-pointer ${
+                            isActive(link.href) ? "text-venus-lime" : ""
+                          }`}
+                        >
+                          {link.label}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+              
+              <div 
+                className="relative group" 
                 ref={contributeDropdownRef}
                 onMouseEnter={() => setContributeDropdownOpen(true)}
                 onMouseLeave={() => setContributeDropdownOpen(false)}
@@ -81,7 +121,11 @@ export default function Navigation() {
                   <img src={contributeIcon} alt="Contribute" className="h-8 w-8" />
                 </button>
                 {contributeDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-32 bg-white border border-venus-gray rounded-md shadow-lg z-50">
+                  <div 
+                    className="absolute right-0 mt-2 w-32 bg-white border border-venus-gray rounded-md shadow-lg z-50"
+                    onMouseEnter={() => setContributeDropdownOpen(true)}
+                    onMouseLeave={() => setContributeDropdownOpen(false)}
+                  >
                     {contributeLinks.map((link) => (
                       <Link key={link.href} href={link.href}>
                         <span
@@ -107,7 +151,11 @@ export default function Navigation() {
                   <img src={agoraIcon} alt="Agora" className="h-8 w-8" />
                 </button>
                 {agoraDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-32 bg-white border border-venus-gray rounded-md shadow-lg z-50">
+                  <div 
+                    className="absolute right-0 mt-2 w-32 bg-white border border-venus-gray rounded-md shadow-lg z-50"
+                    onMouseEnter={() => setAgoraDropdownOpen(true)}
+                    onMouseLeave={() => setAgoraDropdownOpen(false)}
+                  >
                     {agoraLinks.map((link) => (
                       <Link key={link.href} href={link.href}>
                         <span
@@ -133,11 +181,15 @@ export default function Navigation() {
                   <img src={docsIcon} alt="Docs" className="h-8 w-8" />
                 </button>
                 {docsDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white border border-venus-gray rounded-md shadow-lg z-50">
+                  <div 
+                    className="absolute right-0 mt-2 w-48 bg-white border border-venus-gray rounded-md shadow-lg z-50"
+                    onMouseEnter={() => setDocsDropdownOpen(true)}
+                    onMouseLeave={() => setDocsDropdownOpen(false)}
+                  >
                     {docsLinks.map((link) => (
                       <Link key={link.href} href={link.href}>
                         <span
-                          className={`block px-4 py-2 text-sm hover:bg-gray-50 hover:text-venus-lime transition-colors cursor-pointer ${
+                          className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-colors cursor-pointer ${
                             isActive(link.href) ? "text-venus-lime" : ""
                           }`}
                         >
@@ -172,6 +224,18 @@ export default function Navigation() {
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-gray-800 bg-black">
           <div className="px-2 pt-2 pb-3 space-y-1">
+            {venusLinks.map((link) => (
+              <Link key={link.href} href={link.href}>
+                <span
+                  className={`block px-3 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors cursor-pointer ${
+                    isActive(link.href) ? "text-venus-lime" : ""
+                  }`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {link.label}
+                </span>
+              </Link>
+            ))}
             {contributeLinks.map((link) => (
               <Link key={link.href} href={link.href}>
                 <span
