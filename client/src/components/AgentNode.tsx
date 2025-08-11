@@ -21,10 +21,10 @@ export default function AgentNode({ agent, position, connections, onHover }: Age
   const [isHovered, setIsHovered] = useState(false);
 
   const statusColors = {
-    active: 'bg-lime-500 shadow-lime-500/50',
-    processing: 'bg-yellow-500 shadow-yellow-500/50',
-    idle: 'bg-gray-400 shadow-gray-400/50',
-    negotiating: 'bg-blue-500 shadow-blue-500/50'
+    active: 'bg-green-400 shadow-green-400/50',
+    processing: 'bg-yellow-400 shadow-yellow-400/50',
+    idle: 'bg-gray-300 shadow-gray-300/50',
+    negotiating: 'bg-blue-400 shadow-blue-400/50'
   };
 
   const urgencyPulse = {
@@ -49,22 +49,22 @@ export default function AgentNode({ agent, position, connections, onHover }: Age
         onHover(null);
       }}
     >
-      <div className="w-full h-full rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center">
-        <span className="text-xs font-bold text-black">{agent.name.charAt(0)}</span>
+      <div className="w-full h-full rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+        <span className="text-xs font-bold text-white">{agent.name.charAt(0)}</span>
       </div>
       
       {/* Agent info tooltip */}
       {isHovered && (
         <motion.div
-          className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-white/95 backdrop-blur-sm rounded-lg p-3 shadow-xl z-10 min-w-48 border border-lime-500/20"
+          className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-xl z-10 min-w-48"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <h4 className="font-semibold text-black">{agent.name}</h4>
-          <p className="text-sm text-black">{agent.domain}</p>
-          <p className="text-xs text-gray-600 mt-1">Status: {agent.status}</p>
+          <h4 className="font-semibold text-gray-800">{agent.name}</h4>
+          <p className="text-sm text-gray-600">{agent.domain}</p>
+          <p className="text-xs text-gray-500 mt-1">Status: {agent.status}</p>
           <div className="mt-2">
-            <p className="text-xs font-medium text-black">Resources:</p>
+            <p className="text-xs font-medium text-gray-700">Resources:</p>
             <p className="text-xs text-gray-600">{agent.resources.join(', ')}</p>
           </div>
         </motion.div>

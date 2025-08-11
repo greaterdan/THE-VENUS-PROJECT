@@ -15,9 +15,9 @@ interface TimelineRibbonProps {
 
 export default function TimelineRibbon({ markers, onMarkerClick, className = '' }: TimelineRibbonProps) {
   const typeColors = {
-    update: 'bg-blue-500',
-    decision: 'bg-lime-500',
-    alert: 'bg-red-500'
+    update: 'bg-blue-400',
+    decision: 'bg-green-400',
+    alert: 'bg-red-400'
   };
 
   const formatTime = (date: Date) => {
@@ -31,7 +31,7 @@ export default function TimelineRibbon({ markers, onMarkerClick, className = '' 
   return (
     <div className={`fixed right-4 top-20 bottom-20 w-8 flex flex-col ${className}`}>
       {/* Timeline line */}
-      <div className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-transparent via-lime-300 to-transparent"></div>
+      <div className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-transparent via-gray-300 to-transparent"></div>
       
       {/* Scrollable markers container */}
       <div className="flex-1 overflow-y-auto py-4 scrollbar-hide">
@@ -49,10 +49,10 @@ export default function TimelineRibbon({ markers, onMarkerClick, className = '' 
             
             {/* Tooltip on hover */}
             <div className="absolute right-full mr-3 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <div className="bg-white/95 backdrop-blur-sm rounded-lg p-2 shadow-xl text-xs whitespace-nowrap border border-lime-500/20">
-                <div className="font-semibold text-black">{marker.agentName}</div>
+              <div className="bg-white/90 backdrop-blur-sm rounded-lg p-2 shadow-xl text-xs whitespace-nowrap">
+                <div className="font-semibold text-gray-800">{marker.agentName}</div>
                 <div className="text-gray-600">{formatTime(marker.timestamp)}</div>
-                <div className="text-gray-600 capitalize">{marker.type}</div>
+                <div className="text-gray-500 capitalize">{marker.type}</div>
               </div>
             </div>
           </motion.div>
