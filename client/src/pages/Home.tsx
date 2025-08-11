@@ -216,7 +216,7 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
             <div 
               className="flex select-none"
               style={{
-                animation: 'scrollLeftToRight 50s linear infinite',
+                animation: 'scrollRightToLeft 50s linear infinite',
                 willChange: 'transform'
               }}
             >
