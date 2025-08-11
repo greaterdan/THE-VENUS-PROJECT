@@ -69,7 +69,6 @@ interface HomeProps {
 export default function Home({ isLoaded = true, showContent = true }: HomeProps) {
   const [scrollY, setScrollY] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const paragraphText = "Cities have always been the product of human imagination and human limitation, shaped by the slow accumulation of decisions made by countless individuals over generations. But what if we could reimagine this process entirely?";
 
@@ -84,48 +83,7 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
     setIsTyping(shouldStartTyping);
   }, [scrollY]);
 
-  // Force continuous scrolling with JavaScript
-  useEffect(() => {
-    let animationId: number;
-    let position = 0;
-    const scrollSpeed = 0.2; // pixels per frame (slower to match 50s CSS animation)
-    let containerWidth = 0;
-    
-    const animate = () => {
-      if (scrollContainerRef.current) {
-        // Get container width only once or when it changes
-        if (containerWidth === 0) {
-          const firstSet = scrollContainerRef.current.querySelector('div');
-          if (firstSet) {
-            containerWidth = firstSet.scrollWidth + 80; // include margin
-          }
-        }
-        
-        position -= scrollSpeed;
-        
-        // Reset position smoothly when we've scrolled one full set
-        if (position <= -containerWidth) {
-          position = 0;
-        }
-        
-        // Use transform3d for hardware acceleration
-        scrollContainerRef.current.style.transform = `translate3d(${position}px, 0, 0)`;
-      }
-      animationId = requestAnimationFrame(animate);
-    };
-    
-    // Start animation after a small delay to ensure DOM is ready
-    const startTimer = setTimeout(() => {
-      animationId = requestAnimationFrame(animate);
-    }, 500);
-    
-    return () => {
-      clearTimeout(startTimer);
-      if (animationId) {
-        cancelAnimationFrame(animationId);
-      }
-    };
-  }, []);
+  // All rows now use CSS animations for consistent timing
 
 
 
@@ -256,10 +214,9 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
         {/* Scrolling logos container - full width */}
         <div className="overflow-hidden">
             <div 
-              ref={scrollContainerRef}
-              className="flex select-none smooth-scroll-container"
-              style={{ 
-                transform: 'translate3d(0px, 0, 0)',
+              className="flex select-none"
+              style={{
+                animation: 'scrollLeftToRight 50s linear infinite',
                 willChange: 'transform'
               }}
             >
