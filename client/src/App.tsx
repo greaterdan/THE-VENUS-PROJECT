@@ -44,12 +44,12 @@ function App() {
     // Show main title first
     const titleTimer = setTimeout(() => {
       setIsLoaded(true);
-    }, 600);
+    }, 500);
 
-    // Then show rest of content
+    // Then show rest of content gradually - reduced from 1800 to 1200
     const contentTimer = setTimeout(() => {
       setShowContent(true);
-    }, 2500);
+    }, 1200);
 
     return () => {
       clearTimeout(titleTimer);
@@ -63,7 +63,7 @@ function App() {
         <div className="min-h-screen bg-venus-bg text-foreground font-inter">
           {/* Navigation with delayed fade in */}
           <div 
-            className={`transition-opacity duration-2500 ease-out delay-800 ${
+            className={`transition-opacity duration-4000 ease-out delay-1200 ${
               showContent ? 'opacity-100' : 'opacity-0'
             }`}
           >
@@ -74,7 +74,7 @@ function App() {
           
           {/* Fixed Social Icons - Bottom Right with delayed fade in */}
           <div 
-            className={`fixed bottom-6 right-6 flex flex-col space-y-3 z-50 transition-opacity duration-2500 ease-out delay-2500 ${
+            className={`fixed bottom-6 right-6 flex flex-col space-y-3 z-50 transition-opacity duration-4000 ease-out delay-4000 ${
               showContent ? 'opacity-100' : 'opacity-0'
             }`}
           >
