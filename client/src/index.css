@@ -3,15 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Remove PNG transparency backgrounds */
-.no-png-transparency {
-  background-color: white !important;
-  background-image: var(--bg-image);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
 :root {
   --background: hsl(0 0% 98.04%);
   --foreground: hsl(0 0% 0%);

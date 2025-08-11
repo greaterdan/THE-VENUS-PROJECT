@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import ScrollPortrait from "@/components/ScrollPortrait";
-import architectureBg from "@assets/fd7aa77a-6cf8-41b7-a61c-a2ea33400e8e_1754886580779.png";
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
@@ -25,45 +24,30 @@ export default function Home() {
 
   return (
     <>
-      <div 
-        className="min-h-screen flex items-center justify-center relative overflow-hidden no-png-transparency"
-        style={{
-          '--bg-image': `url(${architectureBg})`
-        } as React.CSSProperties}
-      >
+      <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-white">
         
-        <div className="text-center px-4 relative z-10">
+        <div className="text-center px-4">
           <h1 
-            className="text-6xl md:text-8xl font-bold text-black tracking-tight transition-all duration-300 drop-shadow-lg"
+            className="text-6xl md:text-8xl font-bold text-black tracking-tight transition-all duration-300"
             style={{
               opacity: titleOpacity,
-              transform: `translateY(${titleTranslateY}px) scale(${titleScale})`,
-              textShadow: '2px 2px 4px rgba(255,255,255,0.8)'
+              transform: `translateY(${titleTranslateY}px) scale(${titleScale})`
             }}
           >
             THE VENUS PROJECT
           </h1>
         </div>
         
-        {/* Gradient overlay for smooth transition */}
-        <div 
-          className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent pointer-events-none"
-          style={{
-            opacity: Math.min(1, scrollY / 200)
-          }}
-        />
-        
         {/* Scroll indicator */}
         <div 
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-black animate-bounce relative z-10"
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-black animate-bounce"
           style={{
-            opacity: Math.max(0, 1 - scrollY / 200),
-            textShadow: '2px 2px 4px rgba(255,255,255,0.8)'
+            opacity: Math.max(0, 1 - scrollY / 200)
           }}
         >
           <div className="flex flex-col items-center">
             <span className="text-sm mb-2">Scroll to explore</span>
-            <div className="w-px h-8 bg-black shadow-lg"></div>
+            <div className="w-px h-8 bg-black"></div>
           </div>
         </div>
       </div>
