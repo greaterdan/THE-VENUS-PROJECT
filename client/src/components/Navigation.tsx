@@ -19,41 +19,6 @@ export default function Navigation() {
   const contributeDropdownRef = useRef<HTMLDivElement>(null);
   const venusDropdownRef = useRef<HTMLDivElement>(null);
 
-  // Create realistic click sound effect
-  const playClickSound = () => {
-    try {
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      
-      // Create a sharp click sound using white noise and filtering
-      const bufferSize = audioContext.sampleRate * 0.05; // 50ms
-      const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
-      const output = buffer.getChannelData(0);
-      
-      // Generate click sound with rapid attack and decay
-      for (let i = 0; i < bufferSize; i++) {
-        const t = i / audioContext.sampleRate;
-        // Create a sharp transient with exponential decay
-        const envelope = Math.exp(-t * 100);
-        // Add some high frequency content for the "click"
-        const noise = (Math.random() * 2 - 1) * envelope;
-        const tone = Math.sin(2 * Math.PI * 2000 * t) * envelope * 0.3;
-        output[i] = (noise + tone) * 0.15;
-      }
-      
-      const source = audioContext.createBufferSource();
-      const gainNode = audioContext.createGain();
-      
-      source.buffer = buffer;
-      source.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-      
-      gainNode.gain.setValueAtTime(0.4, audioContext.currentTime);
-      source.start();
-    } catch (error) {
-      console.log('Audio not supported');
-    }
-  };
-
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -139,7 +104,6 @@ export default function Navigation() {
                           className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-colors cursor-pointer ${
                             isActive(link.href) ? "text-venus-lime" : ""
                           }`}
-                          onClick={playClickSound}
                         >
                           {link.label}
                         </span>
@@ -170,7 +134,6 @@ export default function Navigation() {
                           className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-colors cursor-pointer ${
                             isActive(link.href) ? "text-venus-lime" : ""
                           }`}
-                          onClick={playClickSound}
                         >
                           {link.label}
                         </span>
@@ -201,7 +164,6 @@ export default function Navigation() {
                           className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-colors cursor-pointer ${
                             isActive(link.href) ? "text-venus-lime" : ""
                           }`}
-                          onClick={playClickSound}
                         >
                           {link.label}
                         </span>
@@ -232,7 +194,6 @@ export default function Navigation() {
                           className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-colors cursor-pointer ${
                             isActive(link.href) ? "text-venus-lime" : ""
                           }`}
-                          onClick={playClickSound}
                         >
                           {link.label}
                         </span>
@@ -271,10 +232,7 @@ export default function Navigation() {
                   className={`block px-3 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors cursor-pointer ${
                     isActive(link.href) ? "text-venus-lime" : ""
                   }`}
-                  onClick={() => {
-                    playClickSound();
-                    setMobileMenuOpen(false);
-                  }}
+                  onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.label}
                 </span>
@@ -286,10 +244,7 @@ export default function Navigation() {
                   className={`block px-3 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors cursor-pointer ${
                     isActive(link.href) ? "text-venus-lime" : ""
                   }`}
-                  onClick={() => {
-                    playClickSound();
-                    setMobileMenuOpen(false);
-                  }}
+                  onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.label}
                 </span>
@@ -301,10 +256,7 @@ export default function Navigation() {
                   className={`block px-3 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors cursor-pointer ${
                     isActive(link.href) ? "text-venus-lime" : ""
                   }`}
-                  onClick={() => {
-                    playClickSound();
-                    setMobileMenuOpen(false);
-                  }}
+                  onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.label}
                 </span>
@@ -316,10 +268,7 @@ export default function Navigation() {
                   className={`block px-3 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors cursor-pointer ${
                     isActive(link.href) ? "text-venus-lime" : ""
                   }`}
-                  onClick={() => {
-                    playClickSound();
-                    setMobileMenuOpen(false);
-                  }}
+                  onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.label}
                 </span>
