@@ -39,6 +39,7 @@ function Router({ isLoaded, showContent }: { isLoaded: boolean; showContent: boo
 function App() {
   const [isLoaded, setIsLoaded] = useState(true);
   const [showContent, setShowContent] = useState(true);
+  const [showSocialButtons, setShowSocialButtons] = useState(false);
 
   useEffect(() => {
     // Show main title first
@@ -57,6 +58,17 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      // Show social buttons when user scrolls down 100px or more
+      setShowSocialButtons(scrollY > 100);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -68,8 +80,8 @@ function App() {
           
           {/* Fixed Social Icons - Middle Right */}
           <div 
-            className={`fixed top-1/2 right-6 transform -translate-y-1/2 flex flex-col space-y-3 z-50 transition-opacity duration-3000 ease-out delay-2000 ${
-              showContent ? 'opacity-100' : 'opacity-0'
+            className={`fixed top-1/2 right-6 transform -translate-y-1/2 flex flex-col space-y-3 z-50 transition-opacity duration-500 ease-out ${
+              showSocialButtons ? 'opacity-100' : 'opacity-0'
             }`}
           >
             <a 
