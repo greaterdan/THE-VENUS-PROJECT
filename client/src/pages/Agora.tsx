@@ -383,7 +383,7 @@ export default function Agora() {
 
       {/* Enhanced Footer */}
       <motion.div 
-        className="fixed bottom-0 left-0 right-0 bg-white/70 backdrop-blur-xl border-t border-white/20 z-50"
+        className="fixed bottom-0 left-0 right-0 bg-gray-900/80 backdrop-blur-xl border-t border-gray-700/30 z-50"
         initial={{ y: 100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
@@ -391,18 +391,18 @@ export default function Agora() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-6">
-              <p className="text-xs font-light text-gray-600">
+              <p className="text-xs font-light text-gray-300">
                 Live feed from Venus Alpha City AI Network — Data integrity verified
               </p>
               <div className="flex items-center space-x-2">
                 <Leaf className="w-4 h-4 text-green-500" />
-                <span className="text-xs text-gray-600">Ecological Balance: Optimal</span>
+                <span className="text-xs text-gray-300">Ecological Balance: Optimal</span>
               </div>
             </div>
             
             {/* Ecological Balance Gauge */}
             <div className="flex items-center space-x-3">
-              <span className="text-xs text-gray-600">Global Resource Health:</span>
+              <span className="text-xs text-gray-300">Global Resource Health:</span>
               <div className="relative w-16 h-16">
                 <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 32 32">
                   <circle
