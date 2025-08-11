@@ -10,7 +10,7 @@ const ScrollPortrait = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const opacity = Math.min(1, Math.max(0, (scrollY - 200) / 300));
+  const opacity = Math.min(1, Math.max(0, (scrollY - 400) / 300));
 
   return (
     <div 
