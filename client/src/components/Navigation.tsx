@@ -39,13 +39,13 @@ export default function Navigation() {
   ];
 
   return (
-    <nav className="bg-white border-b border-venus-gray sticky top-0 z-50">
+    <nav className="bg-black border-b border-gray-800 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/">
-              <span className="text-xl font-bold tracking-tight cursor-pointer hover:text-gray-700 transition-colors">
+              <span className="text-xl font-bold tracking-tight cursor-pointer text-white hover:text-venus-lime transition-colors">
                 THE VENUS PROJECT
               </span>
             </Link>
@@ -57,7 +57,7 @@ export default function Navigation() {
               {navLinks.map((link) => (
                 <Link key={link.href} href={link.href}>
                   <span
-                    className={`px-2 py-2 text-sm font-medium hover:text-venus-lime transition-colors cursor-pointer ${
+                    className={`px-2 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors cursor-pointer ${
                       isActive(link.href) ? "text-venus-lime" : ""
                     }`}
                   >
@@ -68,7 +68,7 @@ export default function Navigation() {
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setDocsDropdownOpen(!docsDropdownOpen)}
-                  className="px-2 py-2 text-sm font-medium hover:text-venus-lime transition-colors focus:outline-none"
+                  className="px-2 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors focus:outline-none"
                 >
                   Docs ↓
                 </button>
@@ -96,7 +96,7 @@ export default function Navigation() {
           <div className="md:hidden">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-black hover:text-venus-lime focus:outline-none"
+              className="text-white hover:text-venus-lime focus:outline-none"
             >
               {mobileMenuOpen ? (
                 <X className="h-6 w-6" />
@@ -110,12 +110,12 @@ export default function Navigation() {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-venus-gray">
+        <div className="md:hidden border-t border-gray-800 bg-black">
           <div className="px-2 pt-2 pb-3 space-y-1">
             {navLinks.map((link) => (
               <Link key={link.href} href={link.href}>
                 <span
-                  className={`block px-3 py-2 text-sm font-medium hover:text-venus-lime transition-colors cursor-pointer ${
+                  className={`block px-3 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors cursor-pointer ${
                     isActive(link.href) ? "text-venus-lime" : ""
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
@@ -127,7 +127,7 @@ export default function Navigation() {
             {docsLinks.map((link) => (
               <Link key={link.href} href={link.href}>
                 <span
-                  className={`block px-3 py-2 text-sm font-medium hover:text-venus-lime transition-colors cursor-pointer ${
+                  className={`block px-3 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors cursor-pointer ${
                     isActive(link.href) ? "text-venus-lime" : ""
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
