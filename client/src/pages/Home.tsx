@@ -26,10 +26,10 @@ export default function Home() {
   return (
     <>
       <div 
-        className="min-h-screen flex items-center justify-center relative overflow-hidden"
+        className="min-h-screen flex items-center justify-center relative overflow-hidden no-png-transparency"
         style={{
-          background: `linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0.1)), url(${architectureBg}) center/cover no-repeat, #ffffff`
-        }}
+          '--bg-image': `url(${architectureBg})`
+        } as React.CSSProperties}
       >
         
         <div className="text-center px-4 relative z-10">
