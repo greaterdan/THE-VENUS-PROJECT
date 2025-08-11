@@ -142,22 +142,22 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
           </h2>
           <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
             <p className={isTyping ? "fade-in-up" : ""} style={{ animationDelay: "0.2s" }}>
-              Cities have always been the product of human imagination and human limitation, shaped by the slow 
-              accumulation of decisions made by countless individuals over generations. But what if we could 
-              reimagine this process entirely?
+              The cities of the future will not be dictated by a single blueprint or controlled from one center of power. They will grow from a balance between the whole and the part, the global and the local, the planned and the spontaneous.
             </p>
             <p className={isTyping ? "fade-in-up" : ""} style={{ animationDelay: "0.4s" }}>
-              The Venus Project represents a new paradigm in urban development, where artificial intelligence 
-              and human creativity converge to create sustainable, efficient, and beautiful living spaces 
-              that serve all of humanity.
+              Decentralization is at the heart of this vision. When decision-making is shared, ideas move more freely, and communities are trusted to shape their own environments, we unlock a deeper form of resilience. It is the interplay between top-down vision and bottom-up creativity that gives rise to systems which are both adaptive and enduring.
             </p>
             <p className={isTyping ? "fade-in-up" : ""} style={{ animationDelay: "0.6s" }}>
-              Through advanced AI systems and distributed computing, we're building the foundation for cities 
-              that adapt, learn, and evolve with their inhabitants, creating harmony between technology and nature.
+              Artificial intelligence will play a vital role, not as a master, but as a partner. By analyzing complex systems, AI can help us design spaces that are modular yet integrated, efficient yet humane, deeply rooted in tradition while always open to new discoveries. These are not static cities, but living organisms—capable of learning, evolving, and responding to the needs of their inhabitants.
             </p>
             <p className={isTyping ? "fade-in-up" : ""} style={{ animationDelay: "0.8s" }}>
-              Join us in this revolutionary journey toward a sustainable future where every citizen thrives 
-              in an environment designed for both individual fulfillment and collective prosperity.
+              In such a model, form works with function, innovation respects tradition, and speed is guided by timing. Technology becomes a tool for harmony, helping nature and human life coexist in balance rather than competition. Our approach blends rigorous analysis with creative synthesis, ensuring that every element serves both individual fulfillment and collective prosperity.
+            </p>
+            <p className={isTyping ? "fade-in-up" : ""} style={{ animationDelay: "1.0s" }}>
+              This is more than an architectural or technological challenge—it is a cultural shift. It is the recognition that progress does not come from control alone, but from the right mix of freedom and responsibility. By building cities on the principles of decentralization, cooperation, and adaptive design, we can create environments where every citizen not only survives, but thrives.
+            </p>
+            <p className={isTyping ? "fade-in-up" : ""} style={{ animationDelay: "1.2s" }}>
+              The path ahead is not about imposing a perfect design. It is about cultivating a system where innovation can emerge from anywhere, where diversity strengthens the whole, and where the future remains open, evolving alongside us.
             </p>
           </div>
         </div>
