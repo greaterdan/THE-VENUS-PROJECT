@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import agoraIcon from "@assets/Untitled design_1754878809797.gif";
+import docsIcon from "@assets/Untitled design_1754879488364.gif";
 
 export default function Navigation() {
   const [location] = useLocation();
@@ -101,9 +102,9 @@ export default function Navigation() {
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setDocsDropdownOpen(!docsDropdownOpen)}
-                  className="px-1 py-2 text-sm font-medium text-white hover:text-venus-lime transition-colors focus:outline-none"
+                  className="px-1 py-2 text-white hover:opacity-80 transition-opacity focus:outline-none"
                 >
-                  Docs ↓
+                  <img src={docsIcon} alt="Docs" className="h-8 w-8" />
                 </button>
                 {docsDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white border border-venus-gray rounded-md shadow-lg z-50">
