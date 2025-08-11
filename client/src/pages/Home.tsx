@@ -78,16 +78,16 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
           }`}
         ></div>
         
-        <div className="flex items-center justify-center px-4 relative z-20 min-h-[50vh]">
+        <div className="flex items-center justify-center px-4 relative z-20 min-h-[50vh] -mt-16">
           <img 
             src={venusProjectTitleLogo}
             alt="The Venus Project"
-            className={`max-w-6xl w-full h-auto drop-shadow-lg transition-all duration-1000 ease-out ${
+            className={`max-w-7xl w-full h-auto drop-shadow-lg transition-all duration-1000 ease-out ${
               isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
             }`}
             style={{
               opacity: isLoaded ? titleOpacity : 0,
-              transform: `translateY(${titleTranslateY}px) scale(${titleScale * (isLoaded ? 1 : 0.95)})`,
+              transform: `translateY(${titleTranslateY - 50}px) scale(${titleScale * (isLoaded ? 1 : 0.95)})`,
               filter: 'drop-shadow(2px 2px 4px rgba(255,255,255,0.8))'
             }}
           />
