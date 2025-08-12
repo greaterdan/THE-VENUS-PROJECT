@@ -22,12 +22,14 @@ interface GlobalConversationContextType {
   chatMessages: ChatMessage[];
   activeConnections: ActiveConnection[];
   isLoadingNewMessage: boolean;
+  totalMessageCount: number;
 }
 
 const GlobalConversationContext = createContext<GlobalConversationContextType>({
   chatMessages: [],
   activeConnections: [],
   isLoadingNewMessage: false,
+  totalMessageCount: 0,
 });
 
 export const useGlobalConversation = () => {
@@ -42,6 +44,7 @@ export const GlobalConversationProvider: React.FC<{ children: React.ReactNode }>
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [activeConnections, setActiveConnections] = useState<ActiveConnection[]>([]);
   const [isLoadingNewMessage, setIsLoadingNewMessage] = useState(false);
+  const [totalMessageCount, setTotalMessageCount] = useState(0);
   
   const isComponentMounted = useRef(true);
   const conversationIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -111,6 +114,9 @@ export const GlobalConversationProvider: React.FC<{ children: React.ReactNode }>
       setChatMessages(current => {
         const existingIds = new Set(current.map(msg => msg.id));
         const newMessages = chatMessages.filter(msg => !existingIds.has(msg.id));
+        if (newMessages.length > 0) {
+          setTotalMessageCount(prev => prev + newMessages.length);
+        }
         return [...current, ...newMessages];
       });
 
@@ -156,6 +162,7 @@ export const GlobalConversationProvider: React.FC<{ children: React.ReactNode }>
     chatMessages,
     activeConnections,
     isLoadingNewMessage,
+    totalMessageCount,
   };
 
   return (

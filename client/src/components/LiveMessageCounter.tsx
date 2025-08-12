@@ -16,7 +16,7 @@ export const LiveMessageCounter: React.FC<LiveMessageCounterProps> = ({
   showDetails = true,
   onExpandConversation
 }) => {
-  const { chatMessages, activeConnections, isLoadingNewMessage } = useGlobalConversation();
+  const { chatMessages, activeConnections, isLoadingNewMessage, totalMessageCount } = useGlobalConversation();
   const [messageCount, setMessageCount] = useState(0);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
   const [recentGrowth, setRecentGrowth] = useState(0);
@@ -24,7 +24,7 @@ export const LiveMessageCounter: React.FC<LiveMessageCounterProps> = ({
 
   // Update message count with animation trigger
   useEffect(() => {
-    const newCount = chatMessages.length;
+    const newCount = totalMessageCount;
     const growth = newCount - messageCount;
     
     if (growth > 0) {
@@ -38,7 +38,7 @@ export const LiveMessageCounter: React.FC<LiveMessageCounterProps> = ({
     }
     
     setMessageCount(newCount);
-  }, [chatMessages.length, messageCount]);
+  }, [totalMessageCount, messageCount]);
 
   // Calculate message velocity (messages per minute)
   const getMessageVelocity = useCallback(() => {
