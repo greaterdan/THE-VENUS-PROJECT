@@ -173,8 +173,8 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
         <div 
           className="w-full bg-white px-4 sm:px-6 lg:px-8 lg:pr-[650px]"
           style={{
-            opacity: Math.min(1, Math.max(0, (scrollY - 200) / 300)),
-            transform: `translateY(${Math.max(0, 100 - (scrollY - 200) * 0.3)}px)`,
+            opacity: Math.min(1, Math.max(0.3, (scrollY - 100) / 200)),
+            transform: `translateY(${Math.max(0, 50 - (scrollY - 100) * 0.2)}px)`,
           }}
         >
           <div className="max-w-lg">
