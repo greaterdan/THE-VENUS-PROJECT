@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { generateAgentConversation } from "./grok";
 import DecisionImpactAnalyzer from "./impactAnalyzer";
 import ArchiveSnapshotManager from "./archiveSnapshots";
+import { AgoraWebSocketServer } from "./websocket";
 import OpenAI from "openai";
 
 // Initialize OpenAI client
@@ -328,6 +329,10 @@ Respond as this specific agent would, considering your domain expertise and the 
   });
 
   const httpServer = createServer(app);
+  
+  // Initialize WebSocket server for real-time neural network
+  const agoraWS = new AgoraWebSocketServer(httpServer);
+  agoraWS.startCleanupInterval();
 
   return httpServer;
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGlobalConversation } from '@/contexts/GlobalConversationContext';
+import { LiveMessageCounter } from '@/components/LiveMessageCounter';
 
 interface Agent {
   id: string;
@@ -1132,8 +1133,12 @@ export default function Agora() {
                     </div>
                   </div>
                   
-                  <div className="mt-2 text-xs text-gray-500 text-center">
-                    {chatMessages.length} messages • Click to expand full conversation
+                  <div className="mt-2">
+                    <LiveMessageCounter
+                      showDetails={false}
+                      onExpandConversation={() => setShowChatModal(true)}
+                      className="bg-transparent border-0 shadow-none p-0"
+                    />
                   </div>
                 </div>
 
