@@ -99,7 +99,6 @@ export default function Navigation() {
   const docsLinks = [
     { href: "/manifesto", label: "Manifesto" },
     { href: "/structure", label: "Structure" },
-    { href: "/tokenomics", label: "Tokenomics" },
     { href: "/contact", label: "Contact Us" },
   ];
 
