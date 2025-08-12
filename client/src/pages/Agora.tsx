@@ -514,6 +514,8 @@ export default function Agora() {
   const [archiveEntries, setArchiveEntries] = useState<any[]>([]);
   const [expandedEntry, setExpandedEntry] = useState<string | null>(null);
   const [transcript, setTranscript] = useState<string[] | null>(null);
+  const [showArchiveModal, setShowArchiveModal] = useState(false);
+  const [selectedArchiveEntry, setSelectedArchiveEntry] = useState<any>(null);
 
   // Agent chat state
   const [showAgentChat, setShowAgentChat] = useState(false);
@@ -615,21 +617,17 @@ export default function Agora() {
     }
   }, [viewMode]);
 
-  // Handle archive entry click
-  const handleArchiveEntryClick = async (entryId: string) => {
-    if (expandedEntry === entryId) {
-      // Collapse if already expanded
-      setExpandedEntry(null);
-      setTranscript(null);
-      return;
-    }
-
+  // Handle archive entry click - now opens modal
+  const handleArchiveEntryClick = async (entry: any) => {
     try {
-      const response = await fetch(`/api/archive/transcript/${entryId}`);
+      const response = await fetch(`/api/archive/transcript/${entry.id}`);
       if (response.ok) {
         const data = await response.json();
-        setExpandedEntry(entryId);
-        setTranscript(data.transcript);
+        setSelectedArchiveEntry({
+          ...entry,
+          transcript: data.transcript
+        });
+        setShowArchiveModal(true);
       }
     } catch (error) {
       console.error('Error fetching transcript:', error);
@@ -994,20 +992,14 @@ export default function Agora() {
                   <div key={entry.id}>
                     <div 
                       className="hover:bg-gray-100 p-1 cursor-pointer rounded"
-                      onClick={() => handleArchiveEntryClick(entry.id)}
+                      onClick={() => handleArchiveEntryClick(entry)}
                     >
                       <span className="text-lime-600 font-medium">[{entry.timestamp}]</span>
                       <span className="ml-2 text-gray-800">{entry.title}</span>
                       <span className="ml-4 text-blue-600">{entry.status}</span>
                       <span className="ml-4 text-gray-500">{entry.impact}</span>
                     </div>
-                    {expandedEntry === entry.id && transcript && (
-                      <div className="ml-4 mt-2 p-2 bg-gray-50 rounded text-xs font-mono space-y-1">
-                        {transcript.map((line, index) => (
-                          <div key={index} className="text-gray-700">{line}</div>
-                        ))}
-                      </div>
-                    )}
+
                   </div>
                 ))
               )}
@@ -1119,6 +1111,126 @@ export default function Agora() {
               {/* Modal Footer */}
               <div className="p-6 border-t border-gray-200 bg-gray-50">
 
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Archive Conversation Modal */}
+      <AnimatePresence>
+        {showArchiveModal && selectedArchiveEntry && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-[90] p-4"
+            style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
+            onClick={(e) => e.target === e.currentTarget && setShowArchiveModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-lg shadow-2xl w-full max-w-4xl h-[80vh] flex flex-col"
+            >
+              {/* Modal Header */}
+              <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-800">{selectedArchiveEntry.title}</h2>
+                  <div className="flex items-center gap-4 mt-1 text-sm text-gray-500">
+                    <span>{selectedArchiveEntry.timestamp}</span>
+                    <span className={`px-2 py-1 rounded-full text-xs ${
+                      selectedArchiveEntry.status === 'APPROVED' ? 'bg-green-100 text-green-800' :
+                      selectedArchiveEntry.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-gray-100 text-gray-600'
+                    }`}>
+                      {selectedArchiveEntry.status}
+                    </span>
+                    <span>{selectedArchiveEntry.participants} participants</span>
+                    <span>{selectedArchiveEntry.messageCount} messages</span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowArchiveModal(false)}
+                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                </button>
+              </div>
+
+              {/* Modal Content */}
+              <div className="flex-1 p-6 overflow-hidden">
+                <div className="h-full bg-gray-50 rounded-lg border overflow-hidden">
+                  <div className="h-full overflow-y-auto p-4 space-y-3">
+                    {selectedArchiveEntry.transcript ? (
+                      selectedArchiveEntry.transcript.map((message: string, index: number) => {
+                        // Parse message format like "[02:56:31] EPSILON to Kappa: message..."
+                        const messageMatch = message.match(/^\[([^\]]+)\]\s+(\w+)\s+(.+?):\s+(.+)$/);
+                        if (messageMatch) {
+                          const [, timestamp, fromAgent, toInfo, messageText] = messageMatch;
+                          const toAgent = toInfo.replace('to ', '');
+                          
+                          return (
+                            <motion.div
+                              key={index}
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: index * 0.02 }}
+                              className="bg-white rounded-lg p-4 shadow-sm border"
+                            >
+                              <div className="flex items-start justify-between mb-3">
+                                <div className="flex items-center gap-3">
+                                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-lime-400 to-green-500 flex items-center justify-center">
+                                    <span className="text-xs font-bold text-white">{fromAgent.charAt(0)}</span>
+                                  </div>
+                                  <div>
+                                    <div className="text-sm font-semibold text-gray-800">Agent {fromAgent}</div>
+                                    <div className="text-xs text-gray-500">to {toAgent}</div>
+                                  </div>
+                                </div>
+                                <div className="text-xs text-gray-400 font-mono">{timestamp}</div>
+                              </div>
+                              <div className="text-sm text-gray-700 leading-relaxed pl-11">
+                                {messageText}
+                              </div>
+                            </motion.div>
+                          );
+                        }
+                        
+                        // Fallback for unparsed messages
+                        return (
+                          <div key={index} className="bg-white rounded-lg p-3 shadow-sm border text-sm text-gray-700 font-mono">
+                            {message}
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <div className="text-gray-500 text-center py-16">
+                        <div className="text-lg mb-2">Loading conversation...</div>
+                        <div className="text-sm">Retrieving archived messages</div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="p-6 border-t border-gray-200 bg-gray-50">
+                <div className="flex items-center justify-between">
+                  <div className="text-xs text-gray-500">
+                    Archived conversation from decision process: {selectedArchiveEntry.id}
+                  </div>
+                  {selectedArchiveEntry.impact && (
+                    <div className="flex items-center gap-4 text-xs">
+                      <span className="text-green-600">Ecological: {selectedArchiveEntry.impact.ecological || 'N/A'}</span>
+                      <span className="text-blue-600">Wellbeing: {selectedArchiveEntry.impact.wellbeing || 'N/A'}</span>
+                      <span className="text-purple-600">Efficiency: {selectedArchiveEntry.impact.efficiency || 'N/A'}</span>
+                    </div>
+                  )}
+                </div>
               </div>
             </motion.div>
           </motion.div>
