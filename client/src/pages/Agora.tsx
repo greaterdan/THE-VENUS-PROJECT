@@ -400,51 +400,96 @@ const AnimatedConnectionLine = ({
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {/* Connection line - color-coded by resource type */}
+      {/* Futuristic connection line with glow effect */}
+      <defs>
+        <filter id={`glow-${connection.type}`}>
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge> 
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+        <linearGradient id={`gradient-${connection.type}`} x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style={{stopColor: colors[connection.type], stopOpacity: 0.3}} />
+          <stop offset="50%" style={{stopColor: colors[connection.type], stopOpacity: 1}} />
+          <stop offset="100%" style={{stopColor: colors[connection.type], stopOpacity: 0.3}} />
+        </linearGradient>
+      </defs>
+      
+      {/* Main connection line with gradient and glow */}
+      <motion.line
+        x1={fromX}
+        y1={fromY}
+        x2={toX}
+        y2={toY}
+        stroke={`url(#gradient-${connection.type})`}
+        strokeWidth="3"
+        filter={`url(#glow-${connection.type})`}
+        strokeDasharray={connection.type === 'data' || connection.type === 'time' ? "8,4" : "none"}
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
+      />
+      
+      {/* Animated pulse effect along the line */}
       <motion.line
         x1={fromX}
         y1={fromY}
         x2={toX}
         y2={toY}
         stroke={colors[connection.type]}
-        strokeWidth="2"
-        strokeOpacity="0.8"
-        strokeDasharray={connection.type === 'data' || connection.type === 'time' ? "5,5" : "none"}
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: 1, ease: "easeOut" }}
+        strokeWidth="1"
+        strokeOpacity="0.6"
+        strokeDasharray="20,10"
+        initial={{ strokeDashoffset: 0 }}
+        animate={{ strokeDashoffset: -30 }}
+        transition={{ 
+          duration: 2, 
+          repeat: Infinity, 
+          ease: "linear",
+          delay: 0.5 
+        }}
       />
       
-      {/* Resource flow data like in example */}
-      <motion.text
-        x={(fromX + toX) / 2}
-        y={(fromY + toY) / 2 - 8}
-        textAnchor="middle"
-        fontSize="12"
-        fill={colors[connection.type]}
-        className="font-mono font-bold"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-      >
-        {connection.type === 'energy' ? '1600kWh' : 
-         connection.type === 'material' ? '24kg' :
-         connection.type === 'data' ? '156MB' : '45min'}
-      </motion.text>
+      {/* Multiple moving energy particles */}
+      {[0, 0.3, 0.6].map((delay, index) => (
+        <motion.circle
+          key={index}
+          r="2"
+          fill={colors[connection.type]}
+          opacity="0.9"
+          filter={`url(#glow-${connection.type})`}
+        >
+          <animateMotion
+            dur="3s"
+            repeatCount="indefinite"
+            path={`M ${fromX},${fromY} L ${toX},${toY}`}
+            begin={`${delay}s`}
+          />
+        </motion.circle>
+      ))}
       
-      {/* Small moving dot along the line */}
-      <motion.circle
-        r="3"
-        fill={colors[connection.type]}
-        opacity="0.8"
+      {/* Hexagonal data packet for futuristic look */}
+      <motion.g
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.7 }}
+        transition={{ delay: 1 }}
       >
-        <animateMotion
-          dur="2s"
-          repeatCount="1"
-          path={`M ${fromX},${fromY} L ${toX},${toY}`}
-          begin="0.3s"
-        />
-      </motion.circle>
+        <motion.polygon
+          points="0,-4 3.5,-2 3.5,2 0,4 -3.5,2 -3.5,-2"
+          fill={colors[connection.type]}
+          opacity="0.4"
+          stroke={colors[connection.type]}
+          strokeWidth="1"
+        >
+          <animateMotion
+            dur="4s"
+            repeatCount="indefinite"
+            path={`M ${fromX},${fromY} L ${toX},${toY}`}
+            begin="1s"
+          />
+        </motion.polygon>
+      </motion.g>
     </motion.g>
   );
 };
