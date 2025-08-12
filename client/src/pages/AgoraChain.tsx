@@ -65,6 +65,10 @@ export default function AgoraChain() {
   const [stakeModalAgent, setStakeModalAgent] = useState<string>('');
   const [stakeModalType, setStakeModalType] = useState<'stake' | 'unstake'>('stake');
   const [modalStakeAmount, setModalStakeAmount] = useState<string>('');
+  const [lockPeriod, setLockPeriod] = useState<number>(7);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [validationError, setValidationError] = useState<string>('');
+  const [transactionMessage, setTransactionMessage] = useState<string>('');
 
   // Generate pool statistics for each agent
   const generatePoolStats = (agentId: string) => {
@@ -261,11 +265,23 @@ export default function AgoraChain() {
     return () => clearInterval(interval);
   }, []);
 
-  // Modal handlers
+  // Wallet gating and modal handlers
+  const handleStakeAction = (agentId: string, type: 'stake' | 'unstake') => {
+    if (!walletConnected) {
+      setTransactionMessage('> Connect wallet (Phantom / MetaMask) to interact with staking.');
+      setTimeout(() => setTransactionMessage(''), 5000);
+      return;
+    }
+    openStakeModal(agentId, type);
+  };
+
   const openStakeModal = (agentId: string, type: 'stake' | 'unstake') => {
     setStakeModalAgent(agentId);
     setStakeModalType(type);
     setModalStakeAmount('');
+    setLockPeriod(7);
+    setValidationError('');
+    setIsSubmitting(false);
     setShowStakeModal(true);
   };
 
@@ -273,54 +289,120 @@ export default function AgoraChain() {
     setShowStakeModal(false);
     setStakeModalAgent('');
     setModalStakeAmount('');
+    setValidationError('');
+    setIsSubmitting(false);
+  };
+
+  const validateStakeAmount = () => {
+    const amount = parseFloat(modalStakeAmount);
+    if (!amount || amount <= 0) {
+      setValidationError('');
+      return false;
+    }
+
+    const userPosition = userPositions.find(p => p.agent === stakeModalAgent);
+    const userBalance = 10000; // Mock user balance - would come from wallet
+    
+    if (stakeModalType === 'stake' && amount > userBalance) {
+      setValidationError('Amount exceeds available balance.');
+      return false;
+    } else if (stakeModalType === 'unstake' && amount > (userPosition?.staked || 0)) {
+      setValidationError('Amount exceeds your staked amount.');
+      return false;
+    } else {
+      setValidationError('');
+      return true;
+    }
   };
 
   const confirmStakeAction = async () => {
-    const amount = parseFloat(modalStakeAmount);
-    if (!amount || amount <= 0) return;
+    if (!validateStakeAmount()) return;
     
+    const amount = parseFloat(modalStakeAmount);
     const agent = AGENT_DOMAINS.find(a => a.id === stakeModalAgent);
     if (!agent) return;
 
-    const newEvent: ChainEvent = {
-      id: `${stakeModalType}-${Date.now()}`,
-      timestamp: format(new Date(), 'HH:mm'),
-      agent: agent.name,
-      domain: agent.domain,
-      action: stakeModalType === 'stake' ? 'STAKING' : 'UNSTAKING',
-      amount: amount,
-      details: `${stakeModalType === 'stake' ? '+' : '-'}${amount} VPC | Pool: ${Math.floor(Math.random() * 50000) + 10000 + (stakeModalType === 'stake' ? amount : -amount)} VPC | ${agent.domain.split(' ')[0].toUpperCase()}: ${(amount * 0.001 * (stakeModalType === 'stake' ? 1 : -1)).toFixed(1)}`,
-      poolBalance: Math.floor(Math.random() * 50000) + 10000 + (stakeModalType === 'stake' ? amount : -amount),
-      status: 'CONFIRMED',
-      wallet: walletAlias
-    };
-    
-    setChainEvents(prev => [newEvent, ...prev]);
-    
-    // Update user position
-    setUserPositions(prev => {
-      const existing = prev.find(p => p.agent === stakeModalAgent);
-      if (existing) {
-        const newStaked = stakeModalType === 'stake' 
-          ? existing.staked + amount 
-          : Math.max(0, existing.staked - amount);
-        return prev.map(p => p.agent === stakeModalAgent 
-          ? { ...p, staked: newStaked, influenceScore: Math.max(0, p.influenceScore + Math.floor(amount * 0.1 * (stakeModalType === 'stake' ? 1 : -1))) }
-          : p
-        );
-      } else if (stakeModalType === 'stake') {
-        return [...prev, {
-          agent: stakeModalAgent,
-          staked: amount,
-          pending: 0,
-          influenceScore: Math.floor(amount * 0.1),
-          accessTickets: Math.floor(amount * 0.05)
-        }];
-      }
-      return prev;
-    });
-    
+    setIsSubmitting(true);
     closeStakeModal();
+    
+    // Show submitting message
+    setTransactionMessage('> Submitting transaction…');
+    
+    // Console log for debugging
+    console.log(`[${format(new Date(), 'HH:mm:ss')}] UI ACTION ${stakeModalType.toUpperCase()} agent=${stakeModalAgent} amount=${amount} status=submitted`);
+    
+    try {
+      // Simulate transaction delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Simulate random success/failure (90% success rate)
+      const success = Math.random() > 0.1;
+      
+      if (success) {
+        // Success: Update chain events and user positions
+        const newEvent: ChainEvent = {
+          id: `${stakeModalType}-${Date.now()}`,
+          timestamp: format(new Date(), 'HH:mm:ss'),
+          agent: agent.name,
+          domain: agent.domain,
+          action: stakeModalType === 'stake' ? 'STAKING' : 'UNSTAKING',
+          amount: amount,
+          details: `${stakeModalType === 'stake' ? '+' : '-'}${amount} VPC by ${walletAlias} | Pool: ${Math.floor(Math.random() * 50000) + 10000 + (stakeModalType === 'stake' ? amount : -amount)} VPC | ${agent.domain.split(' ')[0].toUpperCase()}: ${(amount * 0.001 * (stakeModalType === 'stake' ? 1 : -1)).toFixed(1)}`,
+          poolBalance: Math.floor(Math.random() * 50000) + 10000 + (stakeModalType === 'stake' ? amount : -amount),
+          status: 'CONFIRMED',
+          wallet: walletAlias
+        };
+        
+        setChainEvents(prev => [newEvent, ...prev]);
+        
+        // Update user position
+        setUserPositions(prev => {
+          const existing = prev.find(p => p.agent === stakeModalAgent);
+          if (existing) {
+            const newStaked = stakeModalType === 'stake' 
+              ? existing.staked + amount 
+              : Math.max(0, existing.staked - amount);
+            return prev.map(p => p.agent === stakeModalAgent 
+              ? { ...p, staked: newStaked, influenceScore: Math.max(0, p.influenceScore + Math.floor(amount * 0.1 * (stakeModalType === 'stake' ? 1 : -1))) }
+              : p
+            );
+          } else if (stakeModalType === 'stake') {
+            return [...prev, {
+              agent: stakeModalAgent,
+              staked: amount,
+              pending: 0,
+              influenceScore: Math.floor(amount * 0.1),
+              accessTickets: Math.floor(amount * 0.05)
+            }];
+          }
+          return prev;
+        });
+        
+        setTransactionMessage('> Transaction confirmed.');
+        setTimeout(() => setTransactionMessage(''), 3000);
+        
+        console.log(`[${format(new Date(), 'HH:mm:ss')}] UI ACTION ${stakeModalType.toUpperCase()} agent=${stakeModalAgent} amount=${amount} status=confirmed`);
+      } else {
+        // Failure
+        const failedEvent: ChainEvent = {
+          id: `${stakeModalType}-failed-${Date.now()}`,
+          timestamp: format(new Date(), 'HH:mm:ss'),
+          agent: agent.name,
+          domain: agent.domain,
+          action: stakeModalType === 'stake' ? 'STAKING' : 'UNSTAKING',
+          amount: amount,
+          details: `FAILED Insufficient balance | No state change`,
+          status: 'FAILED'
+        };
+        
+        setChainEvents(prev => [failedEvent, ...prev]);
+        setTransactionMessage('> Transaction failed: Insufficient balance.');
+        
+        console.log(`[${format(new Date(), 'HH:mm:ss')}] UI ACTION ${stakeModalType.toUpperCase()} agent=${stakeModalAgent} amount=${amount} status=failed`);
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Handle staking action
@@ -524,7 +606,7 @@ export default function AgoraChain() {
                         <button 
                           onClick={(e) => {
                             e.stopPropagation();
-                            if (walletConnected) openStakeModal(agent.id, 'stake');
+                            handleStakeAction(agent.id, 'stake');
                           }}
                           className="text-lime-600 hover:text-lime-800 underline text-xs"
                         >
@@ -533,7 +615,7 @@ export default function AgoraChain() {
                         <button 
                           onClick={(e) => {
                             e.stopPropagation();
-                            if (walletConnected) openStakeModal(agent.id, 'unstake');
+                            handleStakeAction(agent.id, 'unstake');
                           }}
                           className="text-red-600 hover:text-red-800 underline text-xs"
                         >
@@ -611,12 +693,15 @@ export default function AgoraChain() {
         );
       })()}
 
-      {/* Stake/Unstake Modal - exact visual style matching */}
+      {/* Stake/Unstake Modal - Archive styling */}
       <AnimatePresence>
         {showStakeModal && (() => {
           const agent = AGENT_DOMAINS.find(a => a.id === stakeModalAgent);
           const stats = generatePoolStats(stakeModalAgent);
           const userPosition = userPositions.find(p => p.agent === stakeModalAgent);
+          const userBalance = 10000; // Mock user balance
+          const isValid = modalStakeAmount && parseFloat(modalStakeAmount) > 0 && 
+            (stakeModalType === 'stake' ? parseFloat(modalStakeAmount) <= userBalance : parseFloat(modalStakeAmount) <= (userPosition?.staked || 0));
           
           return (
             <motion.div
@@ -625,47 +710,88 @@ export default function AgoraChain() {
               exit={{ opacity: 0 }}
               className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
               onClick={closeStakeModal}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') closeStakeModal();
+                if (e.key === 'Enter' && isValid) confirmStakeAction();
+              }}
+              tabIndex={-1}
             >
               <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
+                initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                className="bg-white border border-gray-200 p-4 max-w-md w-full mx-4"
+                exit={{ scale: 0.95, opacity: 0 }}
+                className="bg-white border border-gray-200 p-4 max-w-md w-full mx-4 text-xs"
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="text-xs font-semibold text-gray-800 mb-3">
-                  {stakeModalType === 'stake' ? 'Stake VPC' : 'Unstake VPC'} — {agent?.name} — {agent?.domain}
+                {/* Header - Archive style */}
+                <div className="font-semibold text-gray-800 mb-3">
+                  [{currentTime}] {agent?.name} {stakeModalType.toUpperCase()}
                 </div>
                 
-                <div className="space-y-2 text-xs">
-                  <div>Pool Balance: <span className="font-mono">{stats.poolBalance.toLocaleString()} VPC</span></div>
-                  <div>Field Strength: <span className="font-mono">ECOLOGICAL: {(Math.random() * 2).toFixed(1)} | EFFICIENCY: {(Math.random() * 2).toFixed(1)} | RESILIENCE: {(Math.random() * 2).toFixed(1)}</span></div>
+                {/* Body - compact rows */}
+                <div className="space-y-1">
+                  <div>Your balance: <span className="font-mono">{userBalance.toLocaleString()} VPC</span></div>
+                  <div>Pool balance: <span className="font-mono">{stats.poolBalance.toLocaleString()} VPC</span></div>
+                  <div>24h net flow: <span className={`font-mono ${stats.netFlow24h >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {stats.netFlow24h >= 0 ? '+' : ''}{stats.netFlow24h.toFixed(0)} VPC
+                  </span></div>
+                  <div>Estimated influence (domain): <span className="font-mono">+{(parseFloat(modalStakeAmount || '0') * 0.1).toFixed(1)}</span></div>
                   
                   {userPosition && (
-                    <div className="border-t border-gray-200 pt-2 mt-2">
-                      <div>Your Current Stake: <span className="font-mono text-lime-600">{userPosition.staked} VPC</span></div>
+                    <div className="mt-2 pt-1 border-t border-gray-200">
+                      <div>Your current stake: <span className="font-mono text-lime-600">{userPosition.staked} VPC</span></div>
                     </div>
                   )}
                   
-                  <div className="border-t border-gray-200 pt-2 mt-2">
-                    <label className="text-gray-500">Amount (VPC): </label>
+                  {/* Input */}
+                  <div className="mt-3 pt-2 border-t border-gray-200">
                     <input
                       type="number"
                       value={modalStakeAmount}
-                      onChange={(e) => setModalStakeAmount(e.target.value)}
-                      className="ml-2 px-2 py-1 border border-gray-300 rounded text-xs font-mono w-24 focus:outline-none focus:ring-1 focus:ring-lime-500"
+                      onChange={(e) => {
+                        setModalStakeAmount(e.target.value);
+                        validateStakeAmount();
+                      }}
+                      className="px-2 py-1 border border-gray-300 text-xs font-mono w-24 focus:outline-none focus:ring-1 focus:ring-lime-500"
                       placeholder="100"
                       autoFocus
                     />
+                    <span className="ml-2 text-gray-500">VPC</span>
                   </div>
                   
-                  <div className="space-x-2 pt-3 border-t border-gray-200">
+                  {/* Lock period selector */}
+                  {stakeModalType === 'stake' && (
+                    <div className="mt-2">
+                      <span className="text-gray-500 mr-2">Lock period:</span>
+                      {[7, 30, 90].map((days) => (
+                        <button
+                          key={days}
+                          onClick={() => setLockPeriod(days)}
+                          className={`mr-2 underline ${
+                            lockPeriod === days 
+                              ? 'text-gray-800 bg-gray-200' 
+                              : 'text-gray-500 hover:text-gray-700'
+                          }`}
+                        >
+                          {days} days
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  
+                  {/* Validation error */}
+                  {validationError && (
+                    <div className="text-red-600 text-xs mt-1">{validationError}</div>
+                  )}
+                  
+                  {/* Footer - text links only */}
+                  <div className="space-x-4 pt-3 mt-3 border-t border-gray-200">
                     <button
                       onClick={confirmStakeAction}
-                      disabled={!modalStakeAmount || parseFloat(modalStakeAmount) <= 0}
+                      disabled={!isValid}
                       className="text-lime-600 hover:text-lime-800 underline disabled:text-gray-400 disabled:no-underline"
                     >
-                      Confirm {stakeModalType === 'stake' ? 'Stake' : 'Unstake'}
+                      Confirm
                     </button>
                     <button 
                       onClick={closeStakeModal}
@@ -674,19 +800,19 @@ export default function AgoraChain() {
                       Cancel
                     </button>
                   </div>
-                  
-                  <div className="text-gray-500 mt-2 text-xs">
-                    {stakeModalType === 'stake' 
-                      ? 'Staking VPC strengthens this domain\'s allocation capacity. Rewards are non-financial: Influence Score, AccessTickets, Reputation.'
-                      : 'Unstaking will reduce your influence in this domain and decrease the protocol\'s field strength.'
-                    }
-                  </div>
                 </div>
               </motion.div>
             </motion.div>
           );
         })()}
       </AnimatePresence>
+
+      {/* Transaction message - inline notice */}
+      {transactionMessage && (
+        <div className="mt-4 text-xs text-gray-500">
+          {transactionMessage}
+        </div>
+      )}
     </div>
   );
 }

@@ -1,0 +1,106 @@
+Prompt: Enable staking modal + actions (no UI redesign)
+Goal
+Wire up the Stake and Unstake links on each protocol card so they open a centered modal in the same typography and compact style as the Archive/Agora pages. On confirm, execute the action, then update the card metrics and append a new archive-style event to the live feed. Do not introduce new visual styles.
+
+Behavior
+
+Wallet gate
+
+If no wallet connected, clicking Stake or Unstake opens a small inline notice (archive muted style) at the bottom of the page:
+> Connect wallet (Phantom / MetaMask) to interact with staking.
+
+If connected, proceed to modal.
+
+Open modal (same UI language)
+
+Modal: centered, semi-transparent backdrop; use existing font, sizes, and greys; thin 1px border; no shadows, no rounded corners beyond what Archive already uses.
+
+Header: [HH:MM:SS] <AGENT NAME> STAKE or UNSTAKE in the same small-caps/bold treatment as list rows.
+
+Body (compact rows):
+
+Your balance: <X> VPC
+
+Pool balance: <Y> VPC
+
+24h net flow: +/− <Z> VPC
+
+Estimated influence (domain): +<Δ> (plain text estimate)
+
+Input: single numeric amount field (monospace; same input style as search bar).
+
+Optional selector: Lock period: 7 / 30 / 90 days (plain inline links; selected state = same muted highlight used by status tags).
+
+Footer (text links only): Confirm • Cancel
+
+Validation
+
+Disable Confirm until amount > 0 and ≤ available balance (stake) or ≤ user’s staked amount (unstake).
+
+On invalid: show one-line error under input in Archive’s muted red:
+Amount exceeds available balance.
+
+Action + optimistic state
+
+On Confirm, close modal and show a one-line inline notice at the bottom (archive style):
+> Submitting transaction…
+
+Optimistically gray the card’s Pool Balance row until tx result returns.
+
+Success
+
+Update card metrics in place: Pool Balance, 24h Net Flow, Active Stakers (if first stake), and recompute Field Strength Δ (7d) if provided by backend.
+
+Append a live event row at the top of the feed in archive format, e.g.:
+[23:47] ENERGY SYSTEMS STAKING +320 VPC by beta…vxs | Pool: 41,770 VPC | Efficiency: +0.2
+
+Clear inline notice:
+> Transaction confirmed. (auto-fade after 3s)
+
+Failure
+
+Revert optimistic card values.
+
+Append a failed row:
+[23:47] ENERGY SYSTEMS STAKING FAILED Insufficient balance | No state change
+
+Show inline error at bottom (muted red):
+> Transaction failed: Insufficient balance.
+
+Accessibility & controls
+
+Modal traps focus; Esc or backdrop click closes.
+
+Enter triggers Confirm when valid.
+
+Keep keyboard navigation identical to Archive inputs.
+
+Data contract
+
+On open: fetch user position for that agent (userStaked, unlockDate, domainInfluence).
+
+On confirm: post { agentId, action: "stake"|"unstake", amount, lockDays? }.
+
+On result: backend returns updated pool stats and a pre-formatted event line string to inject into the feed.
+
+Logging
+
+Console/log one line per action in archive style for debugging:
+[23:47] UI ACTION STAKE agent=beta amount=320 status=submitted|confirmed|failed
+
+Strict constraints
+
+Do not add new colors, buttons, icons, or card styles.
+
+Use only plain text links and existing muted tags.
+
+Keep spacing and font weights identical to the Archive list.
+
+Acceptance criteria
+
+Clicking Stake/Unstake opens the modal; confirm updates card + adds a feed row; cancel or backdrop click closes.
+
+Wallet gating message shows when not connected.
+
+All text and layout remain visually consistent with the Archive page.
+
