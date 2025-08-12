@@ -452,6 +452,7 @@ export default function Agora() {
     message: string;
     type: 'energy' | 'material' | 'data' | 'time';
   }>>([]);
+  const [isLoadingNewMessage, setIsLoadingNewMessage] = useState(false);
 
   useEffect(() => {
     const timeInterval = setInterval(() => {
@@ -460,13 +461,23 @@ export default function Agora() {
     return () => clearInterval(timeInterval);
   }, []);
 
-  // Grok-powered AI conversation system
+  // Grok-powered AI conversation system with stable state management
   useEffect(() => {
+    let isMounted = true;
+    let timeoutId: number;
+
     const createGrokConversation = async () => {
+      if (!isMounted) return;
+      
+      setIsLoadingNewMessage(true);
+      
       try {
         const response = await fetch('/api/agent-conversation');
+        if (!response.ok) throw new Error('Failed to fetch conversation');
         const conversation = await response.json();
         
+        if (!isMounted) return;
+
         const newConnection: ActiveConnection = {
           id: `conn-${Date.now()}-${Math.random()}`,
           from: conversation.from,
@@ -487,51 +498,80 @@ export default function Agora() {
           message: newConnection.message,
           type: newConnection.type
         };
+
         setChatMessages(prev => {
+          // Prevent duplicate messages
+          const existingIds = new Set(prev.map(msg => msg.id));
+          if (existingIds.has(chatMessage.id)) return prev;
+          
           const newMessages = [...prev.slice(-19), chatMessage]; // Keep last 20 messages
           
-          // Auto-scroll to bottom only if user is near the bottom
-          setTimeout(() => {
+          // Smart auto-scroll
+          requestAnimationFrame(() => {
             const chatContainer = document.getElementById('chat-container');
             if (chatContainer) {
               const { scrollTop, scrollHeight, clientHeight } = chatContainer;
-              const isNearBottom = scrollTop + clientHeight >= scrollHeight - 50;
+              const isNearBottom = scrollTop + clientHeight >= scrollHeight - 100;
               if (isNearBottom) {
                 chatContainer.scrollTop = scrollHeight;
               }
             }
-          }, 100);
+          });
           
           return newMessages;
         });
 
-        // Remove connection after 3 seconds
-        setTimeout(() => {
-          setActiveConnections(prev => prev.filter(conn => conn.id !== newConnection.id));
-        }, 3000);
+        // Remove connection visualization after 4 seconds
+        timeoutId = window.setTimeout(() => {
+          if (isMounted) {
+            setActiveConnections(prev => prev.filter(conn => conn.id !== newConnection.id));
+          }
+        }, 4000);
+
       } catch (error) {
         console.error('Grok conversation failed:', error);
+        
+        if (!isMounted) return;
+        
         // Fallback to template-based conversation
         const fallback = getRandomConversation();
-        const newConnection: ActiveConnection = {
-          id: `conn-${Date.now()}-${Math.random()}`,
-          from: fallback.from,
-          to: fallback.to,
-          type: fallback.type,
+        const chatMessage = {
+          id: `fallback-${Date.now()}-${Math.random()}`,
+          timestamp: new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+          from: fallback.from.toUpperCase(),
+          to: fallback.to.toUpperCase(),
           message: fallback.message,
-          timestamp: Date.now()
+          type: fallback.type
         };
-        setActiveConnections(prev => [...prev, newConnection]);
+
+        setChatMessages(prev => [...prev.slice(-19), chatMessage]);
+      } finally {
+        if (isMounted) {
+          setIsLoadingNewMessage(false);
+        }
       }
     };
 
-    // Generate initial Grok conversation
-    createGrokConversation();
+    // Generate initial conversation after a short delay
+    const initialDelay = setTimeout(() => {
+      if (isMounted) {
+        createGrokConversation();
+      }
+    }, 1000);
 
-    // Create new Grok conversations every 6 seconds (reduced frequency)
-    const interval = setInterval(createGrokConversation, 6000);
+    // Create new conversations every 8 seconds (further reduced frequency)
+    const interval = setInterval(() => {
+      if (isMounted) {
+        createGrokConversation();
+      }
+    }, 8000);
 
-    return () => clearInterval(interval);
+    return () => {
+      isMounted = false;
+      clearTimeout(initialDelay);
+      clearInterval(interval);
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, []);
 
   return (
@@ -669,8 +709,8 @@ export default function Agora() {
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-sm font-semibold text-gray-800">Live Communications</h3>
                     <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                      <span className="text-xs text-gray-500">Live</span>
+                      <div className={`w-2 h-2 rounded-full ${isLoadingNewMessage ? 'bg-blue-400 animate-spin' : 'bg-green-400 animate-pulse'}`}></div>
+                      <span className="text-xs text-gray-500">{isLoadingNewMessage ? 'Generating...' : 'Live'}</span>
                     </div>
                   </div>
                   
