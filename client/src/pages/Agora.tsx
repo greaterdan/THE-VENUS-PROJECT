@@ -672,10 +672,13 @@ export default function Agora() {
                 {/* Current Decision Metrics */}
                 <div>
                   <h3 className="text-sm font-semibold text-gray-800 mb-4">Decision Impact Analysis</h3>
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-3 gap-3">
                     <MetricGauge label="Ecological" value={CURRENT_DECISION.impact.ecological} color="text-green-500" />
                     <MetricGauge label="Wellbeing" value={CURRENT_DECISION.impact.wellbeing} color="text-blue-500" />
                     <MetricGauge label="Efficiency" value={CURRENT_DECISION.impact.efficiency} color="text-purple-500" />
+                    <MetricGauge label="Resilience" value={CURRENT_DECISION.impact.resilience} color="text-orange-500" />
+                    <MetricGauge label="Equity" value={CURRENT_DECISION.impact.equity} color="text-red-500" />
+                    <MetricGauge label="Innovation" value={CURRENT_DECISION.impact.innovation} color="text-cyan-500" />
                   </div>
                 </div>
 
