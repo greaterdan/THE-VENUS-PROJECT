@@ -971,18 +971,18 @@ export default function Agora() {
                 LIVE MAP
               </button>
               <button
+                onClick={() => {/* TODO: Add Agora Chain functionality */}}
+                className="px-3 py-1 text-xs font-mono rounded bg-gray-200 text-gray-600 hover:bg-gray-300"
+              >
+                AGORA CHAIN
+              </button>
+              <button
                 onClick={() => setViewMode('archive')}
                 className={`px-3 py-1 text-xs font-mono rounded ${
                   viewMode === 'archive' ? 'bg-lime-500 text-white' : 'bg-gray-200 text-gray-600'
                 }`}
               >
                 ARCHIVE
-              </button>
-              <button
-                onClick={() => {/* TODO: Add Agora Chain functionality */}}
-                className="px-3 py-1 text-xs font-mono rounded bg-gray-200 text-gray-600 hover:bg-gray-300"
-              >
-                AGORA CHAIN
               </button>
               <button
                 onClick={() => setShowAgentChat(true)}
