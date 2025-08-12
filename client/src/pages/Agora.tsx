@@ -516,6 +516,7 @@ export default function Agora() {
   const [transcript, setTranscript] = useState<string[] | null>(null);
   const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [selectedArchiveEntry, setSelectedArchiveEntry] = useState<any>(null);
+  const [archiveSearchQuery, setArchiveSearchQuery] = useState('');
 
   // Agent chat state
   const [showAgentChat, setShowAgentChat] = useState(false);
@@ -998,16 +999,61 @@ export default function Agora() {
               <div className="text-gray-800 text-xs font-semibold">DECISION ARCHIVE - VENUS PROJECT AGORA</div>
               <div className="text-xs text-gray-600">System Time: {currentTime} | Status: OPERATIONAL</div>
               <div className="border-t border-gray-200 my-2"></div>
+              
+              {/* Search Bar */}
+              <div className="mb-4">
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Search conversations and decisions..."
+                    value={archiveSearchQuery}
+                    onChange={(e) => setArchiveSearchQuery(e.target.value)}
+                    className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-500 focus:border-transparent font-mono"
+                  />
+                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    <svg className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                  </div>
+                </div>
+                {archiveSearchQuery && (
+                  <div className="mt-1 text-xs text-gray-500">
+                    Filtering results for "{archiveSearchQuery}"
+                  </div>
+                )}
+              </div>
             </div>
             
-            <div className="space-y-1 text-xs max-h-[calc(100vh-10rem)] overflow-y-auto">
-              {archiveEntries.length === 0 ? (
-                <div className="text-gray-500 p-4 text-center">
-                  No archive snapshots available yet.<br/>
-                  Snapshots are created hourly based on agent conversations.
-                </div>
-              ) : (
-                archiveEntries.map((entry) => (
+            <div className="space-y-1 text-xs max-h-[calc(100vh-12rem)] overflow-y-auto">
+              {(() => {
+                // Filter archive entries based on search query
+                const filteredEntries = archiveEntries.filter(entry => 
+                  archiveSearchQuery === '' || 
+                  entry.title.toLowerCase().includes(archiveSearchQuery.toLowerCase()) ||
+                  entry.status.toLowerCase().includes(archiveSearchQuery.toLowerCase()) ||
+                  entry.impact?.toLowerCase().includes(archiveSearchQuery.toLowerCase()) ||
+                  entry.participants?.toString().toLowerCase().includes(archiveSearchQuery.toLowerCase())
+                );
+                
+                if (archiveEntries.length === 0) {
+                  return (
+                    <div className="text-gray-500 p-4 text-center">
+                      No archive snapshots available yet.<br/>
+                      Snapshots are created hourly based on agent conversations.
+                    </div>
+                  );
+                }
+                
+                if (filteredEntries.length === 0 && archiveSearchQuery !== '') {
+                  return (
+                    <div className="text-gray-500 p-4 text-center">
+                      No results found for "{archiveSearchQuery}".<br/>
+                      Try different search terms or clear the search.
+                    </div>
+                  );
+                }
+                
+                return filteredEntries.map((entry) => (
                   <div key={entry.id}>
                     <div 
                       className="hover:bg-gray-100 p-1 cursor-pointer rounded"
@@ -1018,14 +1064,23 @@ export default function Agora() {
                       <span className="ml-4 text-blue-600">{entry.status}</span>
                       <span className="ml-4 text-gray-500">{entry.impact}</span>
                     </div>
-
                   </div>
-                ))
-              )}
+                ));
+              })()}
             </div>
             
             <div className="mt-6 text-xs text-gray-500">
               &gt; Use LIVE MAP mode to view active decision processes
+              {archiveSearchQuery && (
+                <div className="mt-1">
+                  <button 
+                    onClick={() => setArchiveSearchQuery('')}
+                    className="text-lime-600 hover:text-lime-800 underline"
+                  >
+                    Clear search
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         )}
