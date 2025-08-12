@@ -431,29 +431,29 @@ export default function AgoraChain() {
                 return (
                   <div
                     key={agent.id}
-                    className="border border-gray-200 p-3 hover:bg-gray-50 cursor-pointer"
+                    className="border border-gray-200 p-2 hover:bg-gray-50 cursor-pointer text-xs"
                     onClick={() => walletConnected && openStakeDrawer(agent.id)}
                   >
-                    <div className="text-xs font-semibold text-gray-800 mb-2">
+                    <div className="font-semibold text-gray-800 mb-1 text-xs">
                       {agent.name} — {agent.domain}
                     </div>
                     
-                    <div className="space-y-1 text-xs">
+                    <div className="space-y-0.5 text-xs">
                       <div>Pool Balance: <span className="font-mono">{stats.poolBalance.toLocaleString()} VPC</span></div>
                       <div>24h Net Flow: <span className={`font-mono ${stats.netFlow24h >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                         {stats.netFlow24h >= 0 ? '+' : ''}{stats.netFlow24h.toFixed(0)} VPC
                       </span></div>
                       <div>Active Stakers: <span className="font-mono">{stats.activeStakers}</span></div>
-                      <div>Field Strength Δ (7d): <span className="font-mono">ECOLOGICAL: +{(Math.random() * 2).toFixed(1)} | EFFICIENCY: +{(Math.random() * 2).toFixed(1)} | RESILIENCE: +{(Math.random() * 2).toFixed(1)}</span></div>
-                      <div>Faucet Threshold: <span className="font-mono">{(stats.poolBalance + 5000).toLocaleString()} VPC (opens {Math.floor(Math.random() * 500) + 100} kWh/24h)</span></div>
+                      <div>Field Strength Δ (7d): <span className="font-mono text-xs">ECOLOGICAL: +{(Math.random() * 2).toFixed(1)} | EFFICIENCY: +{(Math.random() * 2).toFixed(1)} | RESILIENCE: +{(Math.random() * 2).toFixed(1)}</span></div>
+                      <div>Faucet Threshold: <span className="font-mono text-xs">{(stats.poolBalance + 5000).toLocaleString()} VPC (opens {Math.floor(Math.random() * 500) + 100} kWh/24h)</span></div>
                       
                       {userPosition && (
-                        <div className="border-t border-gray-200 pt-1 mt-2">
+                        <div className="border-t border-gray-200 pt-0.5 mt-1">
                           <div>Your Stake: <span className="font-mono text-lime-600">{userPosition.staked} VPC</span></div>
                         </div>
                       )}
                       
-                      <div className="pt-1">
+                      <div className="pt-0.5">
                         <button className="text-lime-600 hover:text-lime-800 underline text-xs">
                           Stake / Unstake
                         </button>
