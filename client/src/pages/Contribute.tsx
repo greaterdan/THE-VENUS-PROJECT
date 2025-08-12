@@ -38,12 +38,9 @@ export default function Contribute() {
       <div className="container mx-auto px-6 py-12">
         {/* Header */}
         <div className="flex items-center justify-between mb-12">
-          <div>
-            <h1 className="text-4xl font-bold mb-4">
-              Contribute GPU
-            </h1>
-            <p className="text-gray-600 text-lg">
-              Power the Venus AI City simulation with your computing resources
+          <div className="text-center flex-1 mr-8">
+            <p className="text-gray-600 text-lg max-w-3xl mx-auto leading-relaxed">
+              Contribute your GPU power to help The Venus Project's AI City grow and make decisions faster, while earning voting rights to shape its future and gaining early access to upcoming features.
             </p>
           </div>
           <WalletConnect
