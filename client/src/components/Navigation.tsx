@@ -39,14 +39,21 @@ export default function Navigation() {
     }
 
     function handleScroll() {
-      setScrollY(window.scrollY);
+      // Don't track scroll on Agora page since it prevents scrolling
+      if (location !== "/agora") {
+        setScrollY(window.scrollY);
+      }
     }
 
     document.addEventListener("mousedown", handleClickOutside);
     window.addEventListener("scroll", handleScroll);
 
-    // Set initial scroll position
-    setScrollY(window.scrollY);
+    // Set initial scroll position - force visibility on Agora
+    if (location === "/agora") {
+      setScrollY(100); // Force navigation visibility on Agora
+    } else {
+      setScrollY(window.scrollY);
+    }
 
     // Glitch effect disabled
 
@@ -58,12 +65,12 @@ export default function Navigation() {
 
   // Reset scroll awareness when location changes
   useEffect(() => {
-    if (location !== "/") {
-      // For non-home pages, we don't rely on scroll position
-      setScrollY(100); // Force visibility
+    if (location === "/agora") {
+      setScrollY(100); // Force visibility on Agora (prevents scrolling conflicts)
+    } else if (location !== "/") {
+      setScrollY(100); // Force visibility on non-home pages
     } else {
-      // For home page, check current scroll position
-      setScrollY(window.scrollY);
+      setScrollY(window.scrollY); // Use actual scroll position on home page
     }
   }, [location]);
 
