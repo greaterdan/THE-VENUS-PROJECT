@@ -115,8 +115,7 @@ export default function Navigation() {
         visibility: 'visible'
       }}
     >
-      {/* FORCE VISIBLE TEST BAR - REMOVE ONCE CONFIRMED WORKING */}
-      <div className="absolute top-0 left-0 w-full h-1 bg-lime-500 z-[10000]"></div>
+
       <div className="w-full">
         <div className="flex items-center justify-between h-16 pr-4">
           {/* Left Logo - Home Link - FORCED visibility on Agora and non-home pages */}
