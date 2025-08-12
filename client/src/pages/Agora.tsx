@@ -725,12 +725,23 @@ export default function Agora() {
     }
   };
 
-  // Disable all scrolling on AGORA page only
+  // Disable body scrolling but allow scrolling in specific containers
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
     
     const preventScroll = (e: Event) => {
+      // Allow scrolling in specific containers
+      let target = e.target as Element;
+      while (target && target !== document.body) {
+        if (target.classList.contains('overflow-y-auto') || 
+            target.classList.contains('scroll-smooth') ||
+            target.id === 'chat-container') {
+          return; // Allow scrolling in these containers
+        }
+        target = target.parentElement as Element;
+      }
+      
       e.preventDefault();
       e.stopPropagation();
       return false;
