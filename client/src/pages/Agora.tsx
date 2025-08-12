@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGlobalConversation } from '@/contexts/GlobalConversationContext';
+import Navigation from '@/components/Navigation';
 
 interface Agent {
   id: string;
@@ -755,6 +756,7 @@ export default function Agora() {
 
   return (
     <div className="h-screen bg-white text-black overflow-hidden" style={{ touchAction: 'none' }}>
+      <Navigation />
       
       {/* Header - with top margin to account for navigation */}
       <div className="px-6 py-3 border-b border-gray-200 bg-gray-50/50 mt-20">
