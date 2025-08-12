@@ -85,13 +85,13 @@ export default function Navigation() {
   ];
 
   return (
-    <nav className="sticky top-0 z-[100]">
+    <nav className="sticky top-0 z-[100]" style={{ backgroundColor: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(8px)' }}>
       <div className="w-full">
         <div className="flex items-center justify-between h-16 pr-4">
-          {/* Left Logo - Home Link - Appears on scroll */}
+          {/* Left Logo - Home Link - Always visible on non-home pages */}
           <div 
             className="flex items-center transition-opacity duration-500 ease-in-out pl-4" 
-            style={{ opacity: navOpacity }}
+            style={{ opacity: location === "/" ? navOpacity : 1 }}
           >
             <Link href="/">
               <img 
@@ -102,8 +102,8 @@ export default function Navigation() {
             </Link>
           </div>
 
-          {/* Right Navigation Group - Desktop - Appears on scroll */}
-          <div className="hidden md:block transition-opacity duration-500 ease-in-out" style={{ opacity: navOpacity }}>
+          {/* Right Navigation Group - Desktop - Always visible on non-home pages */}
+          <div className="hidden md:block transition-opacity duration-500 ease-in-out" style={{ opacity: location === "/" ? navOpacity : 1 }}>
             <div className="flex items-baseline space-x-2">
               <div 
                 className="relative group" 
@@ -244,8 +244,8 @@ export default function Navigation() {
             </div>
           </div>
 
-          {/* Mobile menu button - Appears on scroll */}
-          <div className="md:hidden ml-auto transition-opacity duration-500 ease-in-out" style={{ opacity: navOpacity }}>
+          {/* Mobile menu button - Always visible on non-home pages */}
+          <div className="md:hidden ml-auto transition-opacity duration-500 ease-in-out" style={{ opacity: location === "/" ? navOpacity : 1 }}>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="text-black hover:text-venus-lime focus:outline-none transition-all duration-300"
