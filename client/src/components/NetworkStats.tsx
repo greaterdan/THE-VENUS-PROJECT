@@ -49,7 +49,7 @@ export function NetworkStats() {
             <div className="text-2xl font-mono text-black mb-1">
               {networkStats.totalNodesOnline?.toLocaleString() || '0'}
             </div>
-            <Badge className="bg-lime-100 text-lime-700 text-xs">
+            <Badge className="bg-lime-100 text-slate-700 text-xs">
               <Activity className="w-3 h-3 mr-1" />
               +127 this hour
             </Badge>
@@ -65,15 +65,15 @@ export function NetworkStats() {
         <Card className="bg-white border">
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-sm font-medium text-black">
-              <Zap className="w-4 h-4 text-lime-600" />
+              <Zap className="w-4 h-4 text-slate-600" />
               Total GPU Power
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-mono text-lime-600 mb-1">
+            <div className="text-2xl font-mono text-slate-600 mb-1">
               {formatTflops(networkStats.totalTflops || 0)}FLOPS
             </div>
-            <Badge className="bg-lime-100 text-lime-700 text-xs">
+            <Badge className="bg-lime-100 text-slate-700 text-xs">
               <TrendingUp className="w-3 h-3 mr-1" />
               +12.3T today
             </Badge>

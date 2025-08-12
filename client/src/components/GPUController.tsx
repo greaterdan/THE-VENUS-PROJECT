@@ -85,7 +85,7 @@ export function GPUController({ isRunning, onToggle, gpuPower, onPowerChange, st
     <Card className="bg-white border text-black">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Zap className="w-5 h-5 text-lime-400" />
+          <Zap className="w-5 h-5 text-slate-500" />
           Light Mode (WebGPU)
         </CardTitle>
         <CardDescription className="text-gray-600">
@@ -96,12 +96,12 @@ export function GPUController({ isRunning, onToggle, gpuPower, onPowerChange, st
         {/* GPU Detection */}
         <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
           <div className="flex items-center gap-2">
-            <Activity className={`w-4 h-4 ${isDetecting ? 'animate-pulse text-blue-400' : webGPUSupported ? 'text-lime-400' : 'text-red-400'}`} />
+            <Activity className={`w-4 h-4 ${isDetecting ? 'animate-pulse text-blue-400' : webGPUSupported ? 'text-slate-500' : 'text-red-400'}`} />
             <span className="text-sm font-mono">{gpuInfo}</span>
           </div>
           <Badge 
             variant={webGPUSupported ? "default" : "destructive"} 
-            className={webGPUSupported ? "bg-lime-100 text-lime-700 border-lime-200" : "bg-red-100 text-red-700 border-red-200"}
+            className={webGPUSupported ? "bg-lime-100 text-slate-700 border-lime-200" : "bg-red-100 text-red-700 border-red-200"}
           >
             {isDetecting ? 'Detecting...' : webGPUSupported ? 'Compatible' : 'Not Supported'}
           </Badge>
@@ -111,7 +111,7 @@ export function GPUController({ isRunning, onToggle, gpuPower, onPowerChange, st
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <label className="text-sm font-medium">GPU Power Allocation</label>
-            <span className="text-lime-600 font-mono">{gpuPower}%</span>
+            <span className="text-slate-600 font-mono">{gpuPower}%</span>
           </div>
           <Slider
             value={[gpuPower]}
@@ -134,7 +134,7 @@ export function GPUController({ isRunning, onToggle, gpuPower, onPowerChange, st
           className={`w-full transition-all duration-300 ${
             isRunning
               ? 'bg-red-500 hover:bg-red-600 text-white'
-              : 'bg-lime-400 hover:bg-lime-500 text-black'
+              : 'bg-slate-500 hover:bg-slate-600 text-black'
           }`}
         >
           {isRunning ? (
@@ -160,19 +160,19 @@ export function GPUController({ isRunning, onToggle, gpuPower, onPowerChange, st
               className="grid grid-cols-3 gap-4 p-4 bg-white/5 rounded-lg"
             >
               <div className="text-center">
-                <div className="text-lg font-mono text-lime-400">
+                <div className="text-lg font-mono text-slate-500">
                   {formatFlops(stats.flopsContributed)}
                 </div>
                 <div className="text-xs text-white/60">FLOPS Added</div>
               </div>
               <div className="text-center">
-                <div className="text-lg font-mono text-lime-400">
+                <div className="text-lg font-mono text-slate-500">
                   {stats.decisionCyclePowered.toFixed(1)}%
                 </div>
                 <div className="text-xs text-white/60">Cycle Powered</div>
               </div>
               <div className="text-center">
-                <div className="text-lg font-mono text-lime-400">
+                <div className="text-lg font-mono text-slate-500">
                   {stats.hoursRunning.toFixed(1)}h
                 </div>
                 <div className="text-xs text-white/60">Runtime</div>

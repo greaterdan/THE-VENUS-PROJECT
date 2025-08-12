@@ -96,7 +96,7 @@ export default function Contact() {
               </div>
               <div className="bg-white p-6 rounded-lg shadow-sm">
                 <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">Current Opening</h3>
-                <h4 className="font-semibold text-lime-700 mb-3 text-lg text-center">Reinforcement Learning Engineer</h4>
+                <h4 className="font-semibold text-slate-700 mb-3 text-lg text-center">Reinforcement Learning Engineer</h4>
                 <p className="text-gray-600 leading-relaxed text-center mb-4">
                   Implements learning agents in simulations and real-world applications. 
                   Join our team to develop AI systems that optimize sustainable city planning 
@@ -105,7 +105,7 @@ export default function Contact() {
                 <div className="text-center">
                   <Dialog open={isOpen} onOpenChange={setIsOpen}>
                     <DialogTrigger asChild>
-                      <Button className="px-6 py-2 bg-lime-600 text-white hover:bg-lime-700 transition-colors rounded-md font-medium">
+                      <Button className="px-6 py-2 bg-slate-600 text-white hover:bg-slate-700 transition-colors rounded-md font-medium">
                         Apply Now
                       </Button>
                     </DialogTrigger>
@@ -129,19 +129,19 @@ export default function Contact() {
                             <h3 className="text-lg font-semibold mb-3">Key Responsibilities</h3>
                             <ul className="space-y-2 text-gray-700">
                               <li className="flex items-start space-x-2">
-                                <div className="w-2 h-2 bg-lime-500 rounded-full mt-2"></div>
+                                <div className="w-2 h-2 bg-slate-600 rounded-full mt-2"></div>
                                 <span>Design and implement reinforcement learning algorithms for city optimization</span>
                               </li>
                               <li className="flex items-start space-x-2">
-                                <div className="w-2 h-2 bg-lime-500 rounded-full mt-2"></div>
+                                <div className="w-2 h-2 bg-slate-600 rounded-full mt-2"></div>
                                 <span>Develop multi-agent systems for distributed urban planning</span>
                               </li>
                               <li className="flex items-start space-x-2">
-                                <div className="w-2 h-2 bg-lime-500 rounded-full mt-2"></div>
+                                <div className="w-2 h-2 bg-slate-600 rounded-full mt-2"></div>
                                 <span>Create simulation environments for testing AI-driven city solutions</span>
                               </li>
                               <li className="flex items-start space-x-2">
-                                <div className="w-2 h-2 bg-lime-500 rounded-full mt-2"></div>
+                                <div className="w-2 h-2 bg-slate-600 rounded-full mt-2"></div>
                                 <span>Collaborate with cross-functional teams on infrastructure integration</span>
                               </li>
                             </ul>
@@ -250,7 +250,7 @@ export default function Contact() {
                             </div>
 
                             <div className="flex space-x-3 pt-4">
-                              <Button type="submit" className="flex-1 bg-lime-600 hover:bg-lime-700">
+                              <Button type="submit" className="flex-1 bg-slate-600 hover:bg-slate-700">
                                 Submit Application
                               </Button>
                               <Button type="button" variant="outline" onClick={() => setIsOpen(false)}>
@@ -276,7 +276,7 @@ export default function Contact() {
             looking for passionate individuals to join our cause.
           </p>
           <div className="flex justify-center space-x-6">
-            <button className="px-8 py-3 bg-lime-500 text-black hover:bg-lime-400 transition-colors rounded-md font-semibold">
+            <button className="px-8 py-3 bg-slate-600 text-black hover:bg-slate-500 transition-colors rounded-md font-semibold">
               Join Our Community
             </button>
             <button className="px-8 py-3 border-2 border-white text-white hover:bg-white hover:text-black transition-colors rounded-md font-semibold">

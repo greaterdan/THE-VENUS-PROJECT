@@ -101,7 +101,7 @@ export function LiveSimulationFeed() {
   const getEventIcon = (type: string) => {
     switch (type) {
       case 'decision': return <Brain className="w-4 h-4 text-purple-400" />;
-      case 'resource': return <Zap className="w-4 h-4 text-lime-400" />;
+      case 'resource': return <Zap className="w-4 h-4 text-slate-500" />;
       case 'communication': return <Activity className="w-4 h-4 text-blue-400" />;
       case 'system': return <AlertCircle className="w-4 h-4 text-orange-400" />;
       default: return <Activity className="w-4 h-4 text-white/60" />;
@@ -130,10 +130,10 @@ export function LiveSimulationFeed() {
     <Card className="bg-white/5 backdrop-blur-xl border-white/10 text-white h-[600px]">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Activity className="w-5 h-5 text-lime-400" />
+          <Activity className="w-5 h-5 text-slate-500" />
           Live AGORA Feed
           <div className="ml-auto flex items-center gap-2">
-            <div className="w-2 h-2 bg-lime-400 rounded-full animate-pulse"></div>
+            <div className="w-2 h-2 bg-slate-500 rounded-full animate-pulse"></div>
             <span className="text-xs text-white/60">Real-time</span>
           </div>
         </CardTitle>
@@ -148,7 +148,7 @@ export function LiveSimulationFeed() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
                 transition={{ duration: 0.3 }}
-                className="mb-4 p-4 bg-white/5 rounded-lg border-l-4 border-lime-400/30 hover:bg-white/10 transition-all duration-300"
+                className="mb-4 p-4 bg-white/5 rounded-lg border-l-4 border-slate-500/30 hover:bg-white/10 transition-all duration-300"
               >
                 <div className="flex items-start gap-3">
                   <div className="mt-1">
@@ -169,7 +169,7 @@ export function LiveSimulationFeed() {
                     </div>
                     
                     <div className="flex items-center gap-2 mb-2 text-sm">
-                      <span className="font-medium text-lime-400">{event.agentFrom}</span>
+                      <span className="font-medium text-slate-500">{event.agentFrom}</span>
                       {event.agentTo && (
                         <>
                           <span className="text-white/50">→</span>
@@ -198,7 +198,7 @@ export function LiveSimulationFeed() {
               <div className="text-xs text-white/60">Decisions</div>
             </div>
             <div>
-              <div className="text-lg font-mono text-lime-400">
+              <div className="text-lg font-mono text-slate-500">
                 {events.filter(e => e.type === 'resource').length}
               </div>
               <div className="text-xs text-white/60">Resources</div>

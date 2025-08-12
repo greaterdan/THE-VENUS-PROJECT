@@ -66,7 +66,7 @@ export default function Contribute() {
         >
           <div className="flex items-start gap-6">
             <div className="p-4 bg-white rounded-2xl shadow-sm border border-lime-100">
-              <Brain className="w-8 h-8 text-lime-600" />
+              <Brain className="w-8 h-8 text-slate-600" />
             </div>
             <div className="flex-1">
               <h3 className="text-2xl font-medium mb-4 text-gray-800">Every Second Counts</h3>
@@ -131,17 +131,17 @@ export default function Contribute() {
             className="mt-20 p-8 bg-gray-900 rounded-2xl border border-gray-800"
           >
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-3 h-3 bg-lime-400 rounded-full animate-pulse"></div>
-              <span className="text-lime-400 font-mono text-sm">GPU NODE ACTIVITY</span>
+              <div className="w-3 h-3 bg-slate-500 rounded-full animate-pulse"></div>
+              <span className="text-slate-500 font-mono text-sm">GPU NODE ACTIVITY</span>
             </div>
             <div className="font-mono text-xs space-y-1 text-gray-300">
               <div>[12:04:32] GPU initialized - NVIDIA RTX 4080 detected</div>
               <div>[12:04:33] WebGPU context established - {gpuPower}% power allocated</div>
               <div>[12:04:34] Connected to Venus AI network - Node ID: VN_7xQ8K2B9</div>
-              <div>[12:04:35] <span className="text-lime-400">Processing batch</span> - Energy grid optimization (Alpha → Beta)</div>
+              <div>[12:04:35] <span className="text-slate-500">Processing batch</span> - Energy grid optimization (Alpha → Beta)</div>
               <div>[12:04:36] <span className="text-gray-400">Computation complete</span> - 2.4M FLOPS contributed</div>
-              <div>[12:04:37] <span className="text-lime-400">Reward earned</span> - +0.0023 VNS</div>
-              <div>[12:04:38] <span className="text-lime-400">Processing batch</span> - Resource allocation model (Iota)</div>
+              <div>[12:04:37] <span className="text-slate-500">Reward earned</span> - +0.0023 VNS</div>
+              <div>[12:04:38] <span className="text-slate-500">Processing batch</span> - Resource allocation model (Iota)</div>
             </div>
           </motion.div>
         )}
@@ -159,13 +159,13 @@ export default function Contribute() {
               Earn VNS tokens while helping build sustainable urban solutions.
             </p>
             <div className="flex items-center justify-center gap-4 flex-wrap">
-              <Badge className="bg-gray-100 text-gray-600 hover:bg-lime-100 hover:text-lime-700 transition-colors">
+              <Badge className="bg-gray-100 text-gray-600 hover:bg-lime-100 hover:text-slate-700 transition-colors">
                 ⚡ Browser-based - No download required
               </Badge>
-              <Badge className="bg-gray-100 text-gray-600 hover:bg-lime-100 hover:text-lime-700 transition-colors">
+              <Badge className="bg-gray-100 text-gray-600 hover:bg-lime-100 hover:text-slate-700 transition-colors">
                 🔒 Secure WebGPU technology
               </Badge>
-              <Badge className="bg-gray-100 text-gray-600 hover:bg-lime-100 hover:text-lime-700 transition-colors">
+              <Badge className="bg-gray-100 text-gray-600 hover:bg-lime-100 hover:text-slate-700 transition-colors">
                 💰 Instant VNS rewards
               </Badge>
             </div>

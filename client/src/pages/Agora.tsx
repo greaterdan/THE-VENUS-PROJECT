@@ -976,7 +976,7 @@ export default function Agora() {
               <button
                 onClick={() => setViewMode('live')}
                 className={`px-3 py-1 text-xs font-mono rounded ${
-                  viewMode === 'live' ? 'bg-lime-500 text-white' : 'bg-gray-200 text-gray-600'
+                  viewMode === 'live' ? 'bg-slate-600 text-white' : 'bg-gray-200 text-gray-600'
                 }`}
               >
                 LIVE MAP
@@ -990,7 +990,7 @@ export default function Agora() {
               <button
                 onClick={() => setViewMode('archive')}
                 className={`px-3 py-1 text-xs font-mono rounded ${
-                  viewMode === 'archive' ? 'bg-lime-500 text-white' : 'bg-gray-200 text-gray-600'
+                  viewMode === 'archive' ? 'bg-slate-600 text-white' : 'bg-gray-200 text-gray-600'
                 }`}
               >
                 ARCHIVE
@@ -1098,7 +1098,7 @@ export default function Agora() {
                 <div>
                   <h3 className="text-sm font-semibold text-gray-800 mb-4">Decision Impact Analysis</h3>
                   <div className="grid grid-cols-3 gap-3">
-                    <MetricGauge label="Ecological" value={Math.round(impactMetrics.ecological)} color="text-green-500" />
+                    <MetricGauge label="Ecological" value={Math.round(impactMetrics.ecological)} color="text-slate-600" />
                     <MetricGauge label="Wellbeing" value={Math.round(impactMetrics.wellbeing)} color="text-blue-500" />
                     <MetricGauge label="Efficiency" value={Math.round(impactMetrics.efficiency)} color="text-purple-500" />
                     <MetricGauge label="Resilience" value={Math.round(impactMetrics.resilience)} color="text-orange-500" />
@@ -1203,7 +1203,7 @@ export default function Agora() {
                     placeholder="Search conversations and decisions..."
                     value={archiveSearchQuery}
                     onChange={(e) => setArchiveSearchQuery(e.target.value)}
-                    className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-500 focus:border-transparent font-mono"
+                    className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600 focus:border-transparent font-mono"
                   />
                   <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                     <svg className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1246,12 +1246,12 @@ export default function Agora() {
                       className="hover:bg-gray-100 p-1 cursor-pointer rounded"
                       onClick={() => handleArchiveEntryClick(entry)}
                     >
-                      <span className="text-lime-600 font-medium">[{entry.timestamp}]</span>
+                      <span className="text-slate-600 font-medium">[{entry.timestamp}]</span>
                       <span className="ml-2 text-gray-800">{entry.title}</span>
                       <span className="ml-4 text-blue-600">{entry.status}</span>
                       <span className="ml-4 text-gray-500">{entry.impact}</span>
                       {entry.relevanceScore > 0 && (
-                        <span className="ml-2 px-1 bg-lime-100 text-lime-700 rounded text-xs">
+                        <span className="ml-2 px-1 bg-lime-100 text-slate-700 rounded text-xs">
                           {entry.relevanceScore} matches
                         </span>
                       )}
@@ -1274,7 +1274,7 @@ export default function Agora() {
                 <div className="mt-1">
                   <button 
                     onClick={() => setArchiveSearchQuery('')}
-                    className="text-lime-600 hover:text-lime-800 underline"
+                    className="text-slate-600 hover:text-slate-800 underline"
                   >
                     Clear search
                   </button>
@@ -1346,7 +1346,7 @@ export default function Agora() {
                         <div className="flex items-start justify-between mb-3">
                           <div className="flex items-center gap-3">
                             <div className="flex items-center gap-2">
-                              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-lime-400 to-green-500 flex items-center justify-center">
+                              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-slate-500 to-slate-600 flex items-center justify-center">
                                 <span className="text-xs font-bold text-white">{message.from.charAt(0)}</span>
                               </div>
                               <div>
@@ -1456,7 +1456,7 @@ export default function Agora() {
                             >
                               <div className="flex items-start justify-between mb-3">
                                 <div className="flex items-center gap-3">
-                                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-lime-400 to-green-500 flex items-center justify-center">
+                                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-slate-500 to-slate-600 flex items-center justify-center">
                                     <span className="text-xs font-bold text-white">{fromAgent.charAt(0)}</span>
                                   </div>
                                   <div>
@@ -1615,7 +1615,7 @@ export default function Agora() {
                       <div key={index} className="space-y-2">
                         {/* User Message */}
                         <div className="flex justify-end">
-                          <div className="bg-lime-500 text-white rounded-lg p-3 max-w-[80%]">
+                          <div className="bg-slate-600 text-white rounded-lg p-3 max-w-[80%]">
                             <p className="text-sm">{entry.user}</p>
                             <p className="text-xs opacity-75 mt-1">{entry.timestamp}</p>
                           </div>
@@ -1657,7 +1657,7 @@ export default function Agora() {
                       value={userMessage}
                       onChange={(e) => setUserMessage(e.target.value)}
                       placeholder={`Message Agent ${AGENTS.find(a => a.id === selectedAgent)?.name}...`}
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-lime-500"
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-600"
                       onKeyPress={(e) => {
                         if (e.key === 'Enter' && userMessage.trim() && !isLoadingResponse) {
                           sendMessageToAgent();
@@ -1667,7 +1667,7 @@ export default function Agora() {
                     <button
                       onClick={sendMessageToAgent}
                       disabled={!userMessage.trim() || isLoadingResponse}
-                      className="px-4 py-2 bg-lime-500 text-white rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-lime-600 transition-colors"
+                      className="px-4 py-2 bg-slate-600 text-white rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-600 transition-colors"
                     >
                       {isLoadingResponse ? 'Sending...' : 'Send'}
                     </button>

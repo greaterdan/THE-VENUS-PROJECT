@@ -44,12 +44,12 @@ export function WalletConnect({ onConnect, isConnected, walletAddress, vnsBalanc
     return (
       <div className="flex items-center gap-4 px-4 py-2 bg-gray-50 rounded-lg border">
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 bg-lime-400 rounded-full animate-pulse"></div>
+          <div className="w-2 h-2 bg-slate-500 rounded-full animate-pulse"></div>
           <span className="text-sm text-gray-600">
             {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
           </span>
         </div>
-        <div className="text-sm text-lime-600 font-mono font-medium">
+        <div className="text-sm text-slate-600 font-mono font-medium">
           {vnsBalance?.toFixed(2) || '0.00'} VNS
         </div>
       </div>
@@ -62,7 +62,7 @@ export function WalletConnect({ onConnect, isConnected, walletAddress, vnsBalanc
         <Button
           variant="outline"
           disabled={isConnecting}
-          className="bg-white border-gray-200 text-black hover:bg-lime-50 hover:border-lime-400 hover:text-lime-600 transition-all duration-300"
+          className="bg-white border-gray-200 text-black hover:bg-lime-50 hover:border-slate-500 hover:text-slate-600 transition-all duration-300"
         >
           <Wallet className="w-4 h-4 mr-2" />
           {isConnecting ? 'Connecting...' : 'Connect Wallet'}

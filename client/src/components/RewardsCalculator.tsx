@@ -17,7 +17,7 @@ export function RewardsCalculator() {
 
   const getGpuTier = (power: number) => {
     if (power >= 80) return { tier: 'High Performance', color: 'text-red-400', bg: 'bg-red-400/20' };
-    if (power >= 50) return { tier: 'Balanced', color: 'text-lime-400', bg: 'bg-lime-400/20' };
+    if (power >= 50) return { tier: 'Balanced', color: 'text-slate-500', bg: 'bg-slate-500/20' };
     return { tier: 'Power Saving', color: 'text-blue-400', bg: 'bg-blue-400/20' };
   };
 
@@ -27,7 +27,7 @@ export function RewardsCalculator() {
     <Card className="bg-white border text-black">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Calculator className="w-5 h-5 text-lime-600" />
+          <Calculator className="w-5 h-5 text-slate-600" />
           Rewards Calculator
         </CardTitle>
       </CardHeader>
@@ -39,7 +39,7 @@ export function RewardsCalculator() {
               <Clock className="w-4 h-4" />
               Hours per day
             </label>
-            <span className="text-lime-600 font-mono">{hours}h</span>
+            <span className="text-slate-600 font-mono">{hours}h</span>
           </div>
           <Slider
             value={[hours]}
@@ -62,7 +62,7 @@ export function RewardsCalculator() {
               <Badge className={`${gpuTier.bg} ${gpuTier.color}`}>
                 {gpuTier.tier}
               </Badge>
-              <span className="text-lime-400 font-mono">{gpuPower}%</span>
+              <span className="text-slate-500 font-mono">{gpuPower}%</span>
             </div>
           </div>
           <Slider
@@ -80,22 +80,22 @@ export function RewardsCalculator() {
           key={`${hours}-${gpuPower}`}
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="p-4 bg-gradient-to-r from-lime-500/10 to-green-500/10 rounded-lg border border-lime-500/20"
+          className="p-4 bg-gradient-to-r from-slate-600/10 to-slate-600/10 rounded-lg border border-slate-600/20"
         >
           <div className="flex items-center gap-2 mb-3">
-            <Coins className="w-5 h-5 text-lime-400" />
+            <Coins className="w-5 h-5 text-slate-500" />
             <h3 className="font-medium">Estimated Earnings</h3>
           </div>
           
           <div className="grid grid-cols-2 gap-4">
             <div className="text-center">
-              <div className="text-2xl font-mono text-lime-400">
+              <div className="text-2xl font-mono text-slate-500">
                 {hourlyRate.toFixed(3)}
               </div>
               <div className="text-sm text-white/60">VNS per hour</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-mono text-lime-400">
+              <div className="text-2xl font-mono text-slate-500">
                 {weeklyEarnings.toFixed(2)}
               </div>
               <div className="text-sm text-white/60">VNS per week</div>
@@ -105,7 +105,7 @@ export function RewardsCalculator() {
           <div className="mt-4 p-3 bg-white/5 rounded-lg">
             <div className="flex items-center justify-between text-sm">
               <span className="text-white/60">Monthly projection:</span>
-              <span className="font-mono text-lime-400">
+              <span className="font-mono text-slate-500">
                 {(weeklyEarnings * 4.33).toFixed(2)} VNS
               </span>
             </div>

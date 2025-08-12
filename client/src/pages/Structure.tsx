@@ -107,21 +107,21 @@ export default function Structure() {
               <h2 className="text-3xl font-semibold mb-6">Key Features</h2>
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-lime-500 rounded-full mt-2"></div>
+                  <div className="w-2 h-2 bg-slate-600 rounded-full mt-2"></div>
                   <p className="leading-relaxed text-gray-700">
                     <strong>Distributed Intelligence:</strong> No single point of failure, with intelligence 
                     distributed across thousands of autonomous agents.
                   </p>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-lime-500 rounded-full mt-2"></div>
+                  <div className="w-2 h-2 bg-slate-600 rounded-full mt-2"></div>
                   <p className="leading-relaxed text-gray-700">
                     <strong>Continuous Learning:</strong> Agents adapt and improve through reinforcement 
                     learning and collective knowledge sharing.
                   </p>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-lime-500 rounded-full mt-2"></div>
+                  <div className="w-2 h-2 bg-slate-600 rounded-full mt-2"></div>
                   <p className="leading-relaxed text-gray-700">
                     <strong>Real-time Optimization:</strong> Dynamic resource allocation and system 
                     optimization based on current conditions and future projections.

@@ -175,7 +175,7 @@ export default function Explorer() {
             </div>
             
             {transaction.amount && (
-              <div className="inline-flex items-center bg-lime-50 text-lime-800 px-3 py-1 rounded-full text-sm font-medium">
+              <div className="inline-flex items-center bg-lime-50 text-slate-800 px-3 py-1 rounded-full text-sm font-medium">
                 {transaction.action === 'STAKING' ? '+' : '-'}{transaction.amount?.toLocaleString()} VPC
               </div>
             )}

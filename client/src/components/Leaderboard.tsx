@@ -99,7 +99,7 @@ export function Leaderboard() {
     switch (contributorRank) {
       case 'Visionary': return 'bg-purple-400/20 text-purple-400';
       case 'Architect': return 'bg-blue-400/20 text-blue-400';
-      case 'Builder': return 'bg-lime-400/20 text-lime-400';
+      case 'Builder': return 'bg-slate-500/20 text-slate-500';
       default: return 'bg-gray-400/20 text-gray-400';
     }
   };
@@ -108,20 +108,20 @@ export function Leaderboard() {
     <Card className="bg-white border text-black">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Trophy className="w-5 h-5 text-lime-600" />
+          <Trophy className="w-5 h-5 text-slate-600" />
           Leaderboard
         </CardTitle>
       </CardHeader>
       <CardContent>
         <Tabs value={timeFilter} onValueChange={(value) => setTimeFilter(value as any)} className="w-full">
           <TabsList className="grid w-full grid-cols-3 bg-white/10">
-            <TabsTrigger value="today" className="text-white data-[state=active]:bg-lime-400 data-[state=active]:text-black">
+            <TabsTrigger value="today" className="text-white data-[state=active]:bg-slate-500 data-[state=active]:text-black">
               Today
             </TabsTrigger>
-            <TabsTrigger value="week" className="text-white data-[state=active]:bg-lime-400 data-[state=active]:text-black">
+            <TabsTrigger value="week" className="text-white data-[state=active]:bg-slate-500 data-[state=active]:text-black">
               This Week
             </TabsTrigger>
-            <TabsTrigger value="all" className="text-white data-[state=active]:bg-lime-400 data-[state=active]:text-black">
+            <TabsTrigger value="all" className="text-white data-[state=active]:bg-slate-500 data-[state=active]:text-black">
               All Time
             </TabsTrigger>
           </TabsList>
@@ -144,7 +144,7 @@ export function Leaderboard() {
                 <div className="relative">
                   <Avatar className="w-10 h-10">
                     <AvatarImage src={`https://api.dicebear.com/7.x/identicon/svg?seed=${entry.username}`} />
-                    <AvatarFallback className="bg-lime-400/20 text-lime-400">
+                    <AvatarFallback className="bg-slate-500/20 text-slate-500">
                       {entry.username.slice(0, 2).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
@@ -176,7 +176,7 @@ export function Leaderboard() {
                     <div className="text-xs text-white/50">Hours</div>
                   </div>
                   <div>
-                    <div className="flex items-center gap-1 text-lime-400 text-sm">
+                    <div className="flex items-center gap-1 text-slate-500 text-sm">
                       <Coins className="w-3 h-3" />
                       {entry.totalVnsEarned.toFixed(0)}
                     </div>
@@ -204,7 +204,7 @@ export function Leaderboard() {
             <div className="text-xs text-white/60">Active Contributors</div>
           </div>
           <div className="text-center">
-            <div className="text-lg font-mono text-lime-400">
+            <div className="text-lg font-mono text-slate-500">
               {leaderboard.reduce((sum, entry) => sum + entry.hoursContributed, 0).toFixed(0)}h
             </div>
             <div className="text-xs text-white/60">Total Hours</div>

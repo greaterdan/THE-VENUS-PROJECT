@@ -41,9 +41,9 @@ export function ContributorStatus({
         };
       case 'Builder':
         return {
-          color: 'from-lime-500 to-green-500',
-          textColor: 'text-lime-400',
-          bgColor: 'bg-lime-400/20',
+          color: 'from-slate-600 to-slate-600',
+          textColor: 'text-slate-500',
+          bgColor: 'bg-slate-500/20',
           icon: <Zap className="w-5 h-5" />,
           description: 'Dedicated network contributor'
         };
@@ -75,7 +75,7 @@ export function ContributorStatus({
     <Card className="bg-white/5 backdrop-blur-xl border-white/10 text-white">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Award className="w-5 h-5 text-lime-400" />
+          <Award className="w-5 h-5 text-slate-500" />
           Contributor Status
         </CardTitle>
       </CardHeader>
@@ -125,7 +125,7 @@ export function ContributorStatus({
               <Clock className="w-4 h-4" />
               Today's Goal
             </span>
-            <span className="text-lime-400">
+            <span className="text-slate-500">
               {todaysProgress.toFixed(1)} / {dailyGoal}h
             </span>
           </div>
@@ -150,7 +150,7 @@ export function ContributorStatus({
                 transition={{ delay: index * 0.1 }}
                 className={`p-3 rounded-lg text-center transition-all duration-300 ${
                   badge.achieved
-                    ? 'bg-lime-400/20 border border-lime-400/30 text-lime-400'
+                    ? 'bg-slate-500/20 border border-slate-500/30 text-slate-500'
                     : 'bg-white/5 border border-white/10 text-white/40'
                 }`}
               >
@@ -162,10 +162,10 @@ export function ContributorStatus({
         </div>
 
         {/* Earnings Progress */}
-        <div className="p-4 bg-gradient-to-r from-lime-500/10 to-green-500/10 rounded-lg border border-lime-500/20">
+        <div className="p-4 bg-gradient-to-r from-slate-600/10 to-slate-600/10 rounded-lg border border-slate-600/20">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium">Daily Earnings</span>
-            <span className="text-lime-400 font-mono">2.47 VNS</span>
+            <span className="text-slate-500 font-mono">2.47 VNS</span>
           </div>
           <Progress value={65} className="h-2 mb-2" />
           <div className="text-xs text-white/60">

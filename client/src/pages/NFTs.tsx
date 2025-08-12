@@ -14,7 +14,7 @@ export default function NFTs() {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             <div className="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
-              <div className="w-full h-64 bg-gradient-to-br from-lime-400 to-green-600 rounded-lg mb-4"></div>
+              <div className="w-full h-64 bg-gradient-to-br from-slate-500 to-green-600 rounded-lg mb-4"></div>
               <h3 className="text-xl font-semibold mb-2">Genesis Cities</h3>
               <p className="text-gray-600 mb-4">
                 The first collection of AI-designed sustainable city concepts. 
@@ -63,28 +63,28 @@ export default function NFTs() {
             <h2 className="text-3xl font-semibold mb-4">Utility & Benefits</h2>
             <div className="grid md:grid-cols-2 gap-8">
               <div>
-                <h3 className="text-xl font-medium mb-3 text-lime-400">Governance Rights</h3>
+                <h3 className="text-xl font-medium mb-3 text-slate-500">Governance Rights</h3>
                 <p className="text-gray-300">
                   NFT holders participate in key project decisions, including 
                   city design priorities and resource allocation votes.
                 </p>
               </div>
               <div>
-                <h3 className="text-xl font-medium mb-3 text-lime-400">Early Access</h3>
+                <h3 className="text-xl font-medium mb-3 text-slate-500">Early Access</h3>
                 <p className="text-gray-300">
                   Exclusive access to new AI models, city simulations, and 
                   beta features before public release.
                 </p>
               </div>
               <div>
-                <h3 className="text-xl font-medium mb-3 text-lime-400">Revenue Sharing</h3>
+                <h3 className="text-xl font-medium mb-3 text-slate-500">Revenue Sharing</h3>
                 <p className="text-gray-300">
                   Percentage of project revenue distributed to NFT holders 
                   based on rarity and contribution level.
                 </p>
               </div>
               <div>
-                <h3 className="text-xl font-medium mb-3 text-lime-400">Virtual Land</h3>
+                <h3 className="text-xl font-medium mb-3 text-slate-500">Virtual Land</h3>
                 <p className="text-gray-300">
                   Future access to virtual city plots in the metaverse 
                   representation of Venus Project cities.
@@ -103,7 +103,7 @@ export default function NFTs() {
               <button className="px-8 py-4 bg-black text-white hover:bg-gray-800 transition-colors rounded-lg text-lg">
                 Browse Collections
               </button>
-              <button className="px-8 py-4 border-2 border-black text-black hover:border-lime-500 hover:text-lime-500 transition-colors rounded-lg text-lg">
+              <button className="px-8 py-4 border-2 border-black text-black hover:border-slate-600 hover:text-slate-600 transition-colors rounded-lg text-lg">
                 Learn More
               </button>
             </div>

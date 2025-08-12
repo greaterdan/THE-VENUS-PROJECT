@@ -59,7 +59,7 @@ export function GlobalMap() {
     <Card className="bg-white border text-black">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Globe className="w-5 h-5 text-lime-600" />
+          <Globe className="w-5 h-5 text-slate-600" />
           Global Node Network
         </CardTitle>
       </CardHeader>
@@ -95,7 +95,7 @@ export function GlobalMap() {
                         animate={{ scale: 3, opacity: 0 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 2 }}
-                        className="absolute inset-0 w-3 h-3 bg-lime-400 rounded-full"
+                        className="absolute inset-0 w-3 h-3 bg-slate-500 rounded-full"
                       />
                     )}
                   </AnimatePresence>
@@ -103,7 +103,7 @@ export function GlobalMap() {
                   {/* Node dot */}
                   <motion.div
                     className={`w-3 h-3 rounded-full border-2 border-white/30 ${
-                      isPulsing ? 'bg-lime-400 scale-125' : 'bg-blue-400'
+                      isPulsing ? 'bg-slate-500 scale-125' : 'bg-blue-400'
                     } transition-all duration-300`}
                     animate={{ scale: isPulsing ? 1.2 : 1 }}
                   />
@@ -113,7 +113,7 @@ export function GlobalMap() {
                     <div className="bg-black/90 backdrop-blur-xl rounded-lg p-2 text-xs whitespace-nowrap border border-white/10">
                       <div className="font-medium">{node.country}</div>
                       <div className="text-white/60">{node.nodeCount} nodes</div>
-                      <div className="text-lime-400">{node.tflops}T FLOPS</div>
+                      <div className="text-slate-500">{node.tflops}T FLOPS</div>
                     </div>
                   </div>
                 </div>
@@ -123,7 +123,7 @@ export function GlobalMap() {
 
           {/* Activity indicator */}
           <div className="absolute bottom-2 right-2 flex items-center gap-2 text-xs text-white/60">
-            <div className="w-2 h-2 bg-lime-400 rounded-full animate-pulse"></div>
+            <div className="w-2 h-2 bg-slate-500 rounded-full animate-pulse"></div>
             Live Activity
           </div>
         </div>
@@ -137,7 +137,7 @@ export function GlobalMap() {
             <div className="text-xs text-white/60">Regions</div>
           </div>
           <div>
-            <div className="text-lg font-mono text-lime-400">
+            <div className="text-lg font-mono text-slate-500">
               {activeNodes.reduce((sum, node) => sum + node.nodeCount, 0).toLocaleString()}
             </div>
             <div className="text-xs text-white/60">Total Nodes</div>

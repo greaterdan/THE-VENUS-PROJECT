@@ -147,7 +147,7 @@ export const FluidNeuralNetwork: React.FC<FluidNeuralNetworkProps> = ({
   return (
     <div className={`relative ${className}`}>
       {/* Neural Network Canvas */}
-      <div className="relative w-full h-96 bg-black/20 rounded-lg border border-lime-500/20 overflow-hidden">
+      <div className="relative w-full h-96 bg-black/20 rounded-lg border border-slate-600/20 overflow-hidden">
         <svg
           className="w-full h-full"
           viewBox="0 0 600 400"
@@ -180,15 +180,15 @@ export const FluidNeuralNetwork: React.FC<FluidNeuralNetworkProps> = ({
 
         {/* Connection status overlay */}
         <div className="absolute top-2 left-2 flex items-center gap-2">
-          <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-lime-500' : 'bg-red-500'}`} />
-          <span className="text-xs text-lime-400">
+          <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-slate-600' : 'bg-red-500'}`} />
+          <span className="text-xs text-slate-500">
             {isConnected ? 'Neural Link Active' : 'Neural Link Disconnected'}
           </span>
         </div>
 
         {/* Performance stats */}
         {showPerformanceStats && (
-          <div className="absolute top-2 right-2 flex gap-3 text-xs text-lime-400">
+          <div className="absolute top-2 right-2 flex gap-3 text-xs text-slate-500">
             <div className="flex items-center gap-1">
               <Cpu className="w-3 h-3" />
               <span>{fps}fps</span>
@@ -209,7 +209,7 @@ export const FluidNeuralNetwork: React.FC<FluidNeuralNetworkProps> = ({
           exit={{ opacity: 0, y: 20 }}
           className="mt-4"
         >
-          <Card className="bg-black/40 border-lime-500/30">
+          <Card className="bg-black/40 border-slate-600/30">
             <CardContent className="p-4">
               {(() => {
                 const agent = fluidAgents.find(a => a.id === selectedAgent);
@@ -218,11 +218,11 @@ export const FluidNeuralNetwork: React.FC<FluidNeuralNetworkProps> = ({
                 return (
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-bold text-lime-400">
+                      <h3 className="text-lg font-bold text-slate-500">
                         Agent {agent.name}
                       </h3>
                       <Badge 
-                        className={`${agent.status === 'active' ? 'bg-lime-500' : 
+                        className={`${agent.status === 'active' ? 'bg-slate-600' : 
                           agent.status === 'processing' ? 'bg-yellow-500' : 'bg-gray-500'} text-black`}
                       >
                         {agent.status.toUpperCase()}
@@ -234,7 +234,7 @@ export const FluidNeuralNetwork: React.FC<FluidNeuralNetworkProps> = ({
                     <div className="space-y-2">
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-gray-400">Confidence</span>
-                        <span className="text-lime-400">{(agent.confidence * 100).toFixed(1)}%</span>
+                        <span className="text-slate-500">{(agent.confidence * 100).toFixed(1)}%</span>
                       </div>
                       <Progress 
                         value={agent.confidence * 100} 
@@ -244,10 +244,10 @@ export const FluidNeuralNetwork: React.FC<FluidNeuralNetworkProps> = ({
                     
                     <div className="grid grid-cols-2 gap-4 text-xs">
                       <div>
-                        <h4 className="font-semibold text-lime-400 mb-1">Resource Surplus</h4>
+                        <h4 className="font-semibold text-slate-500 mb-1">Resource Surplus</h4>
                         <div className="space-y-1">
                           {agent.resources.surplus.map((resource, idx) => (
-                            <Badge key={idx} variant="outline" className="text-xs border-green-500/50 text-green-400">
+                            <Badge key={idx} variant="outline" className="text-xs border-slate-600/50 text-green-400">
                               {resource}
                             </Badge>
                           ))}

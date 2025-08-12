@@ -156,7 +156,7 @@ export default function Navigation() {
                     {venusLinks.map((link) => (
                       <Link key={link.href} href={link.href}>
                         <span
-                          className="block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-all duration-300 ease-out transform hover:translate-x-1 cursor-pointer"
+                          className="block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-slate-600 transition-all duration-300 ease-out transform hover:translate-x-1 cursor-pointer"
                         >
                           {link.label}
                         </span>
@@ -188,7 +188,7 @@ export default function Navigation() {
                     {agoraLinks.map((link) => (
                       <Link key={link.href} href={link.href}>
                         <span
-                          className="block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-all duration-300 ease-out transform hover:translate-x-1 cursor-pointer"
+                          className="block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-slate-600 transition-all duration-300 ease-out transform hover:translate-x-1 cursor-pointer"
                         >
                           {link.label}
                         </span>
@@ -220,7 +220,7 @@ export default function Navigation() {
                     {contributeLinks.map((link) => (
                       <Link key={link.href} href={link.href}>
                         <span
-                          className="block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-all duration-300 ease-out transform hover:translate-x-1 cursor-pointer"
+                          className="block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-slate-600 transition-all duration-300 ease-out transform hover:translate-x-1 cursor-pointer"
                         >
                           {link.label}
                         </span>
@@ -252,8 +252,8 @@ export default function Navigation() {
                     {docsLinks.map((link) => (
                       <Link key={link.href} href={link.href}>
                         <span
-                          className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-venus-lime transition-all duration-300 ease-out transform hover:translate-x-1 cursor-pointer ${
-                            isActive(link.href) ? "text-venus-lime" : ""
+                          className={`block px-4 py-2 text-sm text-black hover:bg-gray-50 hover:text-slate-600 transition-all duration-300 ease-out transform hover:translate-x-1 cursor-pointer ${
+                            isActive(link.href) ? "text-slate-600" : ""
                           }`}
                         >
                           {link.label}
@@ -271,7 +271,7 @@ export default function Navigation() {
           <div className="md:hidden ml-auto transition-opacity duration-500 ease-in-out" style={{ opacity: navOpacity }}>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-black hover:text-venus-lime focus:outline-none transition-all duration-300"
+              className="text-black hover:text-slate-600 focus:outline-none transition-all duration-300"
             >
               {mobileMenuOpen ? (
                 <X className="h-8 w-8" />
@@ -290,7 +290,7 @@ export default function Navigation() {
             {/* Mobile Home Link */}
             <Link href="/">
               <span
-                className="flex items-center px-3 py-2 text-sm font-medium text-black hover:text-venus-lime transition-colors cursor-pointer"
+                className="flex items-center px-3 py-2 text-sm font-medium text-black hover:text-slate-600 transition-colors cursor-pointer"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <img src={venusLogo} alt="Home" className="h-6 w-6 mr-3" />
@@ -300,8 +300,8 @@ export default function Navigation() {
             {venusLinks.map((link) => (
               <Link key={link.href} href={link.href}>
                 <span
-                  className={`block px-3 py-2 text-sm font-medium text-black hover:text-venus-lime transition-colors cursor-pointer ${
-                    isActive(link.href) ? "text-venus-lime" : ""
+                  className={`block px-3 py-2 text-sm font-medium text-black hover:text-slate-600 transition-colors cursor-pointer ${
+                    isActive(link.href) ? "text-slate-600" : ""
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -312,8 +312,8 @@ export default function Navigation() {
             {contributeLinks.map((link) => (
               <Link key={link.href} href={link.href}>
                 <span
-                  className={`block px-3 py-2 text-sm font-medium text-black hover:text-venus-lime transition-colors cursor-pointer ${
-                    isActive(link.href) ? "text-venus-lime" : ""
+                  className={`block px-3 py-2 text-sm font-medium text-black hover:text-slate-600 transition-colors cursor-pointer ${
+                    isActive(link.href) ? "text-slate-600" : ""
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -324,8 +324,8 @@ export default function Navigation() {
             {agoraLinks.map((link) => (
               <Link key={link.href} href={link.href}>
                 <span
-                  className={`block px-3 py-2 text-sm font-medium text-black hover:text-venus-lime transition-colors cursor-pointer ${
-                    isActive(link.href) ? "text-venus-lime" : ""
+                  className={`block px-3 py-2 text-sm font-medium text-black hover:text-slate-600 transition-colors cursor-pointer ${
+                    isActive(link.href) ? "text-slate-600" : ""
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -336,8 +336,8 @@ export default function Navigation() {
             {docsLinks.map((link) => (
               <Link key={link.href} href={link.href}>
                 <span
-                  className={`block px-3 py-2 text-sm font-medium text-black hover:text-venus-lime transition-colors cursor-pointer ${
-                    isActive(link.href) ? "text-venus-lime" : ""
+                  className={`block px-3 py-2 text-sm font-medium text-black hover:text-slate-600 transition-colors cursor-pointer ${
+                    isActive(link.href) ? "text-slate-600" : ""
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >

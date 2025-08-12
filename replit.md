@@ -29,7 +29,7 @@ Preferred communication style: Simple, everyday language.
 
 ## Styling and Design System
 - **Tailwind CSS**: Utility-first CSS framework with custom design tokens
-- **Custom Theme**: Venus Project branded color scheme with lime accent colors
+- **Custom Theme**: Venus Project branded color scheme with steel blue-gray accent colors matching the project logo
 - **Typography**: Inter font family for consistent branding
 - **Component Library**: Comprehensive UI component system with consistent styling patterns
 

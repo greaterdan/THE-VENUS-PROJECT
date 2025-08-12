@@ -75,13 +75,13 @@ const ScrollPortrait = () => {
             <blockquote className="text-xl italic text-black mb-4 leading-relaxed">
               "{displayedQuote}"
               {hasStartedTyping && displayedQuote.length < fullQuote.length && (
-                <span className="animate-pulse text-lime-500">|</span>
+                <span className="animate-pulse text-slate-600">|</span>
               )}
             </blockquote>
             <cite className="text-lg font-semibold text-gray-700">
               {displayedAuthor}
               {hasStartedTyping && displayedQuote.length === fullQuote.length && displayedAuthor.length < fullAuthor.length && (
-                <span className="animate-pulse text-lime-500">|</span>
+                <span className="animate-pulse text-slate-600">|</span>
               )}
             </cite>
           </div>

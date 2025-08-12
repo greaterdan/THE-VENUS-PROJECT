@@ -496,7 +496,7 @@ export default function AgoraChain() {
                 LIVE MAP
               </button>
               <button
-                className="px-3 py-1 text-xs font-mono rounded bg-lime-500 text-white"
+                className="px-3 py-1 text-xs font-mono rounded bg-slate-600 text-white"
               >
                 AGORA CHAIN
               </button>
@@ -532,7 +532,7 @@ export default function AgoraChain() {
         <div className="text-xs text-gray-600 flex items-center justify-between">
           <span>System Time: [{currentTime}] | Status: OPERATIONAL</span>
           {!walletConnected ? (
-            <button onClick={() => connectWallet('phantom')} className="text-lime-600 hover:text-lime-800 underline">
+            <button onClick={() => connectWallet('phantom')} className="text-slate-600 hover:text-slate-800 underline">
               Connect Phantom Wallet
             </button>
           ) : (
@@ -579,7 +579,7 @@ export default function AgoraChain() {
                       onClick={() => openExplorer(event.id)}
                       title="Click to view transaction details in explorer"
                     >
-                      <span className="text-lime-600 font-medium">[{event.timestamp}]</span>
+                      <span className="text-slate-600 font-medium">[{event.timestamp}]</span>
                       <span className="ml-2 text-gray-800 font-semibold">{event.domain.toUpperCase()}</span>
                       <span className="ml-2 text-blue-600">{event.action}</span>
                       <span className="ml-2 text-gray-500">{event.details}</span>
@@ -622,7 +622,7 @@ export default function AgoraChain() {
                       
                       {userPosition && (
                         <div className="border-t border-gray-200 pt-0.5 mt-1">
-                          <div>Your Stake: <span className="font-mono text-lime-600">{userPosition.staked} VPC</span></div>
+                          <div>Your Stake: <span className="font-mono text-slate-600">{userPosition.staked} VPC</span></div>
                         </div>
                       )}
                       
@@ -634,7 +634,7 @@ export default function AgoraChain() {
                             console.log('Stake button clicked for agent:', agent.id);
                             handleStakeAction(agent.id, 'stake');
                           }}
-                          className="text-lime-600 hover:text-lime-800 underline text-xs cursor-pointer z-10"
+                          className="text-slate-600 hover:text-slate-800 underline text-xs cursor-pointer z-10"
                         >
                           Stake
                         </button>
@@ -681,14 +681,14 @@ export default function AgoraChain() {
                   type="number"
                   value={stakeAmount}
                   onChange={(e) => setStakeAmount(Number(e.target.value))}
-                  className="ml-2 px-2 py-1 border border-gray-300 rounded text-xs font-mono w-24 focus:outline-none focus:ring-1 focus:ring-lime-500"
+                  className="ml-2 px-2 py-1 border border-gray-300 rounded text-xs font-mono w-24 focus:outline-none focus:ring-1 focus:ring-slate-600"
                   placeholder="100"
                 />
               </div>
               
               {userPosition && (
                 <div className="space-y-1">
-                  <div>Your Position: Staked: <span className="font-mono text-lime-600">{userPosition.staked} VPC</span>, Pending: <span className="font-mono text-yellow-600">{userPosition.pending} VPC</span></div>
+                  <div>Your Position: Staked: <span className="font-mono text-slate-600">{userPosition.staked} VPC</span>, Pending: <span className="font-mono text-yellow-600">{userPosition.pending} VPC</span></div>
                   <div>Influence Score: <span className="font-mono text-purple-600">{userPosition.influenceScore}</span>, Access Tickets: <span className="font-mono text-blue-600">{userPosition.accessTickets}</span></div>
                   {userPosition.unlockDate && <div>Unlock Date: <span className="font-mono">{userPosition.unlockDate}</span></div>}
                 </div>
@@ -698,7 +698,7 @@ export default function AgoraChain() {
                 <button
                   onClick={handleStake}
                   disabled={!stakeAmount || stakeAmount <= 0}
-                  className="text-lime-600 hover:text-lime-800 underline disabled:text-gray-400 disabled:no-underline"
+                  className="text-slate-600 hover:text-slate-800 underline disabled:text-gray-400 disabled:no-underline"
                 >
                   Stake
                 </button>
@@ -822,7 +822,7 @@ export default function AgoraChain() {
                   >
                     Estimated influence (domain): 
                     <motion.span 
-                      className="font-mono text-lime-600"
+                      className="font-mono text-slate-600"
                       animate={{ 
                         scale: estimatedInfluence > 0 ? [1, 1.05, 1] : 1,
                         color: estimatedInfluence > 0 ? '#65a30d' : '#6b7280'
@@ -835,7 +835,7 @@ export default function AgoraChain() {
                   
                   {userPosition && (
                     <div className="mt-2 pt-1 border-t border-gray-200">
-                      <div>Your current stake: <span className="font-mono text-lime-600">{userPosition.staked} VPC</span></div>
+                      <div>Your current stake: <span className="font-mono text-slate-600">{userPosition.staked} VPC</span></div>
                     </div>
                   )}
                   
@@ -853,7 +853,7 @@ export default function AgoraChain() {
                         setModalStakeAmount(e.target.value);
                         validateStakeAmount();
                       }}
-                      className="px-2 py-1 border border-gray-300 text-xs font-mono w-24 focus:outline-none focus:ring-1 focus:ring-lime-500 transition-all duration-200"
+                      className="px-2 py-1 border border-gray-300 text-xs font-mono w-24 focus:outline-none focus:ring-1 focus:ring-slate-600 transition-all duration-200"
                       placeholder="100"
                       autoFocus
                       animate={{
@@ -930,7 +930,7 @@ export default function AgoraChain() {
                     <motion.button
                       onClick={confirmStakeAction}
                       disabled={!isValid || isSubmitting}
-                      className="text-lime-600 hover:text-lime-800 underline disabled:text-gray-400 disabled:no-underline transition-all duration-200"
+                      className="text-slate-600 hover:text-slate-800 underline disabled:text-gray-400 disabled:no-underline transition-all duration-200"
                       whileHover={isValid && !isSubmitting ? { scale: 1.05 } : {}}
                       whileTap={isValid && !isSubmitting ? { scale: 0.95 } : {}}
                       animate={{
@@ -968,7 +968,7 @@ export default function AgoraChain() {
             <div className="flex items-center">
               {isSubmitting && (
                 <motion.div
-                  className="w-2 h-2 bg-lime-500 rounded-full mr-2"
+                  className="w-2 h-2 bg-slate-600 rounded-full mr-2"
                   animate={{ scale: [1, 1.2, 1] }}
                   transition={{ duration: 1, repeat: Infinity }}
                 />
