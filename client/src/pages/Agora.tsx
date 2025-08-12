@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLocation } from 'wouter';
 import { useGlobalConversation } from '@/contexts/GlobalConversationContext';
 import { LiveMessageCounter } from '@/components/LiveMessageCounter';
 
@@ -661,6 +662,7 @@ const MetricGauge = ({ label, value, color }: { label: string; value: number; co
 };
 
 export default function Agora() {
+  const [, setLocation] = useLocation();
   const [hoveredAgent, setHoveredAgent] = useState<Agent | null>(null);
   const [viewMode, setViewMode] = useState<'live' | 'archive'>('live');
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString('en-US', { hour12: false }));
@@ -971,7 +973,7 @@ export default function Agora() {
                 LIVE MAP
               </button>
               <button
-                onClick={() => window.location.href = '/agora-chain'}
+                onClick={() => setLocation('/agora-chain')}
                 className="px-3 py-1 text-xs font-mono rounded bg-gray-200 text-gray-600 hover:bg-gray-300"
               >
                 AGORA CHAIN

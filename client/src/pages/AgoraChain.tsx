@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
+import { useLocation } from "wouter";
 import Navigation from "@/components/Navigation";
 
 // Agent domain mapping
@@ -49,6 +50,7 @@ interface StakePosition {
 }
 
 export default function AgoraChain() {
+  const [, setLocation] = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
   const [chainEvents, setChainEvents] = useState<ChainEvent[]>([]);
   const [walletConnected, setWalletConnected] = useState(false);
@@ -264,7 +266,7 @@ export default function AgoraChain() {
             </div>
             <div className="flex gap-2">
               <button
-                onClick={() => window.location.href = '/agora'}
+                onClick={() => setLocation('/agora')}
                 className="px-3 py-1 text-xs font-mono rounded bg-gray-200 text-gray-600 hover:bg-gray-300"
               >
                 LIVE MAP
@@ -275,13 +277,13 @@ export default function AgoraChain() {
                 AGORA CHAIN
               </button>
               <button
-                onClick={() => window.location.href = '/agora'}
+                onClick={() => setLocation('/agora')}
                 className="px-3 py-1 text-xs font-mono rounded bg-gray-200 text-gray-600 hover:bg-gray-300"
               >
                 ARCHIVE
               </button>
               <button
-                onClick={() => window.location.href = '/agora'}
+                onClick={() => setLocation('/agora')}
                 className="px-3 py-1 text-xs font-mono rounded bg-gray-200 text-gray-600 hover:bg-gray-300"
               >
                 CHAT
