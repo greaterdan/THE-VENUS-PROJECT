@@ -255,7 +255,7 @@ export default function AgoraChain() {
       <Navigation />
       
       {/* Agora Navigation Menu - matching the main Agora page */}
-      <div className="px-6 py-3 border-b border-gray-200 bg-gray-50/50">
+      <div className="px-6 py-3 border-b border-gray-200 bg-gray-50/50 relative z-50" style={{ marginTop: '64px' }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-6">
             <div>
