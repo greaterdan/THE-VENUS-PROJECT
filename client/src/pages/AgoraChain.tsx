@@ -136,6 +136,35 @@ export default function AgoraChain() {
     }
   };
 
+  // Disconnect wallet function
+  const disconnectWallet = async () => {
+    try {
+      const phantom = (window as any).phantom?.solana;
+      if (phantom && phantom.isPhantom) {
+        await phantom.disconnect();
+      }
+      
+      setWalletConnected(false);
+      setWalletAlias('');
+      setUserPositions([]);
+      
+      // Add disconnect event to chain
+      const disconnectEvent: ChainEvent = {
+        id: `disconnect-${Date.now()}`,
+        timestamp: format(new Date(), 'HH:mm'),
+        domain: 'WALLET',
+        agent: 'PHANTOM',
+        action: 'DISCONNECTED',
+        details: 'Wallet disconnected successfully',
+        status: 'CONFIRMED'
+      };
+      
+      setChainEvents(prev => [disconnectEvent, ...prev]);
+    } catch (error) {
+      console.error('Failed to disconnect wallet:', error);
+    }
+  };
+
   // Generate initial chain events
   useEffect(() => {
     const generateInitialEvents = () => {
@@ -334,7 +363,15 @@ export default function AgoraChain() {
               Connect Phantom Wallet
             </button>
           ) : (
-            <span className="text-gray-600">{walletAlias}</span>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-600">{walletAlias}</span>
+              <button 
+                onClick={disconnectWallet}
+                className="text-red-600 hover:text-red-800 underline text-xs"
+              >
+                Disconnect
+              </button>
+            </div>
           )}
         </div>
         <div className="border-t border-gray-200 my-2"></div>
