@@ -404,6 +404,14 @@ export default function Agora() {
   const [viewMode, setViewMode] = useState<'live' | 'archive'>('live');
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString('en-US', { hour12: false }));
   const [activeConnections, setActiveConnections] = useState<ActiveConnection[]>([]);
+  const [chatMessages, setChatMessages] = useState<Array<{
+    id: string;
+    timestamp: string;
+    from: string;
+    to: string;
+    message: string;
+    type: 'energy' | 'material' | 'data' | 'time';
+  }>>([]);
 
   useEffect(() => {
     const timeInterval = setInterval(() => {
@@ -426,6 +434,17 @@ export default function Agora() {
       };
 
       setActiveConnections(prev => [...prev, newConnection]);
+
+      // Add to chat messages with timestamp
+      const chatMessage = {
+        id: newConnection.id,
+        timestamp: new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+        from: newConnection.from.toUpperCase(),
+        to: newConnection.to.toUpperCase(),
+        message: newConnection.message,
+        type: newConnection.type
+      };
+      setChatMessages(prev => [...prev.slice(-19), chatMessage]); // Keep last 20 messages
 
       // Remove connection after 3 seconds
       setTimeout(() => {
@@ -559,8 +578,8 @@ export default function Agora() {
             </div>
 
             {/* Decision Metrics Panel */}
-            <div className="w-1/3 bg-white p-6 overflow-y-auto">
-              <div className="space-y-6">
+            <div className="w-1/3 bg-white p-6 flex flex-col">
+              <div className="space-y-6 flex-shrink-0">
                 
                 {/* Current Decision Metrics */}
                 <div>
@@ -572,30 +591,55 @@ export default function Agora() {
                   </div>
                 </div>
 
-                {/* Active Connections */}
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-800 mb-4">Live Communications</h3>
-                  <div className="space-y-3">
-                    {activeConnections.slice(-3).map((connection) => (
-                      <div key={connection.id} className="bg-gray-50 rounded p-3">
-                        <div className="flex items-center justify-between text-xs">
-                          <span className="font-mono text-gray-600">
-                            {connection.from.toUpperCase()} → {connection.to.toUpperCase()}
-                          </span>
-                          <span className={`px-2 py-1 rounded text-white ${
-                            connection.type === 'energy' ? 'bg-yellow-400' :
-                            connection.type === 'material' ? 'bg-blue-400' :
-                            connection.type === 'data' ? 'bg-purple-400' : 'bg-green-400'
-                          }`}>
-                            {connection.type}
-                          </span>
+                {/* Live Communications Chat */}
+                <div className="flex-1 flex flex-col">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-sm font-semibold text-gray-800">Live Communications</h3>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                      <span className="text-xs text-gray-500">Live</span>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-gray-50 rounded-lg border flex-1 overflow-hidden">
+                    <div className="h-64 overflow-y-auto p-3 space-y-2">
+                      {chatMessages.length === 0 && (
+                        <div className="text-gray-500 text-xs text-center py-8">
+                          Waiting for agent communications...
                         </div>
-                        <div className="text-sm text-gray-800 mt-1">{connection.message}</div>
-                      </div>
-                    ))}
-                    {activeConnections.length === 0 && (
-                      <div className="text-gray-500 text-xs">Establishing connections...</div>
-                    )}
+                      )}
+                      {chatMessages.map((message) => (
+                        <motion.div
+                          key={message.id}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="bg-white rounded p-2 shadow-sm border"
+                        >
+                          <div className="flex items-center justify-between mb-1">
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-mono text-gray-600">
+                                {message.from} → {message.to}
+                              </span>
+                              <span className={`px-1.5 py-0.5 rounded text-xs text-white ${
+                                message.type === 'energy' ? 'bg-yellow-400' :
+                                message.type === 'material' ? 'bg-blue-400' :
+                                message.type === 'data' ? 'bg-purple-400' : 'bg-green-400'
+                              }`}>
+                                {message.type}
+                              </span>
+                            </div>
+                            <span className="text-xs text-gray-400">{message.timestamp}</span>
+                          </div>
+                          <div className="text-xs text-gray-800 leading-relaxed">
+                            {message.message}
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="mt-2 text-xs text-gray-500 text-center">
+                    {chatMessages.length} messages • Real-time AI agent communications
                   </div>
                 </div>
 
