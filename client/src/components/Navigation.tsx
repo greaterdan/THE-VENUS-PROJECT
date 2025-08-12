@@ -113,10 +113,6 @@ export default function Navigation() {
         zIndex: 9999
       }}
     >
-      {/* Debug: Visual indicator for Agora page - will be removed */}
-      {location === "/agora" && (
-        <div className="absolute top-0 left-0 w-full h-2 bg-red-500 z-[10000]" title="Navigation Debug Indicator"></div>
-      )}
       <div className="w-full">
         <div className="flex items-center justify-between h-16 pr-4">
           {/* Left Logo - Home Link - FORCED visibility on Agora and non-home pages */}

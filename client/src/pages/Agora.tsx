@@ -774,10 +774,10 @@ export default function Agora() {
   }, []);
 
   return (
-    <div className="h-screen bg-white text-black overflow-hidden relative" style={{ touchAction: 'none' }}>
+    <div className="bg-white text-black overflow-hidden relative mt-16" style={{ touchAction: 'none', height: 'calc(100vh - 64px)' }}>
       
-      {/* Header - positioned right below navigation */}
-      <div className="px-6 py-3 border-b border-gray-200 bg-gray-50/50 absolute top-16 left-0 right-0 z-10">
+      {/* Header - positioned at the top of container */}
+      <div className="px-6 py-3 border-b border-gray-200 bg-gray-50/50 absolute top-0 left-0 right-0 z-10">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-6">
             <div>
