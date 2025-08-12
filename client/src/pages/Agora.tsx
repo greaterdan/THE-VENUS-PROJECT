@@ -190,7 +190,7 @@ const ARCHIVE_DECISIONS = [
   { id: 5, title: 'Healthcare System Upgrade', status: 'IMPLEMENTED', timestamp: '14:06:12', impact: '97.3% diagnostic accuracy' }
 ];
 
-const SVGAgentNode = ({ agent, isSelected, onClick }: { agent: Agent; isSelected: boolean; onClick: () => void }) => {
+const SVGAgentNode = ({ agent, isHovered, onMouseEnter, onMouseLeave }: { agent: Agent; isHovered: boolean; onMouseEnter: () => void; onMouseLeave: () => void }) => {
   // Color coding based on agent type matching example image
   const agentColors = {
     alpha: '#22c55e',    // Infrastructure - Green
@@ -213,10 +213,11 @@ const SVGAgentNode = ({ agent, isSelected, onClick }: { agent: Agent; isSelected
         cy={agent.position.y}
         r="20"
         fill={agentColors[agent.id as keyof typeof agentColors]}
-        stroke={isSelected ? '#a3e635' : '#ffffff'}
-        strokeWidth={isSelected ? '4' : '2'}
+        stroke={isHovered ? '#a3e635' : '#ffffff'}
+        strokeWidth={isHovered ? '4' : '2'}
         className="cursor-pointer"
-        onClick={onClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         whileHover={{ scale: 1.1 }}
@@ -399,7 +400,7 @@ const MetricGauge = ({ label, value, color }: { label: string; value: number; co
 };
 
 export default function Agora() {
-  const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
+  const [hoveredAgent, setHoveredAgent] = useState<Agent | null>(null);
   const [viewMode, setViewMode] = useState<'live' | 'archive'>('live');
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString('en-US', { hour12: false }));
   const [activeConnections, setActiveConnections] = useState<ActiveConnection[]>([]);
@@ -510,51 +511,46 @@ export default function Agora() {
                   <SVGAgentNode
                     key={agent.id}
                     agent={agent}
-                    isSelected={selectedAgent?.id === agent.id}
-                    onClick={() => setSelectedAgent(agent)}
+                    isHovered={hoveredAgent?.id === agent.id}
+                    onMouseEnter={() => setHoveredAgent(agent)}
+                    onMouseLeave={() => setHoveredAgent(null)}
                   />
                 ))}
               </svg>
 
               {/* Agent Detail Panel */}
               <AnimatePresence>
-                {selectedAgent && (
+                {hoveredAgent && (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    className="absolute bg-white rounded-lg shadow-xl border p-4 w-64 z-10"
+                    className="absolute bg-white rounded-lg shadow-xl border p-4 w-64 z-10 pointer-events-none"
                     style={{
-                      left: `${Math.min(Math.max(selectedAgent.position.x + 30, 10), 320)}px`,
-                      top: `${Math.min(Math.max(selectedAgent.position.y - 100, 10), 250)}px`,
+                      left: `${Math.min(Math.max(hoveredAgent.position.x + 30, 10), 320)}px`,
+                      top: `${Math.min(Math.max(hoveredAgent.position.y - 100, 10), 250)}px`,
                       transformOrigin: 'center'
                     }}
                   >
                     <div className="flex items-center justify-between mb-3">
-                      <h4 className="font-semibold text-gray-800">Agent {selectedAgent.name}</h4>
-                      <button
-                        onClick={() => setSelectedAgent(null)}
-                        className="text-gray-400 hover:text-gray-600"
-                      >
-                        ×
-                      </button>
+                      <h4 className="font-semibold text-gray-800">Agent {hoveredAgent.name}</h4>
                     </div>
                     <div className="space-y-2 text-xs">
                       <div>
                         <span className="text-gray-500">Domain:</span>
-                        <span className="ml-2 font-mono">{selectedAgent.domain}</span>
+                        <span className="ml-2 font-mono">{hoveredAgent.domain}</span>
                       </div>
                       <div>
                         <span className="text-gray-500">Alignment:</span>
-                        <span className="ml-2 font-mono">{selectedAgent.alignment}%</span>
+                        <span className="ml-2 font-mono">{hoveredAgent.alignment}%</span>
                       </div>
                       <div>
                         <span className="text-gray-500">Surplus:</span>
-                        <div className="ml-2 text-green-600">{selectedAgent.resources.surplus.join(', ')}</div>
+                        <div className="ml-2 text-green-600">{hoveredAgent.resources.surplus.join(', ')}</div>
                       </div>
                       <div>
                         <span className="text-gray-500">Needs:</span>
-                        <div className="ml-2 text-red-600">{selectedAgent.resources.deficit.join(', ')}</div>
+                        <div className="ml-2 text-red-600">{hoveredAgent.resources.deficit.join(', ')}</div>
                       </div>
                     </div>
                   </motion.div>
