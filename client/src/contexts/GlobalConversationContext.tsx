@@ -56,53 +56,66 @@ export const GlobalConversationProvider: React.FC<{ children: React.ReactNode }>
     };
   }, []);
 
-  // Global conversation creation
-  const createGlobalConversation = async () => {
+  // Create multiple simultaneous conversations
+  const createMultipleConversations = async () => {
     if (!isComponentMounted.current) return;
     
+    // Generate 2-4 simultaneous conversations for dynamic effect
+    const conversationCount = Math.floor(Math.random() * 3) + 2; // 2-4 conversations
+    const conversationPromises = Array.from({ length: conversationCount }, async () => {
+      try {
+        const response = await fetch('/api/agent-conversation');
+        if (!response.ok) throw new Error('Failed to fetch conversation');
+        return await response.json();
+      } catch (error) {
+        console.error('Single conversation failed:', error);
+        return null;
+      }
+    });
+
     try {
       setIsLoadingNewMessage(true);
       
-      const response = await fetch('/api/agent-conversation');
-      if (!response.ok) throw new Error('Failed to fetch conversation');
-      const conversation = await response.json();
+      const conversations = await Promise.all(conversationPromises);
+      const validConversations = conversations.filter(conv => conv !== null);
       
-      if (!isComponentMounted.current) return;
+      if (!isComponentMounted.current || validConversations.length === 0) return;
 
-      const newConnection: ActiveConnection = {
-        id: `conn-${Date.now()}-${Math.random()}`,
+      const newConnections = validConversations.map((conversation, index) => ({
+        id: `conn-${Date.now()}-${Math.random()}-${index}`,
         from: conversation.from,
         to: conversation.to,
         type: conversation.type,
         message: conversation.message,
-        timestamp: Date.now()
-      };
+        timestamp: Date.now() + (index * 200) // Slight time offset for visual effect
+      }));
 
-      // Update global connections
+      // Update global connections with fade-out effect
       setActiveConnections(prev => {
-        const filtered = prev.filter(conn => Date.now() - conn.timestamp < 4000);
-        return [...filtered, newConnection];
+        const filtered = prev.filter(conn => Date.now() - conn.timestamp < 6000); // Extended for multi-agent
+        return [...filtered, ...newConnections];
       });
 
-      // Add new message to global chat
-      const chatMessage: ChatMessage = {
-        id: newConnection.id,
-        timestamp: new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-        from: newConnection.from.toUpperCase(),
-        to: newConnection.to.toUpperCase(),
-        message: newConnection.message,
-        type: newConnection.type
-      };
+      // Add new messages to global chat
+      const chatMessages = newConnections.map(connection => ({
+        id: connection.id,
+        timestamp: new Date(connection.timestamp).toLocaleTimeString('en-US', { 
+          hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' 
+        }),
+        from: connection.from.toUpperCase(),
+        to: connection.to.toUpperCase(),
+        message: connection.message,
+        type: connection.type
+      }));
 
       setChatMessages(current => {
-        if (current.some(msg => msg.id === chatMessage.id)) {
-          return current;
-        }
-        return [...current.slice(-19), chatMessage];
+        const existingIds = new Set(current.map(msg => msg.id));
+        const newMessages = chatMessages.filter(msg => !existingIds.has(msg.id));
+        return [...current.slice(-(20 - newMessages.length)), ...newMessages];
       });
 
     } catch (error) {
-      console.error('Global conversation failed:', error);
+      console.error('Multi-agent conversations failed:', error);
     } finally {
       if (isComponentMounted.current) {
         setIsLoadingNewMessage(false);
@@ -117,15 +130,15 @@ export const GlobalConversationProvider: React.FC<{ children: React.ReactNode }>
     const startGlobalConversations = async () => {
       if (!mounted) return;
       
-      await createGlobalConversation();
+      await createMultipleConversations();
       
       if (!mounted) return;
       
       conversationIntervalRef.current = setInterval(() => {
         if (mounted && isComponentMounted.current) {
-          createGlobalConversation();
+          createMultipleConversations();
         }
-      }, 12000);
+      }, 8000); // More frequent for dynamic effect
     };
 
     const timer = setTimeout(startGlobalConversations, 1500);

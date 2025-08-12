@@ -281,7 +281,24 @@ const ARCHIVE_DECISIONS = [
   }
 ];
 
-const SVGAgentNode = ({ agent, isHovered, onMouseEnter, onMouseLeave }: { agent: Agent; isHovered: boolean; onMouseEnter: () => void; onMouseLeave: () => void }) => {
+const SVGAgentNode = ({ 
+  agent, 
+  isHovered, 
+  onMouseEnter, 
+  onMouseLeave,
+  activeConnections = []
+}: { 
+  agent: Agent; 
+  isHovered: boolean; 
+  onMouseEnter: () => void; 
+  onMouseLeave: () => void;
+  activeConnections?: ActiveConnection[];
+}) => {
+  const connectionsInvolved = activeConnections.filter(
+    conn => conn.from === agent.id || conn.to === agent.id
+  );
+  const isActivelycommunicating = connectionsInvolved.length > 0;
+  const connectionIntensity = Math.min(connectionsInvolved.length / 3, 1);
   // Color coding based on agent type matching example image
   const agentColors = {
     alpha: '#22c55e',    // Infrastructure - Green
@@ -298,21 +315,85 @@ const SVGAgentNode = ({ agent, isHovered, onMouseEnter, onMouseLeave }: { agent:
 
   return (
     <g>
-      {/* Agent circle */}
+      {/* Neural network communication aura */}
+      {isActivelycommunicating && (
+        <>
+          <motion.circle
+            cx={agent.position.x}
+            cy={agent.position.y}
+            r="35"
+            fill="none"
+            stroke="#06b6d4"
+            strokeWidth="2"
+            opacity={0.3 + connectionIntensity * 0.4}
+            animate={{ 
+              r: [35, 45, 35],
+              opacity: [0.3 + connectionIntensity * 0.4, 0.6 + connectionIntensity * 0.3, 0.3 + connectionIntensity * 0.4]
+            }}
+            transition={{ 
+              duration: 1.5, 
+              repeat: Infinity, 
+              ease: "easeInOut" 
+            }}
+          />
+          <motion.circle
+            cx={agent.position.x}
+            cy={agent.position.y}
+            r="28"
+            fill="none"
+            stroke="#8b5cf6"
+            strokeWidth="1"
+            opacity={0.4 + connectionIntensity * 0.3}
+            animate={{ 
+              r: [28, 35, 28],
+              opacity: [0.4 + connectionIntensity * 0.3, 0.7 + connectionIntensity * 0.2, 0.4 + connectionIntensity * 0.3]
+            }}
+            transition={{ 
+              duration: 2, 
+              repeat: Infinity, 
+              ease: "easeInOut",
+              delay: 0.3 
+            }}
+          />
+        </>
+      )}
+
+      {/* Agent circle with enhanced communication state */}
       <motion.circle
         cx={agent.position.x}
         cy={agent.position.y}
         r="20"
         fill={agentColors[agent.id as keyof typeof agentColors]}
-        stroke={isHovered ? '#a3e635' : '#ffffff'}
-        strokeWidth={isHovered ? '4' : '2'}
+        stroke={
+          isActivelycommunicating 
+            ? '#06b6d4' 
+            : isHovered 
+              ? '#a3e635' 
+              : '#ffffff'
+        }
+        strokeWidth={
+          isActivelycommunicating 
+            ? '3' 
+            : isHovered 
+              ? '4' 
+              : '2'
+        }
         className="cursor-pointer"
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
+        animate={{ 
+          scale: isActivelycommunicating ? [1, 1.05, 1] : 1,
+          filter: isActivelycommunicating 
+            ? ['brightness(1)', 'brightness(1.2)', 'brightness(1)']
+            : 'brightness(1)'
+        }}
         whileHover={{ scale: 1.1 }}
-        transition={{ delay: 0.1 }}
+        transition={{ 
+          delay: 0.1,
+          scale: { duration: 1.5, repeat: isActivelycommunicating ? Infinity : 0, ease: "easeInOut" },
+          filter: { duration: 1.5, repeat: isActivelycommunicating ? Infinity : 0, ease: "easeInOut" }
+        }}
       />
       
       {/* Agent letter */}
@@ -338,18 +419,25 @@ const SVGAgentNode = ({ agent, isHovered, onMouseEnter, onMouseLeave }: { agent:
         {agent.name}
       </text>
       
-      {/* Activity indicator for active agents */}
-      {agent.status === 'active' && (
+      {/* Activity indicator - enhanced for multi-agent */}
+      {(agent.status === 'active' || isActivelycommunicating) && (
         <motion.circle
           cx={agent.position.x}
           cy={agent.position.y}
-          r="20"
+          r="25"
           fill="none"
-          stroke="#22c55e"
-          strokeWidth="2"
-          opacity="0.5"
-          animate={{ r: [20, 30, 20] }}
-          transition={{ duration: 2, repeat: Infinity }}
+          stroke={isActivelycommunicating ? "#06b6d4" : "#22c55e"}
+          strokeWidth="1"
+          opacity={isActivelycommunicating ? 0.6 : 0.4}
+          animate={{ 
+            r: isActivelycommunicating ? [25, 40, 25] : [25, 35, 25],
+            opacity: isActivelycommunicating ? [0.6, 0.2, 0.6] : [0.4, 0.1, 0.4]
+          }}
+          transition={{ 
+            duration: isActivelycommunicating ? 1.2 : 2, 
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
         />
       )}
     </g>
@@ -392,112 +480,140 @@ const AnimatedConnectionLine = ({
   const angle = Math.atan2(toY - fromY, toX - fromX);
   const arrowX = toX - 20 * Math.cos(angle);
   const arrowY = toY - 20 * Math.sin(angle);
+  
+  // Calculate connection age for fade effect
+  const connectionAge = Date.now() - connection.timestamp;
+  const maxAge = 6000;
+  const fadeOpacity = Math.max(0.1, 1 - (connectionAge / maxAge));
+  const pulseIntensity = Math.max(0.3, 1 - (connectionAge / 3000));
 
   return (
     <motion.g
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      animate={{ opacity: fadeOpacity }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
-      {/* Minimal sci-fi filters */}
+      {/* Enhanced sci-fi filters */}
       <defs>
-        <filter id={`softGlow-${connection.type}`} x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="2" result="softBlur"/>
-          <feGaussianBlur stdDeviation="6" result="outerGlow"/>
+        <filter id={`neuralGlow-${connection.id}`} x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="3" result="softBlur"/>
+          <feGaussianBlur stdDeviation="8" result="outerGlow"/>
+          <feGaussianBlur stdDeviation="15" result="farGlow"/>
           <feMerge>
+            <feMergeNode in="farGlow"/>
             <feMergeNode in="outerGlow"/>
             <feMergeNode in="softBlur"/>
             <feMergeNode in="SourceGraphic"/>
           </feMerge>
         </filter>
         
-        <linearGradient id={`neonGradient-${connection.type}`} x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#1e40af" stopOpacity="0.3"/>
-          <stop offset="30%" stopColor="#0ea5e9" stopOpacity="0.8"/>
-          <stop offset="70%" stopColor="#06b6d4" stopOpacity="1"/>
-          <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.6"/>
+        <linearGradient id={`neuralGradient-${connection.id}`} x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#1e40af" stopOpacity={fadeOpacity * 0.3}/>
+          <stop offset="30%" stopColor="#0ea5e9" stopOpacity={fadeOpacity * 0.8}/>
+          <stop offset="70%" stopColor="#06b6d4" stopOpacity={fadeOpacity * 1}/>
+          <stop offset="100%" stopColor="#8b5cf6" stopOpacity={fadeOpacity * 0.6}/>
         </linearGradient>
 
-        <linearGradient id={`shimmer-${connection.type}`} x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="transparent"/>
-          <stop offset="45%" stopColor="transparent"/>
-          <stop offset="50%" stopColor="#ffffff" stopOpacity="0.4"/>
-          <stop offset="55%" stopColor="transparent"/>
-          <stop offset="100%" stopColor="transparent"/>
+        <linearGradient id={`pulsing-${connection.id}`} x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#0ea5e9" stopOpacity={pulseIntensity * 0.4}>
+            <animate attributeName="stop-opacity" 
+              values={`${pulseIntensity * 0.4};${pulseIntensity * 0.8};${pulseIntensity * 0.4}`} 
+              dur="2s" repeatCount="indefinite"/>
+          </stop>
+          <stop offset="50%" stopColor="#06b6d4" stopOpacity={pulseIntensity * 1}>
+            <animate attributeName="stop-opacity" 
+              values={`${pulseIntensity * 1};${pulseIntensity * 0.6};${pulseIntensity * 1}`} 
+              dur="2s" repeatCount="indefinite"/>
+          </stop>
+          <stop offset="100%" stopColor="#8b5cf6" stopOpacity={pulseIntensity * 0.6}>
+            <animate attributeName="stop-opacity" 
+              values={`${pulseIntensity * 0.6};${pulseIntensity * 0.9};${pulseIntensity * 0.6}`} 
+              dur="2s" repeatCount="indefinite"/>
+          </stop>
         </linearGradient>
       </defs>
       
-      {/* Ultra-thin main connection line */}
+      {/* Base neural pathway */}
       <motion.line
         x1={fromX}
         y1={fromY}
         x2={toX}
         y2={toY}
-        stroke={`url(#neonGradient-${connection.type})`}
-        strokeWidth="1.5"
+        stroke={`url(#neuralGradient-${connection.id})`}
+        strokeWidth="2"
         strokeLinecap="round"
-        filter={`url(#softGlow-${connection.type})`}
-        opacity="0.9"
+        filter={`url(#neuralGlow-${connection.id})`}
+        opacity={fadeOpacity}
         initial={{ pathLength: 0 }}
-        animate={{ 
-          pathLength: 1,
-          opacity: [0.7, 1, 0.7]
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+      />
+      
+      {/* Pulsing active signal */}
+      <motion.line
+        x1={fromX}
+        y1={fromY}
+        x2={toX}
+        y2={toY}
+        stroke={`url(#pulsing-${connection.id})`}
+        strokeWidth="1"
+        strokeLinecap="round"
+        strokeDasharray="20,10"
+        filter={`url(#neuralGlow-${connection.id})`}
+        opacity={pulseIntensity}
+        animate={{
+          strokeDashoffset: [0, -30],
         }}
         transition={{ 
-          pathLength: { duration: 2, ease: "easeOut" },
-          opacity: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+          strokeDashoffset: { duration: 1.5, repeat: Infinity, ease: "linear" }
         }}
       />
       
-      {/* Subtle shimmer effect */}
+      {/* Data packet flowing along line */}
+      <motion.circle
+        r="2"
+        fill="#06b6d4"
+        filter={`url(#neuralGlow-${connection.id})`}
+        opacity={pulseIntensity}
+        animate={{
+          fill: ["#06b6d4", "#8b5cf6", "#0ea5e9", "#06b6d4"],
+          r: [2, 3, 2]
+        }}
+        transition={{
+          fill: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+          r: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+        }}
+      >
+        <animateMotion
+          dur="3s"
+          repeatCount="indefinite"
+          path={`M ${fromX},${fromY} L ${toX},${toY}`}
+          begin="0.5s"
+        />
+      </motion.circle>
+
+      {/* Trailing fade effect */}
       <motion.line
         x1={fromX}
         y1={fromY}
         x2={toX}
         y2={toY}
-        stroke={`url(#shimmer-${connection.type})`}
-        strokeWidth="2"
+        stroke={`url(#neuralGradient-${connection.id})`}
+        strokeWidth="4"
         strokeLinecap="round"
-        opacity="0.6"
+        filter={`url(#neuralGlow-${connection.id})`}
+        opacity={fadeOpacity * 0.3}
         initial={{ pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: 2, ease: "easeOut", delay: 0.3 }}
-      >
-        <animate
-          attributeName="stroke-dasharray"
-          values="0,100;10,90;0,100"
-          dur="3s"
-          repeatCount="indefinite"
-        />
-        <animate
-          attributeName="stroke-dashoffset"
-          values="0;100"
-          dur="3s"
-          repeatCount="indefinite"
-        />
-      </motion.line>
-      
-      {/* Minimal flowing particle */}
-      <motion.circle
-        r="1.5"
-        fill="#06b6d4"
-        filter={`url(#softGlow-${connection.type})`}
-        opacity="0.8"
-        animate={{
-          fill: ["#06b6d4", "#8b5cf6", "#0ea5e9", "#06b6d4"]
+        animate={{ 
+          pathLength: 1,
+          opacity: [fadeOpacity * 0.3, fadeOpacity * 0.1, fadeOpacity * 0.3]
         }}
-        transition={{
-          fill: { duration: 6, repeat: Infinity, ease: "easeInOut" }
+        transition={{ 
+          pathLength: { duration: 1.5, ease: "easeOut" },
+          opacity: { duration: 8, repeat: Infinity, ease: "easeInOut" }
         }}
-      >
-        <animateMotion
-          dur="4s"
-          repeatCount="indefinite"
-          path={`M ${fromX},${fromY} L ${toX},${toY}`}
-          begin="1s"
-        />
-      </motion.circle>
+      />
     </motion.g>
   );
 };
@@ -904,6 +1020,7 @@ export default function Agora() {
                     isHovered={hoveredAgent?.id === agent.id}
                     onMouseEnter={() => setHoveredAgent(agent)}
                     onMouseLeave={() => setHoveredAgent(null)}
+                    activeConnections={localActiveConnections}
                   />
                 ))}
               </svg>
