@@ -58,7 +58,7 @@ export default function Structure() {
 
   return (
     <div className="min-h-screen bg-white text-black">
-      <div className="max-w-7xl mx-auto px-6 py-16">
+      <div className="max-w-7xl mx-auto px-6 py-16" style={{ paddingTop: '80px' }}>
         <div className="text-center mb-16">
           <h1 className="text-6xl font-bold mb-8 tracking-tight">AI Swarm Architecture</h1>
           <p className="text-xl leading-relaxed text-gray-700 max-w-4xl mx-auto">

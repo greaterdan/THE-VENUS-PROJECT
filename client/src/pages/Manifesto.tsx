@@ -1,6 +1,6 @@
 export default function Manifesto() {
   return (
-    <div className="max-w-[680px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="max-w-[680px] mx-auto px-4 sm:px-6 lg:px-8 py-12" style={{ paddingTop: '80px' }}>
       <h1 className="text-4xl font-bold mb-8 text-center">Manifesto</h1>
 
       <div className="bg-white border border-venus-gray rounded-lg p-8 shadow-sm">

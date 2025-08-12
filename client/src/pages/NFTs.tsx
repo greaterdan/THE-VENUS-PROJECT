@@ -1,7 +1,7 @@
 export default function NFTs() {
   return (
     <div className="min-h-screen bg-white text-black">
-      <div className="max-w-6xl mx-auto px-6 py-16">
+      <div className="max-w-6xl mx-auto px-6 py-16" style={{ paddingTop: '80px' }}>
         <h1 className="text-5xl font-bold mb-8 tracking-tight">
           Venus Project NFTs
         </h1>
