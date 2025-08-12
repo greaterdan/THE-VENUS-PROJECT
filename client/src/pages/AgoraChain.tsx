@@ -267,11 +267,14 @@ export default function AgoraChain() {
 
   // Wallet gating and modal handlers
   const handleStakeAction = (agentId: string, type: 'stake' | 'unstake') => {
+    console.log('handleStakeAction called:', { agentId, type, walletConnected });
     if (!walletConnected) {
+      console.log('Wallet not connected, showing message');
       setTransactionMessage('> Connect wallet (Phantom / MetaMask) to interact with staking.');
       setTimeout(() => setTransactionMessage(''), 5000);
       return;
     }
+    console.log('Opening stake modal');
     openStakeModal(agentId, type);
   };
 
@@ -602,22 +605,26 @@ export default function AgoraChain() {
                         </div>
                       )}
                       
-                      <div className="pt-0.5 space-x-2">
+                      <div className="pt-0.5 space-x-2 z-10 relative">
                         <button 
                           onClick={(e) => {
                             e.stopPropagation();
+                            e.preventDefault();
+                            console.log('Stake button clicked for agent:', agent.id);
                             handleStakeAction(agent.id, 'stake');
                           }}
-                          className="text-lime-600 hover:text-lime-800 underline text-xs"
+                          className="text-lime-600 hover:text-lime-800 underline text-xs cursor-pointer z-10"
                         >
                           Stake
                         </button>
                         <button 
                           onClick={(e) => {
                             e.stopPropagation();
+                            e.preventDefault();
+                            console.log('Unstake button clicked for agent:', agent.id);
                             handleStakeAction(agent.id, 'unstake');
                           }}
-                          className="text-red-600 hover:text-red-800 underline text-xs"
+                          className="text-red-600 hover:text-red-800 underline text-xs cursor-pointer z-10"
                         >
                           Unstake
                         </button>
