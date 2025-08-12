@@ -299,7 +299,7 @@ export default function AgoraChain() {
                 AGORA CHAIN
               </button>
               <button
-                onClick={() => setLocation('/agora')}
+                onClick={() => setLocation('/agora?view=archive')}
                 className="px-3 py-1 text-xs font-mono rounded bg-gray-200 text-gray-600 hover:bg-gray-300"
               >
                 ARCHIVE

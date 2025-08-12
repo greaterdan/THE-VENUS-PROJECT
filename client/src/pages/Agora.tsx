@@ -702,6 +702,15 @@ export default function Agora() {
   const globalChatMessagesRef = useRef(chatMessages);
   const isComponentMounted = useRef(true);
 
+  // Handle URL parameters for view mode
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const viewParam = urlParams.get('view');
+    if (viewParam === 'archive') {
+      setViewMode('archive');
+    }
+  }, []);
+
   useEffect(() => {
     const timeInterval = setInterval(() => {
       setCurrentTime(new Date().toLocaleTimeString('en-US', { hour12: false }));
