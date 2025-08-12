@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface Agent {
@@ -454,6 +454,10 @@ export default function Agora() {
   }>>([]);
   const [isLoadingNewMessage, setIsLoadingNewMessage] = useState(false);
   const [showChatModal, setShowChatModal] = useState(false);
+  
+  // Use refs to prevent re-renders during scroll
+  const chatMessagesRef = useRef(chatMessages);
+  const isComponentMounted = useRef(true);
 
   useEffect(() => {
     const timeInterval = setInterval(() => {
@@ -462,118 +466,109 @@ export default function Agora() {
     return () => clearInterval(timeInterval);
   }, []);
 
-  // Grok-powered AI conversation system with stable state management
+  // Update chatMessagesRef when state changes
   useEffect(() => {
-    let isMounted = true;
-    let timeoutId: number;
+    chatMessagesRef.current = chatMessages;
+  }, [chatMessages]);
 
-    const createGrokConversation = async () => {
-      if (!isMounted) return;
+  // Stable conversation creation function
+  const createGrokConversation = useCallback(async () => {
+    if (!isComponentMounted.current) return;
+    
+    setIsLoadingNewMessage(true);
+    
+    try {
+      const response = await fetch('/api/agent-conversation');
+      if (!response.ok) throw new Error('Failed to fetch conversation');
+      const conversation = await response.json();
       
-      setIsLoadingNewMessage(true);
-      
-      try {
-        const response = await fetch('/api/agent-conversation');
-        if (!response.ok) throw new Error('Failed to fetch conversation');
-        const conversation = await response.json();
+      if (!isComponentMounted.current) return;
+
+      const newConnection: ActiveConnection = {
+        id: `conn-${Date.now()}-${Math.random()}`,
+        from: conversation.from,
+        to: conversation.to,
+        type: conversation.type,
+        message: conversation.message,
+        timestamp: Date.now()
+      };
+
+      setActiveConnections(prev => [...prev, newConnection]);
+
+      // Add to chat messages with timestamp
+      const chatMessage = {
+        id: newConnection.id,
+        timestamp: new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+        from: newConnection.from.toUpperCase(),
+        to: newConnection.to.toUpperCase(),
+        message: newConnection.message,
+        type: newConnection.type
+      };
+
+      setChatMessages(prev => {
+        // Prevent duplicate messages
+        const existingIds = new Set(prev.map(msg => msg.id));
+        if (existingIds.has(chatMessage.id)) return prev;
         
-        if (!isMounted) return;
-
-        const newConnection: ActiveConnection = {
-          id: `conn-${Date.now()}-${Math.random()}`,
-          from: conversation.from,
-          to: conversation.to,
-          type: conversation.type,
-          message: conversation.message,
-          timestamp: Date.now()
-        };
-
-        setActiveConnections(prev => [...prev, newConnection]);
-
-        // Add to chat messages with timestamp
-        const chatMessage = {
-          id: newConnection.id,
-          timestamp: new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-          from: newConnection.from.toUpperCase(),
-          to: newConnection.to.toUpperCase(),
-          message: newConnection.message,
-          type: newConnection.type
-        };
-
-        setChatMessages(prev => {
-          // Prevent duplicate messages
-          const existingIds = new Set(prev.map(msg => msg.id));
-          if (existingIds.has(chatMessage.id)) return prev;
-          
-          const newMessages = [...prev.slice(-19), chatMessage]; // Keep last 20 messages
-          
-          // Smart auto-scroll
-          requestAnimationFrame(() => {
-            const chatContainer = document.getElementById('chat-container');
-            if (chatContainer) {
-              const { scrollTop, scrollHeight, clientHeight } = chatContainer;
-              const isNearBottom = scrollTop + clientHeight >= scrollHeight - 100;
-              if (isNearBottom) {
-                chatContainer.scrollTop = scrollHeight;
-              }
-            }
-          });
-          
-          return newMessages;
-        });
-
-        // Remove connection visualization after 4 seconds
-        timeoutId = window.setTimeout(() => {
-          if (isMounted) {
-            setActiveConnections(prev => prev.filter(conn => conn.id !== newConnection.id));
-          }
-        }, 4000);
-
-      } catch (error) {
-        console.error('Grok conversation failed:', error);
+        const newMessages = [...prev.slice(-19), chatMessage]; // Keep last 20 messages
         
-        if (!isMounted) return;
-        
-        // Fallback to template-based conversation
-        const fallback = getRandomConversation();
-        const chatMessage = {
-          id: `fallback-${Date.now()}-${Math.random()}`,
-          timestamp: new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-          from: fallback.from.toUpperCase(),
-          to: fallback.to.toUpperCase(),
-          message: fallback.message,
-          type: fallback.type
-        };
+        // Stable scroll behavior - no forced scrolling
+        return newMessages;
+      });
 
-        setChatMessages(prev => [...prev.slice(-19), chatMessage]);
-      } finally {
-        if (isMounted) {
-          setIsLoadingNewMessage(false);
+      // Remove connection visualization after 4 seconds
+      const timeoutId = window.setTimeout(() => {
+        if (isComponentMounted.current) {
+          setActiveConnections(prev => prev.filter(conn => conn.id !== newConnection.id));
         }
-      }
-    };
+      }, 4000);
 
+    } catch (error) {
+      console.error('Grok conversation failed:', error);
+      
+      if (!isComponentMounted.current) return;
+      
+      // Fallback to template-based conversation
+      const fallback = getRandomConversation();
+      const chatMessage = {
+        id: `fallback-${Date.now()}-${Math.random()}`,
+        timestamp: new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+        from: fallback.from.toUpperCase(),
+        to: fallback.to.toUpperCase(),
+        message: fallback.message,
+        type: fallback.type
+      };
+
+      setChatMessages(prev => [...prev.slice(-19), chatMessage]);
+    } finally {
+      if (isComponentMounted.current) {
+        setIsLoadingNewMessage(false);
+      }
+    }
+  }, []);
+
+  // Grok-powered AI conversation system
+  useEffect(() => {
     // Generate initial conversation after a short delay
     const initialDelay = setTimeout(() => {
-      if (isMounted) {
+      if (isComponentMounted.current) {
         createGrokConversation();
       }
     }, 1000);
 
-    // Create new conversations every 8 seconds (further reduced frequency)
+    // Create new conversations every 10 seconds (stable frequency)
     const interval = setInterval(() => {
-      if (isMounted) {
+      if (isComponentMounted.current) {
         createGrokConversation();
       }
-    }, 8000);
+    }, 10000);
 
     return () => {
-      isMounted = false;
+      isComponentMounted.current = false;
       clearTimeout(initialDelay);
       clearInterval(interval);
-      if (timeoutId) clearTimeout(timeoutId);
     };
-  }, []);
+  }, [createGrokConversation]);
 
   return (
     <div className="min-h-screen bg-white text-black pt-20">
