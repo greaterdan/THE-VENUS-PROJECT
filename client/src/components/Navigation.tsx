@@ -85,7 +85,13 @@ export default function Navigation() {
   ];
 
   return (
-    <nav className="sticky top-0 z-[100]" style={{ backgroundColor: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(8px)' }}>
+    <nav 
+      className="sticky top-0 z-[100]" 
+      style={{ 
+        backgroundColor: location === "/" ? 'transparent' : 'rgba(255, 255, 255, 0.95)', 
+        backdropFilter: location === "/" ? 'none' : 'blur(8px)' 
+      }}
+    >
       <div className="w-full">
         <div className="flex items-center justify-between h-16 pr-4">
           {/* Left Logo - Home Link - Always visible on non-home pages */}
