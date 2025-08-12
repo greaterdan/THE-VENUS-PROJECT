@@ -45,6 +45,9 @@ export default function Navigation() {
     document.addEventListener("mousedown", handleClickOutside);
     window.addEventListener("scroll", handleScroll);
 
+    // Set initial scroll position
+    setScrollY(window.scrollY);
+
     // Glitch effect disabled
 
     return () => {
@@ -52,6 +55,17 @@ export default function Navigation() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  // Reset scroll awareness when location changes
+  useEffect(() => {
+    if (location !== "/") {
+      // For non-home pages, we don't rely on scroll position
+      setScrollY(100); // Force visibility
+    } else {
+      // For home page, check current scroll position
+      setScrollY(window.scrollY);
+    }
+  }, [location]);
 
   const isActive = (path: string) => {
     if (path === "/" && location === "/") return true;
