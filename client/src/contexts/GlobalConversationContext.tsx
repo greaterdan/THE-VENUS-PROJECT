@@ -111,7 +111,7 @@ export const GlobalConversationProvider: React.FC<{ children: React.ReactNode }>
       setChatMessages(current => {
         const existingIds = new Set(current.map(msg => msg.id));
         const newMessages = chatMessages.filter(msg => !existingIds.has(msg.id));
-        return [...current.slice(-(20 - newMessages.length)), ...newMessages];
+        return [...current, ...newMessages];
       });
 
     } catch (error) {
