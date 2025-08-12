@@ -1,0 +1,51 @@
+Build a backend-only service that updates six “Decision Impact” rings in real time based on AGORA chat messages. Do not change the UI—only stream updated metric values to the existing frontend.
+
+Scope
+
+Create a small Node.js/Express (or Python/FastAPI) server.
+
+Endpoints:
+
+POST /chat → accepts one chat message { agent, text }.
+
+GET /impact → Server-Sent Events stream that pushes the current metrics JSON whenever they change.
+
+Initial metrics (0–100): ecological, wellbeing, efficiency, resilience, equity, innovation (start with existing values).
+
+Logic
+
+Parse each message (lowercase, basic tokenization).
+
+Rule-based scoring (no external APIs):
+
+For each metric, define positive/negative keyword sets with weights (e.g., ecological: "rewilding", "remediation", "renewable" = +; "diesel", "pollution", "deforest" = −).
+
+Detect context verbs to modulate weight: increase/expand/boost (amplify +), reduce/cut/eliminate (invert or amplify − as appropriate), phase out (strong + for ecological when removing polluting tech).
+
+Sum weights → convert to a per-message delta per metric in the range [-3, +3] (clamp).
+
+Agent credibility multipliers (apply +10–20% to the most relevant metrics):
+
+Ecology→ecological; Energy→efficiency; Food→wellbeing; Transport→efficiency & resilience; Health→wellbeing; Education→innovation & equity; Infrastructure→resilience & efficiency; ResourceMgmt→equity & efficiency; Culture→equity & ecological (small).
+
+Smoothing so rings animate naturally:
+
+Exponential moving average on each update.
+
+Idle drift back toward 75 (e.g., gentle 2% toward baseline every 10s tick).
+
+Conflict tolerant: allow mixed positives/negatives in a single message; apply both deltas, smoothing will reflect tension.
+
+Streaming
+
+After processing each POST /chat, push the updated metrics JSON over /impact SSE so the existing donut charts update live.
+
+Telemetry & Tests
+
+Log each processed message with extracted keywords, metric deltas, and post-update values.
+
+Include a few sample messages (energy reallocation, rewilding, accessibility upgrade) to verify expected movements.
+
+Deliverables
+
+Minimal server with keyword dictionaries, smoothing, SSE stream, short README describing endpoints and scoring rules. No frontend edits—only the ring values should change via /impact.

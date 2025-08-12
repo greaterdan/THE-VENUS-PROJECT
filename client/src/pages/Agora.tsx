@@ -887,9 +887,7 @@ export default function Agora() {
 
               {/* Modal Footer */}
               <div className="p-6 border-t border-gray-200 bg-gray-50">
-                <div className="text-center text-xs text-gray-500">
-                  These conversations are generated in real-time by Grok AI, representing authentic coordination between specialized city management agents
-                </div>
+
               </div>
             </motion.div>
           </motion.div>
