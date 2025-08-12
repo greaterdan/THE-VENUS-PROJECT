@@ -3,10 +3,12 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { generateAgentConversation } from "./grok";
 import DecisionImpactAnalyzer from "./impactAnalyzer";
+import ArchiveSnapshotManager from "./archiveSnapshots";
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Initialize Impact Analyzer
+  // Initialize Impact Analyzer and Archive Manager
   const impactAnalyzer = new DecisionImpactAnalyzer();
+  const archiveManager = new ArchiveSnapshotManager();
   const sseClients = new Set<any>();
   
   // Start idle drift timer (every 10 seconds)
@@ -33,6 +35,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         recentEvents: ['Grid optimization complete', 'Biodiversity assessment updated', 'Resource allocation adjusted'],
         activeAgents: ['alpha', 'beta', 'gamma', 'delta', 'epsilon', 'zeta', 'eta', 'theta', 'iota', 'kappa']
       });
+      
+      // Add message to archive manager for snapshot processing
+      if (conversation.from && conversation.message) {
+        archiveManager.addMessage({
+          id: `msg-${Date.now()}`,
+          from: conversation.from,
+          to: conversation.to || 'system',
+          message: conversation.message,
+          timestamp: new Date(),
+          type: conversation.type || 'data'
+        });
+      }
       
       res.json(conversation);
     } catch (error) {
@@ -204,6 +218,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
       testResults: results,
       finalMetrics: impactAnalyzer.getCurrentMetrics()
     });
+  });
+
+  // Archive snapshot endpoints
+  app.get('/api/archive/snapshots', (req, res) => {
+    try {
+      const headers = archiveManager.getSnapshotHeaders();
+      res.json(headers);
+    } catch (error) {
+      console.error('Error fetching archive snapshots:', error);
+      res.status(500).json({ error: 'Failed to fetch snapshots' });
+    }
+  });
+
+  app.get('/api/archive/transcript/:id', (req, res) => {
+    try {
+      const transcript = archiveManager.getSnapshotTranscript(req.params.id);
+      if (!transcript) {
+        return res.status(404).json({ error: 'Transcript not found' });
+      }
+      res.json({ transcript });
+    } catch (error) {
+      console.error('Error fetching transcript:', error);
+      res.status(500).json({ error: 'Failed to fetch transcript' });
+    }
   });
 
   const httpServer = createServer(app);

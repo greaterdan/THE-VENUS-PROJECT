@@ -509,6 +509,11 @@ export default function Agora() {
     equity: 79,
     innovation: 76
   });
+
+  // Archive state
+  const [archiveEntries, setArchiveEntries] = useState<any[]>([]);
+  const [expandedEntry, setExpandedEntry] = useState<string | null>(null);
+  const [transcript, setTranscript] = useState<string[] | null>(null);
   
   // Local state for page-specific features
   const chatMessagesRef = useRef(chatMessages);
@@ -579,6 +584,49 @@ export default function Agora() {
     
     processLatestMessage();
   }, [chatMessages]);
+
+  // Fetch archive snapshots
+  useEffect(() => {
+    const fetchArchiveSnapshots = async () => {
+      try {
+        const response = await fetch('/api/archive/snapshots');
+        if (response.ok) {
+          const snapshots = await response.json();
+          setArchiveEntries(snapshots);
+        }
+      } catch (error) {
+        console.error('Error fetching archive snapshots:', error);
+      }
+    };
+
+    if (viewMode === 'archive') {
+      fetchArchiveSnapshots();
+      // Refresh archive every 30 seconds
+      const interval = setInterval(fetchArchiveSnapshots, 30000);
+      return () => clearInterval(interval);
+    }
+  }, [viewMode]);
+
+  // Handle archive entry click
+  const handleArchiveEntryClick = async (entryId: string) => {
+    if (expandedEntry === entryId) {
+      // Collapse if already expanded
+      setExpandedEntry(null);
+      setTranscript(null);
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/archive/transcript/${entryId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setExpandedEntry(entryId);
+        setTranscript(data.transcript);
+      }
+    } catch (error) {
+      console.error('Error fetching transcript:', error);
+    }
+  };
 
   // Disable all scrolling on AGORA page only
   useEffect(() => {
@@ -830,15 +878,34 @@ export default function Agora() {
               <div className="border-t border-gray-200 my-2"></div>
             </div>
             
-            <div className="space-y-1 text-xs max-h-[calc(100vh-10rem)] overflow-hidden">
-              {ARCHIVE_DECISIONS.map((decision) => (
-                <div key={decision.id} className="hover:bg-gray-100 p-1 cursor-pointer rounded">
-                  <span className="text-lime-600 font-medium">[{decision.timestamp}]</span>
-                  <span className="ml-2 text-gray-800">{decision.title}</span>
-                  <span className="ml-4 text-blue-600">{decision.status}</span>
-                  <span className="ml-4 text-gray-500">{decision.impact}</span>
+            <div className="space-y-1 text-xs max-h-[calc(100vh-10rem)] overflow-y-auto">
+              {archiveEntries.length === 0 ? (
+                <div className="text-gray-500 p-4 text-center">
+                  No archive snapshots available yet.<br/>
+                  Snapshots are created hourly based on agent conversations.
                 </div>
-              ))}
+              ) : (
+                archiveEntries.map((entry) => (
+                  <div key={entry.id}>
+                    <div 
+                      className="hover:bg-gray-100 p-1 cursor-pointer rounded"
+                      onClick={() => handleArchiveEntryClick(entry.id)}
+                    >
+                      <span className="text-lime-600 font-medium">[{entry.timestamp}]</span>
+                      <span className="ml-2 text-gray-800">{entry.title}</span>
+                      <span className="ml-4 text-blue-600">{entry.status}</span>
+                      <span className="ml-4 text-gray-500">{entry.impact}</span>
+                    </div>
+                    {expandedEntry === entry.id && transcript && (
+                      <div className="ml-4 mt-2 p-2 bg-gray-50 rounded text-xs font-mono space-y-1">
+                        {transcript.map((line, index) => (
+                          <div key={index} className="text-gray-700">{line}</div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))
+              )}
             </div>
             
             <div className="mt-6 text-xs text-gray-500">

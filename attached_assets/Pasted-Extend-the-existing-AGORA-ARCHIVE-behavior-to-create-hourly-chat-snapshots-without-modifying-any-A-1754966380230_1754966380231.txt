@@ -1,0 +1,74 @@
+Extend the existing AGORA → ARCHIVE behavior to create hourly chat snapshots without modifying any ARCHIVE UI, CSS, HTML, components, or layout. Keep the page exactly as it is visually and structurally.
+
+Goal
+
+Every hour, capture the last 60 minutes of AGORA conversations per decision_id and store them as archive entries.
+
+In the ARCHIVE page, clicking an entry should reveal the hour’s transcript inline using the exact current archive font, spacing, and compact style. Do not introduce new elements or redesigns; reuse the existing expandable pattern the archive already supports.
+
+Strict constraints (must follow)
+
+Do not change the ARCHIVE UI. No new buttons, icons, headers, colors, fonts, paddings, grid, or breakpoints.
+
+Do not alter existing HTML templates or CSS classes.
+
+Do not change list rendering order, typography, or line heights.
+
+Only add backend logic, storage, and data wiring that feeds the current archive list and its existing click-to-expand behavior.
+
+Hourly snapshot behavior
+
+Scheduler: run precisely on the hour (:00) and capture messages from [t-60m, t), grouped by decision_id.
+
+For each group, create one snapshot with:
+
+timestamp_start, timestamp_end (the hour window)
+
+decision_id, title, status (DEBATING/VOTING/APPROVED/IMPLEMENTED/REJECTED as currently used)
+
+participants (unique agents seen in the hour)
+
+metrics_delta (ecological, wellbeing, efficiency, resilience, equity, innovation; reuse existing scoring so deltas match the rings)
+
+summary_line (1–2 lines, same compressed style as current archive rows)
+
+transcript_lines: compact messages in the format the archive already displays, e.g.
+[HH:MM:SS] ENERGY Reallocate 120 MWh to farms; diesel backup −30%…
+Truncate long texts (≈140 chars) with ellipsis; keep key nouns/verbs.
+
+If an hour has no messages for a decision, skip creating a snapshot.
+
+Archive page interaction (unchanged visually)
+
+Each snapshot appears in the list exactly like current entries (same font and spacing).
+
+Clicking an entry loads its transcript inline beneath that row (or in the archive’s existing expand region) using the same monospace/compact styling already present.
+
+No new controls; use the current click-to-expand pattern. Close on second click.
+
+Endpoints / data plumbing (non-breaking)
+
+Provide a read endpoint the existing archive list can call to fetch:
+
+snapshot headers (timestamp, title, status, metrics summary)
+
+snapshot transcript (returned only when an entry is expanded)
+
+Do not rename or remove any current endpoints or fields. Add only additive fields if necessary.
+
+Performance & retention
+
+Keep hourly snapshots for 30 days. After that, roll them up into daily summaries (merge metric deltas; keep top 20 transcript lines) without changing how the list looks.
+
+Ensure loading an expanded transcript is lazy (fetch on expand) so the archive page remains fast.
+
+Integrity
+
+Metrics deltas must be computed with the same rule engine used by Decision Impact, so the numbers users see in the archive match what they saw live.
+
+Log each hourly job: snapshot count, per-decision capture status, and any skips.
+
+Final check
+
+Visually verify that the ARCHIVE page is identical to before (pixel-for-pixel list rows and fonts), with the only difference being that clicking an entry now reveals the hour’s transcript inline in the exact existing compact style.
+
