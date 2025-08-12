@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useGlobalConversation } from '@/contexts/GlobalConversationContext';
 
 interface Agent {
   id: string;
@@ -443,22 +444,15 @@ export default function Agora() {
   const [hoveredAgent, setHoveredAgent] = useState<Agent | null>(null);
   const [viewMode, setViewMode] = useState<'live' | 'archive'>('live');
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString('en-US', { hour12: false }));
-  const [activeConnections, setActiveConnections] = useState<ActiveConnection[]>([]);
-  const [chatMessages, setChatMessages] = useState<Array<{
-    id: string;
-    timestamp: string;
-    from: string;
-    to: string;
-    message: string;
-    type: 'energy' | 'material' | 'data' | 'time';
-  }>>([]);
-  const [isLoadingNewMessage, setIsLoadingNewMessage] = useState(false);
+  // Use global connections but allow local display state
+  const [localActiveConnections, setLocalActiveConnections] = useState<ActiveConnection[]>([]);
+  // Use global conversation state instead of local state
+  const { chatMessages, activeConnections: globalActiveConnections, isLoadingNewMessage } = useGlobalConversation();
   const [showChatModal, setShowChatModal] = useState(false);
   
-  // Use refs to prevent re-renders and maintain stable state
+  // Local state for page-specific features
   const chatMessagesRef = useRef(chatMessages);
   const isComponentMounted = useRef(true);
-  const conversationIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const timeInterval = setInterval(() => {
@@ -467,19 +461,21 @@ export default function Agora() {
     return () => clearInterval(timeInterval);
   }, []);
 
-  // Stable state management - prevent re-renders during scroll
+  // Sync local connections with global connections for AGORA visualization
   useEffect(() => {
-    // Keep refs in sync but don't trigger re-renders
+    setLocalActiveConnections(globalActiveConnections);
+  }, [globalActiveConnections]);
+
+  // Keep refs in sync
+  useEffect(() => {
     chatMessagesRef.current = chatMessages;
   }, [chatMessages]);
 
-  // Disable all scrolling on this page
+  // Disable all scrolling on AGORA page only
   useEffect(() => {
-    // Disable scrolling on the page
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
     
-    // Prevent scroll events
     const preventScroll = (e: Event) => {
       e.preventDefault();
       e.stopPropagation();
@@ -491,7 +487,7 @@ export default function Agora() {
     window.addEventListener('touchmove', preventScroll, { passive: false });
     
     return () => {
-      // Re-enable scrolling when leaving the page
+      // Re-enable scrolling when leaving AGORA page
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
       
@@ -500,116 +496,8 @@ export default function Agora() {
       window.removeEventListener('touchmove', preventScroll);
       
       isComponentMounted.current = false;
-      if (conversationIntervalRef.current) {
-        clearInterval(conversationIntervalRef.current);
-      }
     };
   }, []);
-
-  // Stable conversation creation - no dependencies to prevent re-renders
-  const createGrokConversation = async () => {
-    if (!isComponentMounted.current) return;
-    
-    try {
-      setIsLoadingNewMessage(true);
-      
-      const response = await fetch('/api/agent-conversation');
-      if (!response.ok) throw new Error('Failed to fetch conversation');
-      const conversation = await response.json();
-      
-      if (!isComponentMounted.current) return;
-
-      const newConnection: ActiveConnection = {
-        id: `conn-${Date.now()}-${Math.random()}`,
-        from: conversation.from,
-        to: conversation.to,
-        type: conversation.type,
-        message: conversation.message,
-        timestamp: Date.now()
-      };
-
-      // Update connections without dependencies
-      setActiveConnections(prev => {
-        const filtered = prev.filter(conn => Date.now() - conn.timestamp < 4000);
-        return [...filtered, newConnection];
-      });
-
-      // Add new message without triggering scroll
-      const chatMessage = {
-        id: newConnection.id,
-        timestamp: new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-        from: newConnection.from.toUpperCase(),
-        to: newConnection.to.toUpperCase(),
-        message: newConnection.message,
-        type: newConnection.type
-      };
-
-      setChatMessages(current => {
-        // Check for duplicates using current state
-        if (current.some(msg => msg.id === chatMessage.id)) {
-          return current;
-        }
-        
-        // Maintain stable message history
-        const updated = [...current.slice(-19), chatMessage];
-        return updated;
-      });
-
-    } catch (error) {
-      console.error('Grok conversation failed:', error);
-      
-      if (!isComponentMounted.current) return;
-      
-      // Fallback without dependencies
-      const fallback = getRandomConversation();
-      const fallbackMessage = {
-        id: `fallback-${Date.now()}-${Math.random()}`,
-        timestamp: new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-        from: fallback.from.toUpperCase(),
-        to: fallback.to.toUpperCase(),
-        message: fallback.message,
-        type: fallback.type
-      };
-
-      setChatMessages(current => [...current.slice(-19), fallbackMessage]);
-    } finally {
-      if (isComponentMounted.current) {
-        setIsLoadingNewMessage(false);
-      }
-    }
-  };
-
-  // Initialize conversations only once
-  useEffect(() => {
-    let mounted = true;
-    
-    // Start conversations after component is stable
-    const startConversations = async () => {
-      if (!mounted) return;
-      
-      // Initial conversation
-      await createGrokConversation();
-      
-      if (!mounted) return;
-      
-      // Set up interval for new conversations
-      conversationIntervalRef.current = setInterval(() => {
-        if (mounted && isComponentMounted.current) {
-          createGrokConversation();
-        }
-      }, 12000); // 12 seconds for stability
-    };
-
-    const timer = setTimeout(startConversations, 1500);
-
-    return () => {
-      mounted = false;
-      clearTimeout(timer);
-      if (conversationIntervalRef.current) {
-        clearInterval(conversationIntervalRef.current);
-      }
-    };
-  }, []); // Empty dependency array - run only once
 
   return (
     <div className="h-screen bg-white text-black pt-20 overflow-hidden" style={{ touchAction: 'none' }}>
@@ -666,7 +554,7 @@ export default function Agora() {
               <svg className="absolute inset-0 w-full h-full" viewBox="0 0 600 400">
                 {/* Connection lines */}
                 <AnimatePresence>
-                  {activeConnections.map((connection) => (
+                  {localActiveConnections.map((connection) => (
                     <AnimatedConnectionLine 
                       key={connection.id} 
                       connection={connection} 
