@@ -1,0 +1,103 @@
+mplement the Agora Chain page using the exact typography, spacing, and visual style of the Decision Archive page (same header, search bar, list rows, time stamps, status labels). Do not change the UI design—only extend behavior.
+
+What the page shows (live feed, archive-style):
+
+A scrolling, real-time list of chain events rendered like archive entries:
+[23:07] ENERGY DISTRIBUTION STAKING +1,250 VPC | Pool: 82,410 VPC | Field Strength: Efficiency +0.7
+[23:06] ECOLOGY RESTORATION FAUCET OPENED 450 kWh → Rewilding Hub-2 | Duration: 72h | Impact: Ecological +1.8, Equity +0.4
+
+Keep timestamps on the left, domain/agent name in bold, and a status tag (STAKING, UNSTAKING, FAUCET OPENED, FAUCET CLOSED, ATTESTED, REJECTED, ROLLED BACK).
+
+Show 10 agents (one per domain) as separate streams in the same list; use the search bar to filter by agent or keyword.
+
+Wallet & staking (user interaction, no visual redesign):
+
+Add a “Connect Wallet” control that fits the current header bar style (no new colors). Support Phantom and MetaMask. After connect, show a short wallet alias (e.g., alpha…9d3) in the header.
+
+Each agent row is clickable. Clicking opens a compact drawer/modal that matches the archive aesthetic (monospace/compact) with:
+
+Agent Pool Stats: Pool Balance (VPC), Active Stakers, Last 24h Net Flow, Field Strength Δ (six-metric mini summary).
+
+Stake / Unstake Form: number input (VPC), Stake and Unstake buttons, and an optional Lock Period selector (e.g., 7/30/90 days) that grants higher Influence Score but is non-transferable.
+
+Your Position: Staked, Pending, Unlock Date, Estimated Influence, AccessTickets earned.
+
+On submit, write a chain tx and append a new event row to the live list (same styling):
+[23:09] TRANSPORT NETWORK STAKING +300 VPC by kappa…1f2 | Pool: 12,040 VPC | Resilience +0.3
+
+10 staking pools (one smart contract per agent/domain):
+
+Infrastructure & Habitat
+
+Energy Systems
+
+Food & Agriculture
+
+Ecology & Restoration
+
+Social & Wellbeing
+
+Transportation & Mobility
+
+Health & Medical
+
+Education & Knowledge
+
+Resource Management
+
+Culture, Ethics & Governance
+
+Non-monetary outcomes (Fresco-aligned):
+
+Staking does not pay yield. It issues Influence Score and AccessTickets (non-transferable permits) in that domain.
+
+Show these in the drawer under “Rewards”:
+Influence Score (+domain), AccessTickets (active), Reputation (SBT).
+
+Faucet tie-in (chain in action):
+
+When an agent pool reaches thresholds, show FAUCET events in the same list format (no new visuals): resource type, rate, duration, and mini impact delta across the six metrics (Ecology, Wellbeing, Efficiency, Resilience, Equity, Innovation).
+
+Example entry:
+[23:11] FOOD & AGRICULTURE FAUCET OPENED 12,000 L/day → Vertical Farm-7 (48h) | Impact: Wellbeing +1.2, Ecology +0.5
+
+Status & errors (same style):
+
+Use the existing muted palette for PENDING, CONFIRMED, FAILED.
+
+Failed tx example:
+[23:12] ENERGY SYSTEMS STAKING FAILED Insufficient balance | No state change
+
+Performance & loading:
+
+Live list should stream events as they finalize; prepend newest to the top.
+
+Lazy-load older events when scrolling up; maintain archive-like smoothness.
+
+Search & filters (reuse current bar):
+
+The search bar filters by agent, action (STAKING, FAUCET), or wallet alias.
+
+Optional chips (same style) for quick filters: All, Stakes, Faucets, Attestations.
+
+No UI redesign:
+
+Keep exact fonts, line heights, colors, row spacing, time format, and list density of the Archive page.
+
+Only add the wallet connect text link, the stake/unstake drawer, and the insertion of new live rows—everything inherits the Archive look.
+
+Telemetry consistency:
+
+For each FAUCET event, log the six-metric impact deltas using the same scoring source used by Decision Impact so numbers match across pages.
+
+Security & rules (copy as text, no new visuals):
+
+Show a tiny note in the drawer:
+Staking VPC strengthens this domain’s allocation capacity. Rewards are non-financial: Influence Score, AccessTickets, Reputation.
+
+Success criteria:
+
+Page looks visually identical to Archive, but shows chain activity (stakes, faucets, attestations) in real time.
+
+Users can connect wallet, stake/unstake to any of the 10 pools, and immediately see their actions reflected as archive-style rows.
+

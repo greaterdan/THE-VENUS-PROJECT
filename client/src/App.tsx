@@ -14,6 +14,7 @@ import Contribute from "@/pages/Contribute";
 import Manifesto from "@/pages/Manifesto";
 import Structure from "@/pages/Structure";
 import Agora from "@/pages/Agora";
+import AgoraChain from "@/pages/AgoraChain";
 import Contact from "@/pages/Contact";
 import NFTs from "@/pages/NFTs";
 import NotFound from "@/pages/not-found";
@@ -29,6 +30,7 @@ function Router({ isLoaded, showContent }: { isLoaded: boolean; showContent: boo
         <Route path="/manifesto" component={() => <PageTransition><Manifesto /></PageTransition>} />
         <Route path="/structure" component={() => <PageTransition><Structure /></PageTransition>} />
         <Route path="/agora" component={() => <PageTransition><Agora /></PageTransition>} />
+        <Route path="/agora-chain" component={() => <PageTransition><AgoraChain /></PageTransition>} />
         <Route path="/contact" component={() => <PageTransition><Contact /></PageTransition>} />
         <Route path="/nfts" component={() => <PageTransition><NFTs /></PageTransition>} />
         <Route component={() => <PageTransition><NotFound /></PageTransition>} />

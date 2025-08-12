@@ -971,7 +971,7 @@ export default function Agora() {
                 LIVE MAP
               </button>
               <button
-                onClick={() => {/* TODO: Add Agora Chain functionality */}}
+                onClick={() => window.location.href = '/agora-chain'}
                 className="px-3 py-1 text-xs font-mono rounded bg-gray-200 text-gray-600 hover:bg-gray-300"
               >
                 AGORA CHAIN
