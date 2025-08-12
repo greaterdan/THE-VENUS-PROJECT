@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
+import Navigation from "@/components/Navigation";
 
 // Agent domain mapping
 const AGENT_DOMAINS = [
@@ -250,7 +251,9 @@ export default function AgoraChain() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-gray-700 font-mono pt-16">
+    <div className="min-h-screen bg-white text-gray-700 font-mono">
+      <Navigation />
+      
       {/* Header matching archive style exactly */}
       <div className="p-6 border-b border-gray-200">
         <div className="text-gray-800 text-xs font-semibold">AGORA CHAIN — VENUS PROJECT NETWORK</div>
