@@ -124,7 +124,7 @@ const AGENTS: Agent[] = [
     id: 'iota',
     name: 'Iota',
     domain: 'Resource Management & Allocation',
-    position: { x: 480, y: 230 }, // Right-bottom - spread wider
+    position: { x: 480, y: 260 }, // Right-bottom - moved down
     status: 'active',
     resources: { surplus: ['inventory', 'data'], deficit: ['distribution'] },
     alignment: 90
