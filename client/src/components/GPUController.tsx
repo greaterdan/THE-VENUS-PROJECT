@@ -19,15 +19,58 @@ interface GPUControllerProps {
 }
 
 export function GPUController({ isRunning, onToggle, gpuPower, onPowerChange, stats }: GPUControllerProps) {
-  const [webGPUSupported, setWebGPUSupported] = useState(true);
+  const [webGPUSupported, setWebGPUSupported] = useState(false);
   const [gpuInfo, setGPUInfo] = useState<string>('Detecting GPU...');
+  const [isDetecting, setIsDetecting] = useState(true);
 
   useEffect(() => {
-    // Simulate GPU detection
     const detectGPU = async () => {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setGPUInfo('NVIDIA RTX 4080 (WebGPU)');
+      try {
+        // Check if WebGPU is supported
+        if (!navigator.gpu) {
+          setWebGPUSupported(false);
+          setGPUInfo('WebGPU not supported');
+          setIsDetecting(false);
+          return;
+        }
+
+        // Request GPU adapter
+        const adapter = await navigator.gpu.requestAdapter();
+        if (!adapter) {
+          setWebGPUSupported(false);
+          setGPUInfo('No WebGPU adapter found');
+          setIsDetecting(false);
+          return;
+        }
+
+        setWebGPUSupported(true);
+
+        // Get GPU information
+        const info = adapter.info;
+        let gpuName = 'Unknown GPU';
+        
+        // Try to get GPU name from different sources
+        if (info?.description) {
+          gpuName = info.description;
+        } else if (info?.vendor && info?.architecture) {
+          gpuName = `${info.vendor} ${info.architecture}`;
+        } else if (info?.vendor) {
+          gpuName = `${info.vendor} GPU`;
+        }
+
+        // Clean up the name and add WebGPU suffix
+        gpuName = gpuName.replace(/\s+/g, ' ').trim();
+        setGPUInfo(`${gpuName} (WebGPU)`);
+
+      } catch (error) {
+        console.error('GPU detection failed:', error);
+        setWebGPUSupported(false);
+        setGPUInfo('GPU detection failed');
+      } finally {
+        setIsDetecting(false);
+      }
     };
+
     detectGPU();
   }, []);
 
@@ -53,11 +96,14 @@ export function GPUController({ isRunning, onToggle, gpuPower, onPowerChange, st
         {/* GPU Detection */}
         <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
           <div className="flex items-center gap-2">
-            <Activity className="w-4 h-4 text-lime-400" />
-            <span className="text-sm">{gpuInfo}</span>
+            <Activity className={`w-4 h-4 ${isDetecting ? 'animate-pulse text-blue-400' : webGPUSupported ? 'text-lime-400' : 'text-red-400'}`} />
+            <span className="text-sm font-mono">{gpuInfo}</span>
           </div>
-          <Badge variant={webGPUSupported ? "default" : "destructive"} className="bg-lime-100 text-lime-700 border-lime-200">
-            {webGPUSupported ? 'Compatible' : 'Not Supported'}
+          <Badge 
+            variant={webGPUSupported ? "default" : "destructive"} 
+            className={webGPUSupported ? "bg-lime-100 text-lime-700 border-lime-200" : "bg-red-100 text-red-700 border-red-200"}
+          >
+            {isDetecting ? 'Detecting...' : webGPUSupported ? 'Compatible' : 'Not Supported'}
           </Badge>
         </div>
 
