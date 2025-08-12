@@ -520,10 +520,15 @@ export default function Agora() {
               <AnimatePresence>
                 {selectedAgent && (
                   <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    className="absolute bottom-6 left-6 bg-white rounded-lg shadow-lg border p-4 w-64"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    className="absolute bg-white rounded-lg shadow-xl border p-4 w-64 z-10"
+                    style={{
+                      left: `${Math.min(Math.max(selectedAgent.position.x + 30, 10), 320)}px`,
+                      top: `${Math.min(Math.max(selectedAgent.position.y - 100, 10), 250)}px`,
+                      transformOrigin: 'center'
+                    }}
                   >
                     <div className="flex items-center justify-between mb-3">
                       <h4 className="font-semibold text-gray-800">Agent {selectedAgent.name}</h4>
