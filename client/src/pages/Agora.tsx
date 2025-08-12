@@ -455,9 +455,10 @@ export default function Agora() {
   const [isLoadingNewMessage, setIsLoadingNewMessage] = useState(false);
   const [showChatModal, setShowChatModal] = useState(false);
   
-  // Use refs to prevent re-renders during scroll
+  // Use refs to prevent re-renders and maintain stable state
   const chatMessagesRef = useRef(chatMessages);
   const isComponentMounted = useRef(true);
+  const conversationIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const timeInterval = setInterval(() => {
@@ -466,18 +467,29 @@ export default function Agora() {
     return () => clearInterval(timeInterval);
   }, []);
 
-  // Update chatMessagesRef when state changes
+  // Stable state management - prevent re-renders during scroll
   useEffect(() => {
+    // Keep refs in sync but don't trigger re-renders
     chatMessagesRef.current = chatMessages;
   }, [chatMessages]);
 
-  // Stable conversation creation function
-  const createGrokConversation = useCallback(async () => {
+  // Component cleanup
+  useEffect(() => {
+    return () => {
+      isComponentMounted.current = false;
+      if (conversationIntervalRef.current) {
+        clearInterval(conversationIntervalRef.current);
+      }
+    };
+  }, []);
+
+  // Stable conversation creation - no dependencies to prevent re-renders
+  const createGrokConversation = async () => {
     if (!isComponentMounted.current) return;
     
-    setIsLoadingNewMessage(true);
-    
     try {
+      setIsLoadingNewMessage(true);
+      
       const response = await fetch('/api/agent-conversation');
       if (!response.ok) throw new Error('Failed to fetch conversation');
       const conversation = await response.json();
@@ -493,9 +505,13 @@ export default function Agora() {
         timestamp: Date.now()
       };
 
-      setActiveConnections(prev => [...prev, newConnection]);
+      // Update connections without dependencies
+      setActiveConnections(prev => {
+        const filtered = prev.filter(conn => Date.now() - conn.timestamp < 4000);
+        return [...filtered, newConnection];
+      });
 
-      // Add to chat messages with timestamp
+      // Add new message without triggering scroll
       const chatMessage = {
         id: newConnection.id,
         timestamp: new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }),
@@ -505,32 +521,25 @@ export default function Agora() {
         type: newConnection.type
       };
 
-      setChatMessages(prev => {
-        // Prevent duplicate messages
-        const existingIds = new Set(prev.map(msg => msg.id));
-        if (existingIds.has(chatMessage.id)) return prev;
-        
-        const newMessages = [...prev.slice(-19), chatMessage]; // Keep last 20 messages
-        
-        // Stable scroll behavior - no forced scrolling
-        return newMessages;
-      });
-
-      // Remove connection visualization after 4 seconds
-      const timeoutId = window.setTimeout(() => {
-        if (isComponentMounted.current) {
-          setActiveConnections(prev => prev.filter(conn => conn.id !== newConnection.id));
+      setChatMessages(current => {
+        // Check for duplicates using current state
+        if (current.some(msg => msg.id === chatMessage.id)) {
+          return current;
         }
-      }, 4000);
+        
+        // Maintain stable message history
+        const updated = [...current.slice(-19), chatMessage];
+        return updated;
+      });
 
     } catch (error) {
       console.error('Grok conversation failed:', error);
       
       if (!isComponentMounted.current) return;
       
-      // Fallback to template-based conversation
+      // Fallback without dependencies
       const fallback = getRandomConversation();
-      const chatMessage = {
+      const fallbackMessage = {
         id: `fallback-${Date.now()}-${Math.random()}`,
         timestamp: new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }),
         from: fallback.from.toUpperCase(),
@@ -539,36 +548,45 @@ export default function Agora() {
         type: fallback.type
       };
 
-      setChatMessages(prev => [...prev.slice(-19), chatMessage]);
+      setChatMessages(current => [...current.slice(-19), fallbackMessage]);
     } finally {
       if (isComponentMounted.current) {
         setIsLoadingNewMessage(false);
       }
     }
-  }, []);
+  };
 
-  // Grok-powered AI conversation system
+  // Initialize conversations only once
   useEffect(() => {
-    // Generate initial conversation after a short delay
-    const initialDelay = setTimeout(() => {
-      if (isComponentMounted.current) {
-        createGrokConversation();
-      }
-    }, 1000);
+    let mounted = true;
+    
+    // Start conversations after component is stable
+    const startConversations = async () => {
+      if (!mounted) return;
+      
+      // Initial conversation
+      await createGrokConversation();
+      
+      if (!mounted) return;
+      
+      // Set up interval for new conversations
+      conversationIntervalRef.current = setInterval(() => {
+        if (mounted && isComponentMounted.current) {
+          createGrokConversation();
+        }
+      }, 12000); // 12 seconds for stability
+    };
 
-    // Create new conversations every 10 seconds (stable frequency)
-    const interval = setInterval(() => {
-      if (isComponentMounted.current) {
-        createGrokConversation();
-      }
-    }, 10000);
+    const timer = setTimeout(startConversations, 1500);
 
     return () => {
-      isComponentMounted.current = false;
-      clearTimeout(initialDelay);
-      clearInterval(interval);
+      mounted = false;
+      clearTimeout(timer);
+      if (conversationIntervalRef.current) {
+        clearInterval(conversationIntervalRef.current);
+      }
     };
-  }, [createGrokConversation]);
+  }, []); // Empty dependency array - run only once
 
   return (
     <div className="min-h-screen bg-white text-black pt-20">
@@ -705,12 +723,6 @@ export default function Agora() {
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-sm font-semibold text-gray-800">Live Communications</h3>
                     <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => setShowChatModal(true)}
-                        className="px-2 py-1 text-xs bg-gray-200 hover:bg-lime-200 rounded transition-colors"
-                      >
-                        Expand
-                      </button>
                       <div className={`w-2 h-2 rounded-full ${isLoadingNewMessage ? 'bg-blue-400 animate-spin' : 'bg-green-400 animate-pulse'}`}></div>
                       <span className="text-xs text-gray-500">{isLoadingNewMessage ? 'Generating...' : 'Live'}</span>
                     </div>
