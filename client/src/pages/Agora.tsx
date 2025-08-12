@@ -733,7 +733,15 @@ export default function Agora() {
     const preventScroll = (e: Event) => {
       // Allow scrolling in specific containers
       let target = e.target as Element;
-      while (target && target !== document.body) {
+      
+      // Check if target exists and has classList property
+      if (!target || !target.classList) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+      
+      while (target && target !== document.body && target.classList) {
         if (target.classList.contains('overflow-y-auto') || 
             target.classList.contains('scroll-smooth') ||
             target.id === 'chat-container') {
