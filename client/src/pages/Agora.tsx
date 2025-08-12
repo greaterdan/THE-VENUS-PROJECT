@@ -527,8 +527,8 @@ export default function Agora() {
                     exit={{ opacity: 0, scale: 0.8 }}
                     className="absolute bg-white rounded-lg shadow-xl border p-4 w-64 z-10 pointer-events-none"
                     style={{
-                      left: `${Math.min(Math.max(hoveredAgent.position.x * 0.67 + 30, 10), 320)}px`,
-                      top: `${Math.min(Math.max(hoveredAgent.position.y * 0.67 - 80, 10), 250)}px`,
+                      left: `${Math.min(Math.max((hoveredAgent.position.x / 600) * 100 + 5, 2), 55)}%`,
+                      top: `${Math.min(Math.max((hoveredAgent.position.y / 400) * 100 - 20, 2), 75)}%`,
                       transformOrigin: 'center'
                     }}
                   >
