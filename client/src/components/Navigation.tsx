@@ -105,14 +105,18 @@ export default function Navigation() {
 
   return (
     <nav 
-      className="sticky top-0 z-[9999]" 
+      className="fixed top-0 left-0 right-0 z-[9999] h-16" 
       style={{ 
         backgroundColor: location === "/" ? 'transparent' : 'rgba(255, 255, 255, 0.95)', 
         backdropFilter: location === "/" ? 'none' : 'blur(8px)',
-        position: 'sticky',
-        zIndex: 9999
+        position: 'fixed',
+        zIndex: 9999,
+        display: 'block',
+        visibility: 'visible'
       }}
     >
+      {/* FORCE VISIBLE TEST BAR - REMOVE ONCE CONFIRMED WORKING */}
+      <div className="absolute top-0 left-0 w-full h-1 bg-lime-500 z-[10000]"></div>
       <div className="w-full">
         <div className="flex items-center justify-between h-16 pr-4">
           {/* Left Logo - Home Link - FORCED visibility on Agora and non-home pages */}

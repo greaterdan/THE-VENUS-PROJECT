@@ -774,7 +774,7 @@ export default function Agora() {
   }, []);
 
   return (
-    <div className="bg-white text-black overflow-hidden relative mt-16" style={{ touchAction: 'none', height: 'calc(100vh - 64px)' }}>
+    <div className="bg-white text-black overflow-hidden relative" style={{ touchAction: 'none', height: '100vh', paddingTop: '64px' }}>
       
       {/* Header - positioned at the top of container */}
       <div className="px-6 py-3 border-b border-gray-200 bg-gray-50/50 absolute top-0 left-0 right-0 z-10">
