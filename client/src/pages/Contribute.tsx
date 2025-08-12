@@ -40,7 +40,7 @@ export default function Contribute() {
         <div className="text-center mb-16">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-3xl md:text-4xl font-light text-gray-800 mb-8 leading-relaxed">
-              Contribute your GPU power to help The Venus Project's AI City grow and make decisions faster, while earning voting rights to shape its future and gaining early access to upcoming features.
+              Contribute your GPU power to help The Venus Project's City grow and make decisions faster, while earning voting rights to shape its future and gaining early access to upcoming features.
             </h1>
             <div className="flex justify-center">
               <WalletConnect
