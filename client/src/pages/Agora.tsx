@@ -400,65 +400,86 @@ const AnimatedConnectionLine = ({
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {/* Futuristic connection line with glow effect */}
+      {/* SVG filters for futuristic effects */}
       <defs>
         <filter id={`glow-${connection.type}`}>
-          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
           <feMerge> 
             <feMergeNode in="coloredBlur"/>
             <feMergeNode in="SourceGraphic"/>
           </feMerge>
         </filter>
-        <linearGradient id={`gradient-${connection.type}`} x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" style={{stopColor: colors[connection.type], stopOpacity: 0.3}} />
-          <stop offset="50%" style={{stopColor: colors[connection.type], stopOpacity: 1}} />
-          <stop offset="100%" style={{stopColor: colors[connection.type], stopOpacity: 0.3}} />
+        
+        <linearGradient id={`rainbow-${connection.type}`} x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#ff0080" stopOpacity="0.8"/>
+          <stop offset="20%" stopColor="#8000ff" stopOpacity="0.9"/>
+          <stop offset="40%" stopColor="#0080ff" stopOpacity="1"/>
+          <stop offset="60%" stopColor="#00ff80" stopOpacity="0.9"/>
+          <stop offset="80%" stopColor="#ff8000" stopOpacity="0.8"/>
+          <stop offset="100%" stopColor="#ff0080" stopOpacity="0.6"/>
         </linearGradient>
       </defs>
       
-      {/* Main connection line with gradient and glow */}
+      {/* Base glowing line */}
       <motion.line
         x1={fromX}
         y1={fromY}
         x2={toX}
         y2={toY}
-        stroke={`url(#gradient-${connection.type})`}
-        strokeWidth="3"
+        stroke={`url(#rainbow-${connection.type})`}
+        strokeWidth="6"
+        strokeLinecap="round"
         filter={`url(#glow-${connection.type})`}
-        strokeDasharray={connection.type === 'data' || connection.type === 'time' ? "8,4" : "none"}
+        opacity="0.6"
         initial={{ pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: 1.5, ease: "easeOut" }}
-      />
-      
-      {/* Animated pulse effect along the line */}
-      <motion.line
-        x1={fromX}
-        y1={fromY}
-        x2={toX}
-        y2={toY}
-        stroke={colors[connection.type]}
-        strokeWidth="1"
-        strokeOpacity="0.6"
-        strokeDasharray="20,10"
-        initial={{ strokeDashoffset: 0 }}
-        animate={{ strokeDashoffset: -30 }}
+        animate={{ 
+          pathLength: 1,
+          stroke: [
+            "#ff0080", "#8000ff", "#0080ff", "#00ff80", "#ff8000", "#ff0080"
+          ]
+        }}
         transition={{ 
-          duration: 2, 
-          repeat: Infinity, 
-          ease: "linear",
-          delay: 0.5 
+          pathLength: { duration: 1.5, ease: "easeOut" },
+          stroke: { duration: 3, repeat: Infinity, ease: "linear" }
         }}
       />
       
-      {/* Multiple moving energy particles */}
-      {[0, 0.3, 0.6].map((delay, index) => (
+      {/* Animated pulse line */}
+      <motion.line
+        x1={fromX}
+        y1={fromY}
+        x2={toX}
+        y2={toY}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeDasharray="20,10"
+        filter={`url(#glow-${connection.type})`}
+        animate={{
+          strokeDashoffset: [-30, 0],
+          stroke: [
+            "#ff00ff", "#00ffff", "#ffff00", "#ff0080", "#80ff00", "#ff00ff"
+          ]
+        }}
+        transition={{ 
+          strokeDashoffset: { duration: 2, repeat: Infinity, ease: "linear" },
+          stroke: { duration: 2.5, repeat: Infinity, ease: "linear" }
+        }}
+      />
+      
+      {/* Moving energy particles */}
+      {[0, 0.5, 1.0, 1.5].map((delay, index) => (
         <motion.circle
-          key={index}
-          r="2"
-          fill={colors[connection.type]}
-          opacity="0.9"
+          key={`energy-${index}`}
+          r={3}
           filter={`url(#glow-${connection.type})`}
+          animate={{
+            fill: [
+              "#ff0080", "#8000ff", "#0080ff", "#00ff80", "#ff8000", "#ff0080"
+            ]
+          }}
+          transition={{
+            fill: { duration: 2, repeat: Infinity, ease: "linear", delay }
+          }}
         >
           <animateMotion
             dur="3s"
@@ -469,27 +490,33 @@ const AnimatedConnectionLine = ({
         </motion.circle>
       ))}
       
-      {/* Hexagonal data packet for futuristic look */}
-      <motion.g
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.7 }}
-        transition={{ delay: 1 }}
-      >
-        <motion.polygon
-          points="0,-4 3.5,-2 3.5,2 0,4 -3.5,2 -3.5,-2"
-          fill={colors[connection.type]}
-          opacity="0.4"
-          stroke={colors[connection.type]}
-          strokeWidth="1"
-        >
-          <animateMotion
-            dur="4s"
-            repeatCount="indefinite"
-            path={`M ${fromX},${fromY} L ${toX},${toY}`}
-            begin="1s"
-          />
-        </motion.polygon>
-      </motion.g>
+      {/* Floating energy orbs */}
+      {[0.3, 1.2].map((delay, index) => (
+        <g key={`orb-${index}`}>
+          <motion.circle
+            r="8"
+            fill="none"
+            strokeWidth="2"
+            filter={`url(#glow-${connection.type})`}
+            opacity="0.7"
+            animate={{
+              stroke: [
+                "#ff00ff", "#00ffff", "#ffff00", "#ff0080", "#80ff00", "#ff00ff"
+              ]
+            }}
+            transition={{
+              stroke: { duration: 3, repeat: Infinity, ease: "linear", delay }
+            }}
+          >
+            <animateMotion
+              dur="5s"
+              repeatCount="indefinite"
+              path={`M ${fromX},${fromY} L ${toX},${toY}`}
+              begin={`${delay}s`}
+            />
+          </motion.circle>
+        </g>
+      ))}
     </motion.g>
   );
 };
