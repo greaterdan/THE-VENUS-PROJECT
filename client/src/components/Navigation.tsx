@@ -73,9 +73,8 @@ export default function Navigation() {
     return false;
   };
 
-  // Calculate navigation opacity - FORCE visibility on Agora and all non-home pages
-  const isAgoraPage = location === "/agora";
-  const navOpacity = (location === "/" && !isAgoraPage) ? Math.min(1, scrollY / 100) : 1;
+  // Calculate navigation opacity - Simple logic: only fade on home page, always visible everywhere else
+  const navOpacity = location === "/" ? Math.min(1, scrollY / 100) : 1;
 
   const venusLinks = [
     { href: "/", label: "THE VENUS PROJECT" },
@@ -101,8 +100,8 @@ export default function Navigation() {
     <nav 
       className="sticky top-0 z-[100]" 
       style={{ 
-        backgroundColor: (location === "/" && !isAgoraPage) ? 'transparent' : 'rgba(255, 255, 255, 0.95)', 
-        backdropFilter: (location === "/" && !isAgoraPage) ? 'none' : 'blur(8px)' 
+        backgroundColor: location === "/" ? 'transparent' : 'rgba(255, 255, 255, 0.95)', 
+        backdropFilter: location === "/" ? 'none' : 'blur(8px)' 
       }}
     >
       <div className="w-full">
