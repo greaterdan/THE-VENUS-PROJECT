@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
 import { useLocation } from "wouter";
-import Navigation from "@/components/Navigation";
 
 // Agent domain mapping
 const AGENT_DOMAINS = [
@@ -254,8 +253,6 @@ export default function AgoraChain() {
 
   return (
     <div className="min-h-screen bg-white text-gray-700 font-mono">
-      <Navigation />
-      
       {/* Agora Navigation Menu - matching the main Agora page */}
       <div className="px-6 py-3 border-b border-gray-200 bg-gray-50/50 relative z-50" style={{ marginTop: '64px' }}>
         <div className="flex items-center justify-between">
