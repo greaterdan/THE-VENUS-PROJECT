@@ -44,6 +44,95 @@ class ArchiveSnapshotManager {
     this.startHourlyCapture();
   }
 
+  private createInitialSampleSnapshots() {
+    console.log('[ARCHIVE] Creating initial sample snapshots for demo');
+    
+    const now = new Date();
+    const sampleSnapshots: HourlySnapshot[] = [
+      {
+        id: `snapshot-${Date.now()}-1`,
+        timestamp_start: new Date(now.getTime() - 3 * 60 * 60 * 1000).toISOString(),
+        timestamp_end: new Date(now.getTime() - 2 * 60 * 60 * 1000).toISOString(),
+        decision_id: 'energy-reallocation',
+        title: 'Solar Grid Optimization Protocol',
+        status: 'APPROVED',
+        participants: ['ALPHA', 'BETA', 'DELTA', 'EPSILON', 'ZETA'],
+        metrics_delta: {
+          ecological: 12.5,
+          wellbeing: 8.2,
+          efficiency: 15.7,
+          resilience: 9.1,
+          equity: 5.3,
+          innovation: 11.8
+        },
+        summary_line: 'Optimized solar panel placement for 23% efficiency increase',
+        transcript_lines: [
+          '[14:32] BETA → ALPHA: "Solar array reconfiguration analysis complete"',
+          '[14:33] ALPHA → DELTA: "Environmental impact assessment shows positive indicators"',
+          '[14:35] EPSILON → BETA: "Community energy needs projected for next quarter"',
+          '[14:37] ZETA → ALPHA: "Transportation grid ready for energy redistribution"',
+          '[14:40] DELTA → ALL: "Ecosystem integration protocols approved"'
+        ],
+        created_at: new Date(now.getTime() - 2 * 60 * 60 * 1000)
+      },
+      {
+        id: `snapshot-${Date.now()}-2`,
+        timestamp_start: new Date(now.getTime() - 2 * 60 * 60 * 1000).toISOString(),
+        timestamp_end: new Date(now.getTime() - 1 * 60 * 60 * 1000).toISOString(),
+        decision_id: 'agricultural-enhancement',
+        title: 'Vertical Farm Expansion Decision',
+        status: 'PENDING',
+        participants: ['GAMMA', 'DELTA', 'ETA', 'THETA', 'IOTA'],
+        metrics_delta: {
+          ecological: 8.7,
+          wellbeing: 12.3,
+          efficiency: 6.9,
+          resilience: 14.2,
+          equity: 9.8,
+          innovation: 7.5
+        },
+        summary_line: 'Evaluating vertical farming integration with urban planning',
+        transcript_lines: [
+          '[15:15] GAMMA → DELTA: "Hydroponic systems show 40% yield improvement"',
+          '[15:18] ETA → GAMMA: "Nutritional analysis confirms optimal protein distribution"',
+          '[15:22] THETA → ALL: "Educational programs need integration with farming protocols"',
+          '[15:25] IOTA → GAMMA: "Resource allocation for soil-less agriculture approved"',
+          '[15:28] DELTA → ETA: "Ecosystem impact requires further biodiversity analysis"'
+        ],
+        created_at: new Date(now.getTime() - 1 * 60 * 60 * 1000)
+      },
+      {
+        id: `snapshot-${Date.now()}-3`,
+        timestamp_start: new Date(now.getTime() - 1 * 60 * 60 * 1000).toISOString(),
+        timestamp_end: new Date(now.getTime() - 30 * 60 * 1000).toISOString(),
+        decision_id: 'transport-optimization',
+        title: 'Autonomous Transit Network Upgrade',
+        status: 'DEBATING',
+        participants: ['ZETA', 'ALPHA', 'EPSILON', 'KAPPA', 'BETA'],
+        metrics_delta: {
+          ecological: 15.2,
+          wellbeing: 9.7,
+          efficiency: 22.1,
+          resilience: 11.3,
+          equity: 16.8,
+          innovation: 18.4
+        },
+        summary_line: 'Implementing AI-coordinated transportation for reduced emissions',
+        transcript_lines: [
+          '[16:45] ZETA → ALPHA: "Transit pod manufacturing protocols ready for deployment"',
+          '[16:47] EPSILON → ZETA: "Community feedback shows 89% approval for automated systems"',
+          '[16:50] KAPPA → ALL: "Ethical considerations for autonomous decision-making addressed"',
+          '[16:53] BETA → ZETA: "Energy requirements fit within sustainable grid capacity"',
+          '[16:56] ALPHA → EPSILON: "Infrastructure modifications scheduled for next phase"'
+        ],
+        created_at: new Date(now.getTime() - 30 * 60 * 1000)
+      }
+    ];
+
+    this.snapshots = sampleSnapshots;
+    console.log(`[ARCHIVE] Created ${sampleSnapshots.length} initial sample snapshots`);
+  }
+
   // Store chat messages for snapshot processing
   addMessage(message: ChatMessage) {
     // Assign decision_id based on message content or use default
@@ -83,22 +172,21 @@ class ArchiveSnapshotManager {
   }
 
   private startHourlyCapture() {
-    // Calculate time until next hour
-    const now = new Date();
-    const nextHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() + 1, 0, 0, 0);
-    const msUntilNextHour = nextHour.getTime() - now.getTime();
-
-    // Schedule first capture at top of next hour
+    // For demo purposes, create snapshots every 2 minutes instead of hourly
+    console.log(`[ARCHIVE] Starting demo snapshot capture every 2 minutes`);
+    
+    // Create initial sample snapshots
+    this.createInitialSampleSnapshots();
+    
+    // Create first snapshot in 30 seconds
     setTimeout(() => {
       this.captureHourlySnapshots();
       
-      // Then run every hour
+      // Then run every 2 minutes for demo
       setInterval(() => {
         this.captureHourlySnapshots();
-      }, 60 * 60 * 1000);
-    }, msUntilNextHour);
-
-    console.log(`[ARCHIVE] Next hourly snapshot in ${Math.round(msUntilNextHour / 1000 / 60)} minutes`);
+      }, 2 * 60 * 1000); // 2 minutes
+    }, 30 * 1000); // 30 seconds
   }
 
   private async captureHourlySnapshots() {
@@ -107,18 +195,18 @@ class ArchiveSnapshotManager {
 
     try {
       const now = new Date();
-      const periodStart = new Date(now.getTime() - 5 * 60 * 1000); // 5 minutes ago
+      const periodStart = new Date(now.getTime() - 2 * 60 * 1000); // 2 minutes ago
       const periodEnd = new Date(now.getTime());
 
       console.log(`[ARCHIVE] Capturing snapshots for period: ${periodStart.toISOString()} - ${periodEnd.toISOString()}`);
 
-      // Get messages from the past 5 minutes
+      // Get messages from the past 2 minutes for demo
       const periodMessages = this.messages.filter(msg => 
         msg.timestamp >= periodStart && msg.timestamp < periodEnd
       );
 
       if (periodMessages.length === 0) {
-        console.log('[ARCHIVE] No messages in past 5 minutes, skipping snapshot');
+        console.log('[ARCHIVE] No messages in past 2 minutes, skipping snapshot');
         this.isCapturing = false;
         return;
       }
