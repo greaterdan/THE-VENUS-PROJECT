@@ -73,10 +73,9 @@ export default function Navigation() {
     return false;
   };
 
-  // Calculate navigation opacity based on scroll position
-  // Icons appear only after scrolling down with smooth fade on home page
-  // Always visible on other pages, especially Agora which has scroll disabled
-  const navOpacity = location === "/" ? Math.min(1, scrollY / 100) : 1;
+  // Calculate navigation opacity - FORCE visibility on Agora and all non-home pages
+  const isAgoraPage = location === "/agora";
+  const navOpacity = (location === "/" && !isAgoraPage) ? Math.min(1, scrollY / 100) : 1;
 
   const venusLinks = [
     { href: "/", label: "THE VENUS PROJECT" },
@@ -102,16 +101,16 @@ export default function Navigation() {
     <nav 
       className="sticky top-0 z-[100]" 
       style={{ 
-        backgroundColor: location === "/" ? 'transparent' : 'rgba(255, 255, 255, 0.95)', 
-        backdropFilter: location === "/" ? 'none' : 'blur(8px)' 
+        backgroundColor: (location === "/" && !isAgoraPage) ? 'transparent' : 'rgba(255, 255, 255, 0.95)', 
+        backdropFilter: (location === "/" && !isAgoraPage) ? 'none' : 'blur(8px)' 
       }}
     >
       <div className="w-full">
         <div className="flex items-center justify-between h-16 pr-4">
-          {/* Left Logo - Home Link - Always visible on non-home pages */}
+          {/* Left Logo - Home Link - FORCED visibility on Agora and non-home pages */}
           <div 
             className="flex items-center transition-opacity duration-500 ease-in-out pl-4" 
-            style={{ opacity: location === "/" ? navOpacity : 1 }}
+            style={{ opacity: navOpacity }}
           >
             <Link href="/">
               <img 
@@ -122,8 +121,8 @@ export default function Navigation() {
             </Link>
           </div>
 
-          {/* Right Navigation Group - Desktop - Always visible on non-home pages */}
-          <div className="hidden md:block transition-opacity duration-500 ease-in-out" style={{ opacity: location === "/" ? navOpacity : 1 }}>
+          {/* Right Navigation Group - Desktop - FORCED visibility on Agora and non-home pages */}
+          <div className="hidden md:block transition-opacity duration-500 ease-in-out" style={{ opacity: navOpacity }}>
             <div className="flex items-baseline space-x-2">
               <div 
                 className="relative group" 
@@ -264,8 +263,8 @@ export default function Navigation() {
             </div>
           </div>
 
-          {/* Mobile menu button - Always visible on non-home pages */}
-          <div className="md:hidden ml-auto transition-opacity duration-500 ease-in-out" style={{ opacity: location === "/" ? navOpacity : 1 }}>
+          {/* Mobile menu button - FORCED visibility on Agora and non-home pages */}
+          <div className="md:hidden ml-auto transition-opacity duration-500 ease-in-out" style={{ opacity: navOpacity }}>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="text-black hover:text-venus-lime focus:outline-none transition-all duration-300"
