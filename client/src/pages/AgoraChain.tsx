@@ -22,7 +22,7 @@ interface ChainEvent {
   timestamp: string;
   agent: string;
   domain: string;
-  action: 'STAKING' | 'UNSTAKING' | 'FAUCET OPENED' | 'FAUCET CLOSED' | 'ATTESTED' | 'REJECTED' | 'ROLLED BACK' | 'FAILED';
+  action: 'STAKING' | 'UNSTAKING' | 'FAUCET OPENED' | 'FAUCET CLOSED' | 'ATTESTED' | 'REJECTED' | 'ROLLED BACK' | 'FAILED' | 'CONNECTED' | 'DISCONNECTED';
   amount?: number;
   details: string;
   poolBalance?: number;
@@ -59,6 +59,12 @@ export default function AgoraChain() {
   const [stakeAmount, setStakeAmount] = useState<number>(0);
   const [userPositions, setUserPositions] = useState<StakePosition[]>([]);
   const [currentTime, setCurrentTime] = useState(format(new Date(), 'HH:mm:ss'));
+  
+  // Modal state
+  const [showStakeModal, setShowStakeModal] = useState(false);
+  const [stakeModalAgent, setStakeModalAgent] = useState<string>('');
+  const [stakeModalType, setStakeModalType] = useState<'stake' | 'unstake'>('stake');
+  const [modalStakeAmount, setModalStakeAmount] = useState<string>('');
 
   // Generate pool statistics for each agent
   const generatePoolStats = (agentId: string) => {
@@ -255,6 +261,68 @@ export default function AgoraChain() {
     return () => clearInterval(interval);
   }, []);
 
+  // Modal handlers
+  const openStakeModal = (agentId: string, type: 'stake' | 'unstake') => {
+    setStakeModalAgent(agentId);
+    setStakeModalType(type);
+    setModalStakeAmount('');
+    setShowStakeModal(true);
+  };
+
+  const closeStakeModal = () => {
+    setShowStakeModal(false);
+    setStakeModalAgent('');
+    setModalStakeAmount('');
+  };
+
+  const confirmStakeAction = async () => {
+    const amount = parseFloat(modalStakeAmount);
+    if (!amount || amount <= 0) return;
+    
+    const agent = AGENT_DOMAINS.find(a => a.id === stakeModalAgent);
+    if (!agent) return;
+
+    const newEvent: ChainEvent = {
+      id: `${stakeModalType}-${Date.now()}`,
+      timestamp: format(new Date(), 'HH:mm'),
+      agent: agent.name,
+      domain: agent.domain,
+      action: stakeModalType === 'stake' ? 'STAKING' : 'UNSTAKING',
+      amount: amount,
+      details: `${stakeModalType === 'stake' ? '+' : '-'}${amount} VPC | Pool: ${Math.floor(Math.random() * 50000) + 10000 + (stakeModalType === 'stake' ? amount : -amount)} VPC | ${agent.domain.split(' ')[0].toUpperCase()}: ${(amount * 0.001 * (stakeModalType === 'stake' ? 1 : -1)).toFixed(1)}`,
+      poolBalance: Math.floor(Math.random() * 50000) + 10000 + (stakeModalType === 'stake' ? amount : -amount),
+      status: 'CONFIRMED',
+      wallet: walletAlias
+    };
+    
+    setChainEvents(prev => [newEvent, ...prev]);
+    
+    // Update user position
+    setUserPositions(prev => {
+      const existing = prev.find(p => p.agent === stakeModalAgent);
+      if (existing) {
+        const newStaked = stakeModalType === 'stake' 
+          ? existing.staked + amount 
+          : Math.max(0, existing.staked - amount);
+        return prev.map(p => p.agent === stakeModalAgent 
+          ? { ...p, staked: newStaked, influenceScore: Math.max(0, p.influenceScore + Math.floor(amount * 0.1 * (stakeModalType === 'stake' ? 1 : -1))) }
+          : p
+        );
+      } else if (stakeModalType === 'stake') {
+        return [...prev, {
+          agent: stakeModalAgent,
+          staked: amount,
+          pending: 0,
+          influenceScore: Math.floor(amount * 0.1),
+          accessTickets: Math.floor(amount * 0.05)
+        }];
+      }
+      return prev;
+    });
+    
+    closeStakeModal();
+  };
+
   // Handle staking action
   const handleStake = async () => {
     if (!stakeAmount || stakeAmount <= 0) return;
@@ -431,8 +499,7 @@ export default function AgoraChain() {
                 return (
                   <div
                     key={agent.id}
-                    className="border border-gray-200 p-2 hover:bg-gray-50 cursor-pointer text-xs"
-                    onClick={() => walletConnected && openStakeDrawer(agent.id)}
+                    className="border border-gray-200 p-2 hover:bg-gray-50 text-xs"
                   >
                     <div className="font-semibold text-gray-800 mb-1 text-xs">
                       {agent.name} — {agent.domain}
@@ -453,9 +520,24 @@ export default function AgoraChain() {
                         </div>
                       )}
                       
-                      <div className="pt-0.5">
-                        <button className="text-lime-600 hover:text-lime-800 underline text-xs">
-                          Stake / Unstake
+                      <div className="pt-0.5 space-x-2">
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (walletConnected) openStakeModal(agent.id, 'stake');
+                          }}
+                          className="text-lime-600 hover:text-lime-800 underline text-xs"
+                        >
+                          Stake
+                        </button>
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (walletConnected) openStakeModal(agent.id, 'unstake');
+                          }}
+                          className="text-red-600 hover:text-red-800 underline text-xs"
+                        >
+                          Unstake
                         </button>
                       </div>
                     </div>
@@ -528,6 +610,83 @@ export default function AgoraChain() {
           </div>
         );
       })()}
+
+      {/* Stake/Unstake Modal - exact visual style matching */}
+      <AnimatePresence>
+        {showStakeModal && (() => {
+          const agent = AGENT_DOMAINS.find(a => a.id === stakeModalAgent);
+          const stats = generatePoolStats(stakeModalAgent);
+          const userPosition = userPositions.find(p => p.agent === stakeModalAgent);
+          
+          return (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+              onClick={closeStakeModal}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="bg-white border border-gray-200 p-4 max-w-md w-full mx-4"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="text-xs font-semibold text-gray-800 mb-3">
+                  {stakeModalType === 'stake' ? 'Stake VPC' : 'Unstake VPC'} — {agent?.name} — {agent?.domain}
+                </div>
+                
+                <div className="space-y-2 text-xs">
+                  <div>Pool Balance: <span className="font-mono">{stats.poolBalance.toLocaleString()} VPC</span></div>
+                  <div>Field Strength: <span className="font-mono">ECOLOGICAL: {(Math.random() * 2).toFixed(1)} | EFFICIENCY: {(Math.random() * 2).toFixed(1)} | RESILIENCE: {(Math.random() * 2).toFixed(1)}</span></div>
+                  
+                  {userPosition && (
+                    <div className="border-t border-gray-200 pt-2 mt-2">
+                      <div>Your Current Stake: <span className="font-mono text-lime-600">{userPosition.staked} VPC</span></div>
+                    </div>
+                  )}
+                  
+                  <div className="border-t border-gray-200 pt-2 mt-2">
+                    <label className="text-gray-500">Amount (VPC): </label>
+                    <input
+                      type="number"
+                      value={modalStakeAmount}
+                      onChange={(e) => setModalStakeAmount(e.target.value)}
+                      className="ml-2 px-2 py-1 border border-gray-300 rounded text-xs font-mono w-24 focus:outline-none focus:ring-1 focus:ring-lime-500"
+                      placeholder="100"
+                      autoFocus
+                    />
+                  </div>
+                  
+                  <div className="space-x-2 pt-3 border-t border-gray-200">
+                    <button
+                      onClick={confirmStakeAction}
+                      disabled={!modalStakeAmount || parseFloat(modalStakeAmount) <= 0}
+                      className="text-lime-600 hover:text-lime-800 underline disabled:text-gray-400 disabled:no-underline"
+                    >
+                      Confirm {stakeModalType === 'stake' ? 'Stake' : 'Unstake'}
+                    </button>
+                    <button 
+                      onClick={closeStakeModal}
+                      className="text-gray-500 hover:text-gray-700 underline"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  
+                  <div className="text-gray-500 mt-2 text-xs">
+                    {stakeModalType === 'stake' 
+                      ? 'Staking VPC strengthens this domain\'s allocation capacity. Rewards are non-financial: Influence Score, AccessTickets, Reputation.'
+                      : 'Unstaking will reduce your influence in this domain and decrease the protocol\'s field strength.'
+                    }
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          );
+        })()}
+      </AnimatePresence>
     </div>
   );
 }
