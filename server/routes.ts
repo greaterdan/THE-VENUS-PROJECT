@@ -5,6 +5,7 @@ import { generateAgentConversation } from "./grok";
 import DecisionImpactAnalyzer from "./impactAnalyzer";
 import ArchiveSnapshotManager from "./archiveSnapshots";
 import { AgoraWebSocketServer } from "./websocket";
+import { contractManager } from "./contracts/ContractManager";
 import OpenAI from "openai";
 
 // Initialize OpenAI client
@@ -337,6 +338,216 @@ Respond as this specific agent would, considering your domain expertise and the 
         error: 'Failed to process agent chat',
         message: error.message || 'Unknown error occurred'
       });
+    }
+  });
+
+  // Smart Contract Endpoints
+  
+  // Get contract events for all agents
+  app.get('/api/contracts/events', async (req, res) => {
+    try {
+      const events = await contractManager.getSystemWideEvents();
+      res.json(events);
+    } catch (error) {
+      console.error('Error fetching contract events:', error);
+      res.status(500).json({ error: 'Failed to fetch contract events' });
+    }
+  });
+
+  // Get all proposals across agents
+  app.get('/api/contracts/proposals', async (req, res) => {
+    try {
+      const proposals = await contractManager.getAllProposals();
+      res.json(proposals);
+    } catch (error) {
+      console.error('Error fetching proposals:', error);
+      res.status(500).json({ error: 'Failed to fetch proposals' });
+    }
+  });
+
+  // Get system metrics
+  app.get('/api/contracts/metrics', async (req, res) => {
+    try {
+      const metrics = await contractManager.getSystemMetrics();
+      res.json(metrics);
+    } catch (error) {
+      console.error('Error fetching system metrics:', error);
+      res.status(500).json({ error: 'Failed to fetch system metrics' });
+    }
+  });
+
+  // Process staking action
+  app.post('/api/contracts/stake', async (req, res) => {
+    try {
+      const { domain, wallet, amount, lock_days } = req.body;
+      
+      if (!domain || !wallet || !amount) {
+        return res.status(400).json({ error: 'Missing required fields' });
+      }
+
+      await contractManager.processStakeAction(domain, wallet, amount, lock_days || 30);
+      
+      res.json({ 
+        success: true, 
+        message: `${amount} VPC staked in ${domain}`,
+        domain,
+        amount,
+        lock_days: lock_days || 30
+      });
+    } catch (error) {
+      console.error('Error processing stake:', error);
+      res.status(500).json({ error: 'Failed to process stake action' });
+    }
+  });
+
+  // Create a new proposal 
+  app.post('/api/contracts/proposals', async (req, res) => {
+    try {
+      const { domain, author, changes, metrics_claim, rationale_hash } = req.body;
+      
+      if (!domain || !author || !changes || !metrics_claim || !rationale_hash) {
+        return res.status(400).json({ error: 'Missing required fields' });
+      }
+
+      const contract = await contractManager.getAgentContract(domain);
+      if (!contract) {
+        return res.status(400).json({ error: 'Invalid domain' });
+      }
+
+      const proposal_id = await contract.create_proposal(author, changes, metrics_claim, rationale_hash);
+      
+      // Start cross-contract coordination
+      await contractManager.processProposalLifecycle(proposal_id, domain);
+
+      res.json({ 
+        success: true, 
+        proposal_id,
+        domain,
+        status: 'pending'
+      });
+    } catch (error) {
+      console.error('Error creating proposal:', error);
+      res.status(500).json({ error: 'Failed to create proposal' });
+    }
+  });
+
+  // Attest to a proposal
+  app.post('/api/contracts/proposals/:proposal_id/attest', async (req, res) => {
+    try {
+      const { proposal_id } = req.params;
+      const { domain, vote, note_hash } = req.body;
+      
+      if (!domain || !vote || !note_hash) {
+        return res.status(400).json({ error: 'Missing required fields' });
+      }
+
+      const contract = await contractManager.getAgentContract(domain);
+      if (!contract) {
+        return res.status(400).json({ error: 'Invalid domain' });
+      }
+
+      await contract.attest_proposal(proposal_id, vote, note_hash);
+
+      res.json({ 
+        success: true, 
+        proposal_id,
+        domain,
+        vote
+      });
+    } catch (error) {
+      console.error('Error attesting proposal:', error);
+      res.status(500).json({ error: 'Failed to attest proposal' });
+    }
+  });
+
+  // Coordinate resource faucet between domains
+  app.post('/api/contracts/faucets', async (req, res) => {
+    try {
+      const { from_domain, to_domain, resource_type, amount, duration } = req.body;
+      
+      if (!from_domain || !to_domain || !resource_type || !amount || !duration) {
+        return res.status(400).json({ error: 'Missing required fields' });
+      }
+
+      const faucet_id = await contractManager.coordinateFaucetRequest(
+        from_domain, 
+        to_domain, 
+        resource_type, 
+        amount, 
+        duration
+      );
+
+      res.json({ 
+        success: true, 
+        faucet_id,
+        from_domain,
+        to_domain,
+        resource_type,
+        amount,
+        duration
+      });
+    } catch (error) {
+      console.error('Error coordinating faucet:', error);
+      res.status(500).json({ error: error.message || 'Failed to coordinate faucet' });
+    }
+  });
+
+  // Get specific agent contract state
+  app.get('/api/contracts/:domain', async (req, res) => {
+    try {
+      const { domain } = req.params;
+      const contract = await contractManager.getAgentContract(domain);
+      
+      if (!contract) {
+        return res.status(404).json({ error: 'Contract not found' });
+      }
+
+      const state = {
+        domain,
+        proposals: contract.getProposals(),
+        events: contract.getEvents(),
+        // Add domain-specific state
+        ...(domain === 'alpha' && { cityNodes: contract.getCityNodes() }),
+        ...(domain === 'beta' && { energyFaucets: contract.getEnergyFaucets() }),
+        ...(domain === 'gamma' && { harvestRecords: contract.getHarvestRecords() }),
+        ...(domain === 'delta' && { thresholds: Array.from(contract.getThresholds().entries()) }),
+        ...(domain === 'epsilon' && { 
+          wellbeingMetrics: Array.from(contract.getWellbeingMetrics().entries()),
+          equityIndices: Array.from(contract.getEquityIndices().entries())
+        }),
+        ...(domain === 'eta' && { 
+          outcomes: contract.getOutcomes(),
+          facilities: contract.getFacilities()
+        }),
+        ...(domain === 'theta' && { 
+          learningGains: contract.getLearningGains(),
+          campaigns: contract.getCampaigns()
+        }),
+        ...(domain === 'iota' && { 
+          inventory: contract.getInventory(),
+          recyclingRecords: contract.getRecyclingRecords()
+        }),
+        ...(domain === 'kappa' && { 
+          ethicalRules: contract.getEthicalRules(),
+          violations: contract.getViolations()
+        })
+      };
+
+      res.json(state);
+    } catch (error) {
+      console.error('Error fetching contract state:', error);
+      res.status(500).json({ error: 'Failed to fetch contract state' });
+    }
+  });
+
+  // Enforce global guardrails
+  app.post('/api/contracts/guardrails/check', async (req, res) => {
+    try {
+      await contractManager.enforceGlobalGuardrails();
+      res.json({ success: true, message: 'Guardrail check completed' });
+    } catch (error) {
+      console.error('Error checking guardrails:', error);
+      res.status(500).json({ error: 'Failed to check guardrails' });
     }
   });
 
