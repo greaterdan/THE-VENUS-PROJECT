@@ -554,9 +554,9 @@ export default function AgoraChain() {
       <div className="p-6">
         <div className="space-y-8">
           
-          {/* What's happening on chain title */}
+          {/* Live Feed title */}
           <div className="mb-6">
-            <h2 className="text-sm font-semibold text-gray-800 mb-4">What's happening on chain</h2>
+            <h2 className="text-sm font-semibold text-gray-800 mb-4">Live Feed</h2>
           </div>
 
           {/* Live Chain Events */}
