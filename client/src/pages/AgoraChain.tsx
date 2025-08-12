@@ -328,15 +328,27 @@ export default function AgoraChain() {
     setIsSubmitting(true);
     closeStakeModal();
     
-    // Show submitting message
-    setTransactionMessage('> Submitting transaction…');
+    // Progressive loading animation with multiple steps
+    const loadingSteps = [
+      '> Validating transaction...',
+      '> Connecting to agent pool...',
+      '> Processing on-chain...',
+      '> Updating pool balance...',
+      '> Finalizing stake position...'
+    ];
     
     // Console log for debugging
     console.log(`[${format(new Date(), 'HH:mm:ss')}] UI ACTION ${stakeModalType.toUpperCase()} agent=${stakeModalAgent} amount=${amount} status=submitted`);
     
     try {
-      // Simulate transaction delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Show progressive loading steps
+      for (let i = 0; i < loadingSteps.length; i++) {
+        setTransactionMessage(loadingSteps[i]);
+        await new Promise(resolve => setTimeout(resolve, 350));
+      }
+      
+      // Additional delay for final processing
+      await new Promise(resolve => setTimeout(resolve, 500));
       
       // Simulate random success/failure (90% success rate)
       const success = Math.random() > 0.1;
@@ -700,22 +712,28 @@ export default function AgoraChain() {
         );
       })()}
 
-      {/* Stake/Unstake Modal - Archive styling */}
+      {/* Interactive Stake/Unstake Modal with Enhanced Animations */}
       <AnimatePresence>
         {showStakeModal && (() => {
           const agent = AGENT_DOMAINS.find(a => a.id === stakeModalAgent);
           const stats = generatePoolStats(stakeModalAgent);
           const userPosition = userPositions.find(p => p.agent === stakeModalAgent);
           const userBalance = 10000; // Mock user balance
-          const isValid = modalStakeAmount && parseFloat(modalStakeAmount) > 0 && 
-            (stakeModalType === 'stake' ? parseFloat(modalStakeAmount) <= userBalance : parseFloat(modalStakeAmount) <= (userPosition?.staked || 0));
+          const stakAmount = parseFloat(modalStakeAmount) || 0;
+          const isValid = modalStakeAmount && stakAmount > 0 && 
+            (stakeModalType === 'stake' ? stakAmount <= userBalance : stakAmount <= (userPosition?.staked || 0));
+          
+          // Animation calculations
+          const newPoolBalance = stakeModalType === 'stake' ? stats.poolBalance + stakAmount : Math.max(0, stats.poolBalance - stakAmount);
+          const poolChangePercent = stats.poolBalance > 0 ? ((newPoolBalance - stats.poolBalance) / stats.poolBalance) * 100 : 0;
+          const estimatedInfluence = stakAmount * 0.1;
           
           return (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+              exit={{ opacity: 0, transition: { duration: 0.15 } }}
+              className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 backdrop-blur-sm"
               onClick={closeStakeModal}
               onKeyDown={(e) => {
                 if (e.key === 'Escape') closeStakeModal();
@@ -724,25 +742,87 @@ export default function AgoraChain() {
               tabIndex={-1}
             >
               <motion.div
-                initial={{ scale: 0.95, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.95, opacity: 0 }}
-                className="bg-white border border-gray-200 p-4 max-w-md w-full mx-4 text-xs"
+                initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                animate={{ 
+                  scale: 1, 
+                  opacity: 1, 
+                  y: 0,
+                  transition: { type: "spring", damping: 25, stiffness: 300 }
+                }}
+                exit={{ 
+                  scale: 0.95, 
+                  opacity: 0, 
+                  y: 10,
+                  transition: { duration: 0.15 }
+                }}
+                className="bg-white border border-gray-200 p-4 max-w-md w-full mx-4 text-xs shadow-lg"
                 onClick={(e) => e.stopPropagation()}
               >
-                {/* Header - Archive style */}
-                <div className="font-semibold text-gray-800 mb-3">
+                {/* Animated Header */}
+                <motion.div 
+                  className="font-semibold text-gray-800 mb-3"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                >
                   [{currentTime}] {agent?.name} {stakeModalType.toUpperCase()}
-                </div>
+                </motion.div>
                 
-                {/* Body - compact rows */}
+                {/* Body with staggered animations */}
                 <div className="space-y-1">
-                  <div>Your balance: <span className="font-mono">{userBalance.toLocaleString()} VPC</span></div>
-                  <div>Pool balance: <span className="font-mono">{stats.poolBalance.toLocaleString()} VPC</span></div>
-                  <div>24h net flow: <span className={`font-mono ${stats.netFlow24h >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {stats.netFlow24h >= 0 ? '+' : ''}{stats.netFlow24h.toFixed(0)} VPC
-                  </span></div>
-                  <div>Estimated influence (domain): <span className="font-mono">+{(parseFloat(modalStakeAmount || '0') * 0.1).toFixed(1)}</span></div>
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    Your balance: <span className="font-mono">{userBalance.toLocaleString()} VPC</span>
+                  </motion.div>
+                  
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.25 }}
+                  >
+                    Pool balance: <span className="font-mono">{stats.poolBalance.toLocaleString()} VPC</span>
+                    {stakAmount > 0 && (
+                      <motion.span
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.3 }}
+                        className={`ml-2 text-xs ${poolChangePercent >= 0 ? 'text-green-600' : 'text-red-600'}`}
+                      >
+                        → {newPoolBalance.toLocaleString()} VPC ({poolChangePercent >= 0 ? '+' : ''}{poolChangePercent.toFixed(1)}%)
+                      </motion.span>
+                    )}
+                  </motion.div>
+                  
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    24h net flow: <span className={`font-mono ${stats.netFlow24h >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                      {stats.netFlow24h >= 0 ? '+' : ''}{stats.netFlow24h.toFixed(0)} VPC
+                    </span>
+                  </motion.div>
+                  
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.35 }}
+                  >
+                    Estimated influence (domain): 
+                    <motion.span 
+                      className="font-mono text-lime-600"
+                      animate={{ 
+                        scale: estimatedInfluence > 0 ? [1, 1.05, 1] : 1,
+                        color: estimatedInfluence > 0 ? '#65a30d' : '#6b7280'
+                      }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      +{estimatedInfluence.toFixed(1)}
+                    </motion.span>
+                  </motion.div>
                   
                   {userPosition && (
                     <div className="mt-2 pt-1 border-t border-gray-200">
@@ -750,63 +830,115 @@ export default function AgoraChain() {
                     </div>
                   )}
                   
-                  {/* Input */}
-                  <div className="mt-3 pt-2 border-t border-gray-200">
-                    <input
+                  {/* Animated Input Section */}
+                  <motion.div 
+                    className="mt-3 pt-2 border-t border-gray-200"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    <motion.input
                       type="number"
                       value={modalStakeAmount}
                       onChange={(e) => {
                         setModalStakeAmount(e.target.value);
                         validateStakeAmount();
                       }}
-                      className="px-2 py-1 border border-gray-300 text-xs font-mono w-24 focus:outline-none focus:ring-1 focus:ring-lime-500"
+                      className="px-2 py-1 border border-gray-300 text-xs font-mono w-24 focus:outline-none focus:ring-1 focus:ring-lime-500 transition-all duration-200"
                       placeholder="100"
                       autoFocus
+                      animate={{
+                        borderColor: validationError ? '#dc2626' : (stakAmount > 0 ? '#65a30d' : '#d1d5db'),
+                        boxShadow: stakAmount > 0 ? '0 0 0 1px rgba(101, 163, 13, 0.15)' : 'none'
+                      }}
+                      whileFocus={{ 
+                        scale: 1.02,
+                        transition: { duration: 0.1 }
+                      }}
                     />
-                    <span className="ml-2 text-gray-500">VPC</span>
-                  </div>
+                    <motion.span 
+                      className="ml-2 text-gray-500"
+                      animate={{ 
+                        color: stakAmount > 0 ? '#65a30d' : '#6b7280'
+                      }}
+                    >
+                      VPC
+                    </motion.span>
+                  </motion.div>
                   
-                  {/* Lock period selector */}
+                  {/* Animated Lock Period Selector */}
                   {stakeModalType === 'stake' && (
-                    <div className="mt-2">
+                    <motion.div 
+                      className="mt-2"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.45 }}
+                    >
                       <span className="text-gray-500 mr-2">Lock period:</span>
-                      {[7, 30, 90].map((days) => (
-                        <button
+                      {[7, 30, 90].map((days, index) => (
+                        <motion.button
                           key={days}
                           onClick={() => setLockPeriod(days)}
-                          className={`mr-2 underline ${
+                          className={`mr-2 underline transition-all duration-200 ${
                             lockPeriod === days 
-                              ? 'text-gray-800 bg-gray-200' 
+                              ? 'text-gray-800 bg-gray-200 px-1' 
                               : 'text-gray-500 hover:text-gray-700'
                           }`}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.5 + index * 0.05 }}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                         >
                           {days} days
-                        </button>
+                        </motion.button>
                       ))}
-                    </div>
+                    </motion.div>
                   )}
                   
-                  {/* Validation error */}
-                  {validationError && (
-                    <div className="text-red-600 text-xs mt-1">{validationError}</div>
-                  )}
+                  {/* Animated Validation Error */}
+                  <AnimatePresence>
+                    {validationError && (
+                      <motion.div 
+                        className="text-red-600 text-xs mt-1"
+                        initial={{ opacity: 0, scale: 0.95, y: -5 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95, y: -5 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        {validationError}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                   
-                  {/* Footer - text links only */}
-                  <div className="space-x-4 pt-3 mt-3 border-t border-gray-200">
-                    <button
+                  {/* Animated Footer Buttons */}
+                  <motion.div 
+                    className="space-x-4 pt-3 mt-3 border-t border-gray-200"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 }}
+                  >
+                    <motion.button
                       onClick={confirmStakeAction}
-                      disabled={!isValid}
-                      className="text-lime-600 hover:text-lime-800 underline disabled:text-gray-400 disabled:no-underline"
+                      disabled={!isValid || isSubmitting}
+                      className="text-lime-600 hover:text-lime-800 underline disabled:text-gray-400 disabled:no-underline transition-all duration-200"
+                      whileHover={isValid && !isSubmitting ? { scale: 1.05 } : {}}
+                      whileTap={isValid && !isSubmitting ? { scale: 0.95 } : {}}
+                      animate={{
+                        color: isSubmitting ? '#9ca3af' : (isValid ? '#65a30d' : '#9ca3af')
+                      }}
                     >
-                      Confirm
-                    </button>
-                    <button 
+                      {isSubmitting ? 'Processing...' : 'Confirm'}
+                    </motion.button>
+                    <motion.button 
                       onClick={closeStakeModal}
-                      className="text-gray-500 hover:text-gray-700 underline"
+                      className="text-gray-500 hover:text-gray-700 underline transition-all duration-200"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                     >
                       Cancel
-                    </button>
-                  </div>
+                    </motion.button>
+                  </motion.div>
                 </div>
               </motion.div>
             </motion.div>
@@ -814,12 +946,31 @@ export default function AgoraChain() {
         })()}
       </AnimatePresence>
 
-      {/* Transaction message - inline notice */}
-      {transactionMessage && (
-        <div className="mt-4 text-xs text-gray-500">
-          {transactionMessage}
-        </div>
-      )}
+      {/* Enhanced Transaction Message with Animation */}
+      <AnimatePresence>
+        {transactionMessage && (
+          <motion.div 
+            className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-white border border-gray-300 shadow-lg px-4 py-2 text-xs font-mono z-50 max-w-md"
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+          >
+            <div className="flex items-center">
+              {isSubmitting && (
+                <motion.div
+                  className="w-2 h-2 bg-lime-500 rounded-full mr-2"
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 1, repeat: Infinity }}
+                />
+              )}
+              <span className={isSubmitting ? 'text-gray-700' : transactionMessage.includes('✓') ? 'text-green-600' : transactionMessage.includes('failed') ? 'text-red-600' : 'text-gray-700'}>
+                {transactionMessage}
+              </span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
