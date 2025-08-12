@@ -514,6 +514,11 @@ export default function Agora() {
   const [archiveEntries, setArchiveEntries] = useState<any[]>([]);
   const [expandedEntry, setExpandedEntry] = useState<string | null>(null);
   const [transcript, setTranscript] = useState<string[] | null>(null);
+
+  // Agent chat state
+  const [showAgentChat, setShowAgentChat] = useState(false);
+  const [selectedAgent, setSelectedAgent] = useState<string | null>(null);
+  const [userMessage, setUserMessage] = useState('');
   
   // Local state for page-specific features
   const chatMessagesRef = useRef(chatMessages);
@@ -683,6 +688,12 @@ export default function Agora() {
                 }`}
               >
                 ARCHIVE
+              </button>
+              <button
+                onClick={() => setShowAgentChat(true)}
+                className="px-3 py-1 text-xs font-mono rounded bg-gray-200 text-gray-600 hover:bg-gray-300"
+              >
+                CHAT
               </button>
             </div>
           </div>
@@ -1019,6 +1030,138 @@ export default function Agora() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Agent Chat Modal */}
+      {showAgentChat && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-[90] p-4"
+          onClick={(e) => e.target === e.currentTarget && setShowAgentChat(false)}
+        >
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-white rounded-lg shadow-xl border max-w-2xl w-full max-h-[80vh] overflow-hidden"
+          >
+            {/* Chat Header */}
+            <div className="p-4 border-b border-gray-200 bg-gray-50">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-800">Agent Communication</h3>
+                  <p className="text-sm text-gray-600">Select an agent to chat with</p>
+                </div>
+                <button
+                  onClick={() => setShowAgentChat(false)}
+                  className="text-gray-400 hover:text-gray-600 text-xl"
+                >
+                  ×
+                </button>
+              </div>
+            </div>
+
+            {!selectedAgent ? (
+              /* Agent Selection */
+              <div className="p-4 max-h-[60vh] overflow-y-auto">
+                <div className="grid grid-cols-2 gap-3">
+                  {AGENTS.map((agent) => (
+                    <button
+                      key={agent.id}
+                      onClick={() => setSelectedAgent(agent.id)}
+                      className="p-4 bg-gray-50 hover:bg-gray-100 rounded-lg border text-left transition-colors"
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-medium text-gray-800">Agent {agent.name}</h4>
+                        <span className={`w-2 h-2 rounded-full ${
+                          agent.status === 'active' ? 'bg-green-400' :
+                          agent.status === 'processing' ? 'bg-yellow-400' : 'bg-gray-400'
+                        }`} />
+                      </div>
+                      <p className="text-xs text-gray-600 mb-1">{agent.domain}</p>
+                      <p className="text-xs text-gray-500">Alignment: {agent.alignment}%</p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              /* Chat Interface */
+              <div className="flex flex-col h-[60vh]">
+                {/* Chat Header */}
+                <div className="p-3 border-b border-gray-200 bg-gray-50">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={() => setSelectedAgent(null)}
+                        className="text-gray-400 hover:text-gray-600"
+                      >
+                        ← Back
+                      </button>
+                      <div>
+                        <h4 className="font-medium text-gray-800">
+                          Agent {AGENTS.find(a => a.id === selectedAgent)?.name}
+                        </h4>
+                        <p className="text-xs text-gray-600">
+                          {AGENTS.find(a => a.id === selectedAgent)?.domain}
+                        </p>
+                      </div>
+                    </div>
+                    <span className={`w-2 h-2 rounded-full ${
+                      AGENTS.find(a => a.id === selectedAgent)?.status === 'active' ? 'bg-green-400' :
+                      AGENTS.find(a => a.id === selectedAgent)?.status === 'processing' ? 'bg-yellow-400' : 'bg-gray-400'
+                    }`} />
+                  </div>
+                </div>
+
+                {/* Chat Messages Area */}
+                <div className="flex-1 p-4 overflow-y-auto bg-gray-50">
+                  <div className="space-y-3">
+                    {/* System message */}
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                      <p className="text-sm text-blue-800">
+                        You are now connected to Agent {AGENTS.find(a => a.id === selectedAgent)?.name}.
+                        This agent specializes in {AGENTS.find(a => a.id === selectedAgent)?.domain.toLowerCase()}.
+                        How can I assist you with decision analysis and resource coordination?
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Message Input */}
+                <div className="p-4 border-t border-gray-200 bg-white">
+                  <div className="flex gap-3">
+                    <input
+                      type="text"
+                      value={userMessage}
+                      onChange={(e) => setUserMessage(e.target.value)}
+                      placeholder={`Message Agent ${AGENTS.find(a => a.id === selectedAgent)?.name}...`}
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-lime-500"
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter' && userMessage.trim()) {
+                          console.log(`Sending to ${selectedAgent}:`, userMessage);
+                          setUserMessage('');
+                        }
+                      }}
+                    />
+                    <button
+                      onClick={() => {
+                        if (userMessage.trim()) {
+                          console.log(`Sending to ${selectedAgent}:`, userMessage);
+                          setUserMessage('');
+                        }
+                      }}
+                      disabled={!userMessage.trim()}
+                      className="px-4 py-2 bg-lime-500 text-white rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-lime-600 transition-colors"
+                    >
+                      Send
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </motion.div>
+        </motion.div>
+      )}
     </div>
   );
 }
