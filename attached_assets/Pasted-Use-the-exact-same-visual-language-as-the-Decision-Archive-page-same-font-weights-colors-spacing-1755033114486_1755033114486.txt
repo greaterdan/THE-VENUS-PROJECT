@@ -1,0 +1,96 @@
+Use the exact same visual language as the Decision Archive page (same font, weights, colors, spacing, line-height, timestamp brackets, status tags, muted palette). Do not introduce new button styles, gradients, or rounded “app-y” panels.
+
+Header
+
+Title: AGORA CHAIN — VENUS PROJECT NETWORK
+
+Subline: System Time: [HH:MM:SS] | Status: OPERATIONAL
+
+Keep the search bar identical to Archive (same placeholder + icon).
+
+Wallet connect must be a plain text link in the top-right: Connect wallet (Phantom / MetaMask) in the archive’s body color; on connect, show the short alias alpha…9d3. No colored pills.
+
+Section A — Live Chain Events (list must look like Archive rows)
+
+Render live events as single-line entries identical to archive logs:
+[23:07] ENERGY SYSTEMS STAKING +1,250 VPC | Pool: 82,410 VPC | Efficiency: +0.7
+[23:06] ECOLOGY & RESTORATION FAUCET OPENED 450 kWh → Rewilding Hub-2 | 72h | Ecological: +1.8, Equity: +0.4
+
+Left-aligned timestamp in square brackets, agent/domain in small-caps/bold like Archive, status tag in the same muted capsule style (STAKING, UNSTAKING, FAUCET OPENED, ATTESTED, REJECTED, ROLLED BACK, CONFIRMED, PENDING).
+
+No boxes, no shadows, no cards—just the flat list with the same baseline grid and line spacing as Archive.
+
+New events prepend at the top with a subtle fade-in (same timing as Archive list loads).
+
+The existing search input filters this list by agent name, status, or wallet alias; keep placeholder text identical.
+
+Section B — Staking Protocols (cards, but styled like Archive)
+
+Below the live list (or in a narrow right column only if Archive already has a side rail pattern), show 10 minimal “protocol cards”, one per agent/domain, styled like compact archive blocks (thin 1px border in the same gray as Archive dividers; no drop shadow; same font; tight padding).
+
+Card header (single line):
+ALPHA — Infrastructure & Habitat (use the Archive’s header weight and color)
+
+Card body (4–6 compact lines, each a single row in the archive font):
+
+Pool Balance: 16,666 VPC
+
+24h Net Flow: +324 VPC
+
+Active Stakers: 51
+
+Field Strength Δ (7d): Ecological +1.3 | Efficiency +0.9 | Resilience +0.6
+
+Faucet Threshold: 20,000 VPC (opens 250 kWh/24h)
+
+Plain text link: Stake / Unstake (opens a small inline drawer with a number input + “Stake”/“Unstake” text buttons using Archive link style—no colored CTA buttons).
+
+Repeat for all 10 domains (Alpha…Kappa). Keep every card identical in dimensions and typography to maintain Archive’s disciplined look.
+
+If viewport is narrow, stack cards in one column; otherwise show a simple two-column grid with the same gutters as Archive uses.
+
+Behavior & Data (no visual deviations)
+
+When a user stakes/unstakes from a card drawer, append a new Archive-style event to the Live Chain Events list (same one-line format).
+
+When a faucet auto-opens from a pool crossing its threshold, append a FAUCET OPENED event; when it expires or is revoked, append FAUCET CLOSED or ROLLED BACK.
+
+All six impact metrics (Ecology, Wellbeing, Efficiency, Resilience, Equity, Innovation) must use the same numbers as the Decision Impact engine so values are consistent across pages.
+
+Keep error/success feedback as inline text in the drawer using Archive’s muted red/green, not toasts or popups.
+
+Strict constraints
+
+No new colors, no rounded cards, no shadows, no large buttons.
+
+Keep timestamps, caps, spacing, and font weights pixel-identical to the Archive list.
+
+Wallet connect, stake, and modal/drawer interactions must use plain text links in Archive style, not modern UI components.
+
+This page should feel like “the Archive, but live and controllable.”
+
+Content for the 10 protocol cards (titles):
+
+ALPHA — Infrastructure & Habitat
+
+BETA — Energy Systems
+
+GAMMA — Food & Agriculture
+
+DELTA — Ecology & Restoration
+
+EPSILON — Social & Wellbeing
+
+ZETA — Transportation & Mobility
+
+ETA — Health & Medical
+
+THETA — Education & Knowledge
+
+IOTA — Resource Management
+
+KAPPA — Culture, Ethics & Governance
+
+Success check
+
+When compared side-by-side with the Archive page, typography and spacing are indistinguishable. The only differences are: a live event feed and the minimal protocol cards

@@ -49,18 +49,14 @@ interface StakePosition {
 
 export default function AgoraChain() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterType, setFilterType] = useState<'All' | 'Stakes' | 'Faucets' | 'Attestations'>('All');
   const [chainEvents, setChainEvents] = useState<ChainEvent[]>([]);
   const [walletConnected, setWalletConnected] = useState(false);
-  const [walletAddress, setWalletAddress] = useState<string>('');
   const [walletAlias, setWalletAlias] = useState<string>('');
-  const [showStakeModal, setShowStakeModal] = useState(false);
+  const [showStakeDrawer, setShowStakeDrawer] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState<string>('');
   const [stakeAmount, setStakeAmount] = useState<number>(0);
-  const [lockPeriod, setLockPeriod] = useState<number>(7);
   const [userPositions, setUserPositions] = useState<StakePosition[]>([]);
-  const [isLoadingStake, setIsLoadingStake] = useState(false);
-  const chainFeedRef = useRef<HTMLDivElement>(null);
+  const [currentTime, setCurrentTime] = useState(format(new Date(), 'HH:mm:ss'));
 
   // Generate pool statistics for each agent
   const generatePoolStats = (agentId: string) => {
@@ -76,34 +72,32 @@ export default function AgoraChain() {
     };
   };
 
+  // Update current time
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(format(new Date(), 'HH:mm:ss'));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   // Mock wallet connection
   const connectWallet = async (type: 'phantom' | 'metamask') => {
-    try {
-      // Simulate wallet connection
-      const mockAddress = type === 'phantom' 
-        ? 'pha7...9d3f' 
-        : '0x742...1a2b';
-      
-      setWalletAddress(mockAddress);
-      setWalletAlias(mockAddress);
-      setWalletConnected(true);
-      
-      // Generate mock positions
-      const positions: StakePosition[] = AGENT_DOMAINS.slice(0, 3).map(agent => ({
-        agent: agent.id,
-        staked: Math.floor(Math.random() * 1000) + 100,
-        pending: Math.floor(Math.random() * 100),
-        unlockDate: Math.random() > 0.5 ? format(new Date(Date.now() + Math.random() * 30 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd') : undefined,
-        influenceScore: Math.floor(Math.random() * 100) + 50,
-        accessTickets: Math.floor(Math.random() * 10) + 2,
-        lockPeriod: [7, 30, 90][Math.floor(Math.random() * 3)]
-      }));
-      
-      setUserPositions(positions);
-      
-    } catch (error) {
-      console.error('Wallet connection failed:', error);
-    }
+    const mockAlias = type === 'phantom' ? 'alpha…9d3f' : 'beta…1a2b';
+    setWalletAlias(mockAlias);
+    setWalletConnected(true);
+    
+    // Generate mock positions
+    const positions: StakePosition[] = AGENT_DOMAINS.slice(0, 3).map(agent => ({
+      agent: agent.id,
+      staked: Math.floor(Math.random() * 1000) + 100,
+      pending: Math.floor(Math.random() * 100),
+      unlockDate: Math.random() > 0.5 ? format(new Date(Date.now() + Math.random() * 30 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd') : undefined,
+      influenceScore: Math.floor(Math.random() * 100) + 50,
+      accessTickets: Math.floor(Math.random() * 10) + 2,
+      lockPeriod: [7, 30, 90][Math.floor(Math.random() * 3)]
+    }));
+    
+    setUserPositions(positions);
   };
 
   // Generate initial chain events
@@ -125,21 +119,12 @@ export default function AgoraChain() {
         if (action === 'STAKING' || action === 'UNSTAKING') {
           amount = Math.floor(Math.random() * 1000) + 100;
           const wallet = `${['alpha', 'beta', 'gamma', 'delta'][Math.floor(Math.random() * 4)]}…${Math.random().toString(36).substr(2, 3)}`;
-          details = `${action === 'STAKING' ? '+' : '-'}${amount} VPC by ${wallet} | Pool: ${Math.floor(Math.random() * 50000) + 10000} VPC | ${agent.domain.split(' ')[0]} +${(Math.random() * 2).toFixed(1)}`;
+          details = `${action === 'STAKING' ? '+' : '-'}${amount} VPC | Pool: ${Math.floor(Math.random() * 50000) + 10000} VPC | ${agent.domain.split(' ')[0].toUpperCase()}: ${(Math.random() * 2).toFixed(1)}`;
         } else if (action.includes('FAUCET')) {
-          const resource = ['kWh', 'L/day', 'kg/day', 'units/day'][Math.floor(Math.random() * 4)];
-          const rate = Math.floor(Math.random() * 10000) + 1000;
+          const resource = ['kWh', 'L/day', 'kg/day'][Math.floor(Math.random() * 3)];
+          const rate = Math.floor(Math.random() * 5000) + 500;
           const duration = ['24h', '48h', '72h'][Math.floor(Math.random() * 3)];
-          details = `${rate} ${resource} → ${agent.domain.split(' ')[0]} Hub-${Math.floor(Math.random() * 10) + 1} (${duration})`;
-          
-          impact = {
-            ecological: Math.random() * 2,
-            wellbeing: Math.random() * 2,
-            efficiency: Math.random() * 2,
-            resilience: Math.random() * 2,
-            equity: Math.random() * 2,
-            innovation: Math.random() * 2
-          };
+          details = `${rate} ${resource} → ${agent.domain.split(' ')[0]} Hub-${Math.floor(Math.random() * 10) + 1} | ${duration} | ECOLOGICAL: ${(Math.random() * 2).toFixed(1)}, EQUITY: ${(Math.random() * 1).toFixed(1)}`;
         } else {
           details = `Verification completed for ${agent.domain} protocol update`;
         }
@@ -178,21 +163,12 @@ export default function AgoraChain() {
       if (action === 'STAKING' || action === 'UNSTAKING') {
         amount = Math.floor(Math.random() * 500) + 50;
         const wallet = `${['alpha', 'beta', 'gamma'][Math.floor(Math.random() * 3)]}…${Math.random().toString(36).substr(2, 3)}`;
-        details = `${action === 'STAKING' ? '+' : '-'}${amount} VPC by ${wallet} | Pool: ${Math.floor(Math.random() * 50000) + 10000} VPC | ${agent.domain.split(' ')[0]} +${(Math.random() * 2).toFixed(1)}`;
+        details = `${action === 'STAKING' ? '+' : '-'}${amount} VPC | Pool: ${Math.floor(Math.random() * 50000) + 10000} VPC | ${agent.domain.split(' ')[0].toUpperCase()}: ${(Math.random() * 2).toFixed(1)}`;
       } else {
         const resource = ['kWh', 'L/day', 'kg/day'][Math.floor(Math.random() * 3)];
         const rate = Math.floor(Math.random() * 5000) + 500;
         const duration = ['24h', '48h'][Math.floor(Math.random() * 2)];
-        details = `${rate} ${resource} → ${agent.domain.split(' ')[0]} Hub-${Math.floor(Math.random() * 5) + 1} (${duration})`;
-        
-        impact = {
-          ecological: Math.random() * 1.5,
-          wellbeing: Math.random() * 1.5,
-          efficiency: Math.random() * 1.5,
-          resilience: Math.random() * 1.5,
-          equity: Math.random() * 1.5,
-          innovation: Math.random() * 1.5
-        };
+        details = `${rate} ${resource} → ${agent.domain.split(' ')[0]} Hub-${Math.floor(Math.random() * 5) + 1} | ${duration} | ECOLOGICAL: ${(Math.random() * 1.5).toFixed(1)}, WELLBEING: ${(Math.random() * 1).toFixed(1)}`;
       }
       
       const newEvent: ChainEvent = {
@@ -216,27 +192,16 @@ export default function AgoraChain() {
 
   // Filter events
   const filteredEvents = chainEvents.filter(event => {
-    const matchesSearch = !searchTerm || 
+    return !searchTerm || 
       event.agent.toLowerCase().includes(searchTerm.toLowerCase()) ||
       event.domain.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      event.action.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesFilter = filterType === 'All' || 
-      (filterType === 'Stakes' && (event.action === 'STAKING' || event.action === 'UNSTAKING')) ||
-      (filterType === 'Faucets' && event.action.includes('FAUCET')) ||
-      (filterType === 'Attestations' && (event.action === 'ATTESTED' || event.action === 'REJECTED'));
-    
-    return matchesSearch && matchesFilter;
+      event.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (event.wallet && event.wallet.toLowerCase().includes(searchTerm.toLowerCase()));
   });
 
   // Handle staking action
   const handleStake = async () => {
     if (!stakeAmount || stakeAmount <= 0) return;
-    
-    setIsLoadingStake(true);
-    
-    // Simulate transaction
-    await new Promise(resolve => setTimeout(resolve, 2000));
     
     const agent = AGENT_DOMAINS.find(a => a.id === selectedAgent);
     if (agent) {
@@ -247,7 +212,7 @@ export default function AgoraChain() {
         domain: agent.domain,
         action: 'STAKING',
         amount: stakeAmount,
-        details: `+${stakeAmount} VPC by ${walletAlias} | Pool: ${Math.floor(Math.random() * 50000) + 10000 + stakeAmount} VPC | ${agent.domain.split(' ')[0]} +${(stakeAmount * 0.001).toFixed(1)}`,
+        details: `+${stakeAmount} VPC | Pool: ${Math.floor(Math.random() * 50000) + 10000 + stakeAmount} VPC | ${agent.domain.split(' ')[0].toUpperCase()}: ${(stakeAmount * 0.001).toFixed(1)}`,
         poolBalance: Math.floor(Math.random() * 50000) + 10000 + stakeAmount,
         status: 'CONFIRMED',
         wallet: walletAlias
@@ -269,390 +234,232 @@ export default function AgoraChain() {
             staked: stakeAmount,
             pending: 0,
             influenceScore: Math.floor(stakeAmount * 0.1),
-            accessTickets: Math.floor(stakeAmount * 0.05),
-            lockPeriod
+            accessTickets: Math.floor(stakeAmount * 0.05)
           }];
         }
       });
     }
     
-    setIsLoadingStake(false);
-    setShowStakeModal(false);
+    setShowStakeDrawer(false);
     setStakeAmount(0);
   };
 
-  const openStakeModal = (agentId: string) => {
+  const openStakeDrawer = (agentId: string) => {
     setSelectedAgent(agentId);
-    setShowStakeModal(true);
+    setShowStakeDrawer(true);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
-      {/* Header matching archive style */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-6 py-6">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-3xl font-light text-gray-800 mb-2">Agora Chain</h1>
-              <p className="text-gray-600">Real-time staking and resource allocation events</p>
+    <div className="min-h-screen bg-white text-gray-700 font-mono pt-16">
+      {/* Header matching archive style exactly */}
+      <div className="p-6 border-b border-gray-200">
+        <div className="text-gray-800 text-xs font-semibold">AGORA CHAIN — VENUS PROJECT NETWORK</div>
+        <div className="text-xs text-gray-600 flex items-center justify-between">
+          <span>System Time: [{currentTime}] | Status: OPERATIONAL</span>
+          {!walletConnected ? (
+            <span className="text-gray-600">
+              Connect wallet (
+              <button onClick={() => connectWallet('phantom')} className="text-lime-600 hover:text-lime-800 underline">Phantom</button>
+              {' / '}
+              <button onClick={() => connectWallet('metamask')} className="text-lime-600 hover:text-lime-800 underline">MetaMask</button>
+              )
+            </span>
+          ) : (
+            <span className="text-gray-600">{walletAlias}</span>
+          )}
+        </div>
+        <div className="border-t border-gray-200 my-2"></div>
+        
+        {/* Search Bar - identical to Archive */}
+        <div className="mb-4">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search conversations and decisions..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-500 focus:border-transparent font-mono"
+            />
+            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+              <svg className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
             </div>
-            
-            {/* Wallet controls */}
-            <div className="flex items-center gap-4">
-              {!walletConnected ? (
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => connectWallet('phantom')}
-                    className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
-                  >
-                    Connect Phantom
-                  </button>
-                  <button
-                    onClick={() => connectWallet('metamask')}
-                    className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm"
-                  >
-                    Connect MetaMask
-                  </button>
+          </div>
+          {searchTerm && (
+            <div className="mt-1 text-xs text-gray-500">
+              Filtering results for "{searchTerm}"
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Main content - split between live events and protocol cards */}
+      <div className="p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          {/* Live Chain Events - matching archive list exactly */}
+          <div className="lg:col-span-2">
+            <div className="space-y-1 text-xs max-h-[calc(100vh-12rem)] overflow-y-auto">
+              {filteredEvents.length === 0 ? (
+                <div className="text-gray-500 p-4 text-center">
+                  {searchTerm ? (
+                    <>
+                      No results found for "{searchTerm}".<br/>
+                      Try different search terms or clear the search.
+                    </>
+                  ) : (
+                    <>
+                      No chain events yet.<br/>
+                      Events will appear as staking and faucet activities occur.
+                    </>
+                  )}
                 </div>
               ) : (
-                <div className="text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded font-mono">
-                  {walletAlias}
+                <AnimatePresence>
+                  {filteredEvents.map((event, index) => (
+                    <motion.div
+                      key={event.id}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="hover:bg-gray-100 p-1 cursor-pointer rounded"
+                      onClick={() => walletConnected && openStakeDrawer(AGENT_DOMAINS.find(a => a.name === event.agent)?.id || '')}
+                    >
+                      <span className="text-lime-600 font-medium">[{event.timestamp}]</span>
+                      <span className="ml-2 text-gray-800 font-semibold">{event.domain.toUpperCase()}</span>
+                      <span className="ml-2 text-blue-600">{event.action}</span>
+                      <span className="ml-2 text-gray-500">{event.details}</span>
+                      <span className={`ml-4 text-xs ${
+                        event.status === 'CONFIRMED' ? 'text-green-600' :
+                        event.status === 'PENDING' ? 'text-yellow-600' :
+                        'text-red-600'
+                      }`}>
+                        {event.status}
+                      </span>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              )}
+            </div>
+            
+            <div className="mt-6 text-xs text-gray-500">
+              &gt; Connect wallet to interact with staking protocols
+              {searchTerm && (
+                <div className="mt-1">
+                  <button 
+                    onClick={() => setSearchTerm('')}
+                    className="text-lime-600 hover:text-lime-800 underline"
+                  >
+                    Clear search
+                  </button>
                 </div>
               )}
             </div>
           </div>
 
-          {/* Search and filters matching archive style */}
-          <div className="flex items-center gap-4">
-            <div className="flex-1 max-w-md">
-              <input
-                type="text"
-                placeholder="Search events..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-500 focus:border-transparent"
-              />
-            </div>
-            
-            <div className="flex gap-2">
-              {['All', 'Stakes', 'Faucets', 'Attestations'].map((filter) => (
-                <button
-                  key={filter}
-                  onClick={() => setFilterType(filter as any)}
-                  className={`px-3 py-2 text-sm rounded-lg transition-colors ${
-                    filterType === filter
-                      ? 'bg-lime-500 text-white'
-                      : 'bg-white text-gray-600 border border-gray-300 hover:bg-gray-50'
-                  }`}
-                >
-                  {filter}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main content */}
-      <div className="max-w-7xl mx-auto px-6 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          
-          {/* Chain events feed - matching archive list style */}
-          <div className="lg:col-span-3">
-            <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-              <div className="p-4 border-b border-gray-200 bg-gray-50">
-                <h2 className="text-lg font-semibold text-gray-800">Live Chain Events</h2>
-                <p className="text-sm text-gray-600 mt-1">Real-time feed of staking and resource activities</p>
-              </div>
-              
-              <div ref={chainFeedRef} className="max-h-[600px] overflow-y-auto">
-                <AnimatePresence>
-                  {filteredEvents.map((event, index) => (
-                    <motion.div
-                      key={event.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                      className="border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
-                      onClick={() => walletConnected && openStakeModal(AGENT_DOMAINS.find(a => a.name === event.agent)?.id || '')}
-                    >
-                      <div className="p-4">
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-3 mb-2">
-                              <span className="text-xs font-mono text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                [{event.timestamp}]
-                              </span>
-                              <span className="font-semibold text-gray-800">
-                                {event.domain.toUpperCase()}
-                              </span>
-                              <span className={`px-2 py-1 text-xs rounded font-mono ${
-                                event.action === 'STAKING' ? 'bg-green-100 text-green-800' :
-                                event.action === 'UNSTAKING' ? 'bg-red-100 text-red-800' :
-                                event.action.includes('FAUCET') ? 'bg-blue-100 text-blue-800' :
-                                event.action === 'ATTESTED' ? 'bg-purple-100 text-purple-800' :
-                                'bg-gray-100 text-gray-600'
-                              }`}>
-                                {event.action}
-                              </span>
-                              {event.amount && (
-                                <span className="text-sm text-gray-600">
-                                  {event.action === 'STAKING' ? '+' : event.action === 'UNSTAKING' ? '-' : ''}{event.amount} VPC
-                                </span>
-                              )}
-                            </div>
-                            
-                            <div className="text-sm text-gray-700 font-mono mb-2">
-                              {event.details}
-                            </div>
-                            
-                            {event.impact && (
-                              <div className="flex items-center gap-3 text-xs">
-                                <span className="text-gray-500">Impact:</span>
-                                {Object.entries(event.impact).filter(([, value]) => value > 0.1).map(([key, value]) => (
-                                  <span key={key} className={`${
-                                    key === 'ecological' ? 'text-green-600' :
-                                    key === 'wellbeing' ? 'text-blue-600' :
-                                    key === 'efficiency' ? 'text-purple-600' :
-                                    key === 'resilience' ? 'text-orange-600' :
-                                    key === 'equity' ? 'text-pink-600' :
-                                    'text-indigo-600'
-                                  }`}>
-                                    {key.charAt(0).toUpperCase() + key.slice(1)} +{value.toFixed(1)}
-                                  </span>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                          
-                          <div className="text-right">
-                            <span className={`px-2 py-1 text-xs rounded ${
-                              event.status === 'CONFIRMED' ? 'bg-green-100 text-green-800' :
-                              event.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
-                              'bg-red-100 text-red-800'
-                            }`}>
-                              {event.status}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
-            </div>
-          </div>
-
-          {/* Sidebar - Agent pools */}
+          {/* Staking Protocols - matching archive cards */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-              <div className="p-4 border-b border-gray-200 bg-gray-50">
-                <h3 className="text-lg font-semibold text-gray-800">Staking Pools</h3>
-                <p className="text-sm text-gray-600 mt-1">Click to stake or view details</p>
-              </div>
-              
-              <div className="max-h-[600px] overflow-y-auto">
-                {AGENT_DOMAINS.map((agent) => {
-                  const stats = generatePoolStats(agent.id);
-                  const userPosition = userPositions.find(p => p.agent === agent.id);
-                  
-                  return (
-                    <div
-                      key={agent.id}
-                      className="p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
-                      onClick={() => walletConnected && openStakeModal(agent.id)}
-                    >
-                      <div className="mb-2">
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="font-semibold text-sm text-gray-800">{agent.name}</span>
-                          <span className="text-xs text-gray-500">{stats.activeStakers} stakers</span>
-                        </div>
-                        <div className="text-xs text-gray-600 mb-2">{agent.domain}</div>
-                      </div>
-                      
-                      <div className="space-y-1 text-xs">
-                        <div className="flex justify-between">
-                          <span className="text-gray-500">Pool Balance:</span>
-                          <span className="font-mono">{stats.poolBalance.toLocaleString()} VPC</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-500">24h Flow:</span>
-                          <span className={`font-mono ${stats.netFlow24h >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                            {stats.netFlow24h >= 0 ? '+' : ''}{stats.netFlow24h.toFixed(0)} VPC
-                          </span>
-                        </div>
-                        {userPosition && (
-                          <div className="border-t border-gray-200 pt-1 mt-2">
-                            <div className="flex justify-between">
-                              <span className="text-gray-500">Your Stake:</span>
-                              <span className="font-mono text-lime-600">{userPosition.staked} VPC</span>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Stake Modal */}
-      <AnimatePresence>
-        {showStakeModal && selectedAgent && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
-            onClick={(e) => e.target === e.currentTarget && setShowStakeModal(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-lg shadow-xl max-w-md w-full"
-            >
-              {(() => {
-                const agent = AGENT_DOMAINS.find(a => a.id === selectedAgent);
-                const stats = generatePoolStats(selectedAgent);
-                const userPosition = userPositions.find(p => p.agent === selectedAgent);
+            <div className="space-y-3">
+              {AGENT_DOMAINS.map((agent) => {
+                const stats = generatePoolStats(agent.id);
+                const userPosition = userPositions.find(p => p.agent === agent.id);
                 
                 return (
-                  <>
-                    {/* Modal Header */}
-                    <div className="p-6 border-b border-gray-200">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="text-lg font-semibold text-gray-800">{agent?.name} Pool</h3>
-                          <p className="text-sm text-gray-600">{agent?.domain}</p>
+                  <div
+                    key={agent.id}
+                    className="border border-gray-200 p-3 hover:bg-gray-50 cursor-pointer"
+                    onClick={() => walletConnected && openStakeDrawer(agent.id)}
+                  >
+                    <div className="text-xs font-semibold text-gray-800 mb-2">
+                      {agent.name} — {agent.domain}
+                    </div>
+                    
+                    <div className="space-y-1 text-xs">
+                      <div>Pool Balance: <span className="font-mono">{stats.poolBalance.toLocaleString()} VPC</span></div>
+                      <div>24h Net Flow: <span className={`font-mono ${stats.netFlow24h >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {stats.netFlow24h >= 0 ? '+' : ''}{stats.netFlow24h.toFixed(0)} VPC
+                      </span></div>
+                      <div>Active Stakers: <span className="font-mono">{stats.activeStakers}</span></div>
+                      <div>Field Strength Δ (7d): <span className="font-mono">ECOLOGICAL: +{(Math.random() * 2).toFixed(1)} | EFFICIENCY: +{(Math.random() * 2).toFixed(1)} | RESILIENCE: +{(Math.random() * 2).toFixed(1)}</span></div>
+                      <div>Faucet Threshold: <span className="font-mono">{(stats.poolBalance + 5000).toLocaleString()} VPC (opens {Math.floor(Math.random() * 500) + 100} kWh/24h)</span></div>
+                      
+                      {userPosition && (
+                        <div className="border-t border-gray-200 pt-1 mt-2">
+                          <div>Your Stake: <span className="font-mono text-lime-600">{userPosition.staked} VPC</span></div>
                         </div>
-                        <button
-                          onClick={() => setShowStakeModal(false)}
-                          className="text-gray-400 hover:text-gray-600"
-                        >
-                          ×
+                      )}
+                      
+                      <div className="pt-1">
+                        <button className="text-lime-600 hover:text-lime-800 underline text-xs">
+                          Stake / Unstake
                         </button>
                       </div>
                     </div>
-
-                    {/* Pool Stats */}
-                    <div className="p-6 border-b border-gray-200 bg-gray-50">
-                      <h4 className="text-sm font-semibold text-gray-800 mb-3">Pool Statistics</h4>
-                      <div className="grid grid-cols-2 gap-4 text-xs">
-                        <div>
-                          <div className="text-gray-500">Pool Balance</div>
-                          <div className="font-mono text-gray-800">{stats.poolBalance.toLocaleString()} VPC</div>
-                        </div>
-                        <div>
-                          <div className="text-gray-500">Active Stakers</div>
-                          <div className="font-mono text-gray-800">{stats.activeStakers}</div>
-                        </div>
-                        <div>
-                          <div className="text-gray-500">24h Net Flow</div>
-                          <div className={`font-mono ${stats.netFlow24h >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                            {stats.netFlow24h >= 0 ? '+' : ''}{stats.netFlow24h.toFixed(0)} VPC
-                          </div>
-                        </div>
-                        <div>
-                          <div className="text-gray-500">Field Strength Δ</div>
-                          <div className={`font-mono ${stats.fieldStrength >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                            {stats.fieldStrength >= 0 ? '+' : ''}{stats.fieldStrength.toFixed(2)}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Staking Form */}
-                    <div className="p-6 border-b border-gray-200">
-                      <h4 className="text-sm font-semibold text-gray-800 mb-3">Stake VPC</h4>
-                      <div className="space-y-4">
-                        <div>
-                          <label className="block text-xs text-gray-500 mb-1">Amount (VPC)</label>
-                          <input
-                            type="number"
-                            value={stakeAmount}
-                            onChange={(e) => setStakeAmount(Number(e.target.value))}
-                            className="w-full px-3 py-2 border border-gray-300 rounded text-sm font-mono focus:outline-none focus:ring-2 focus:ring-lime-500"
-                            placeholder="Enter amount"
-                          />
-                        </div>
-                        
-                        <div>
-                          <label className="block text-xs text-gray-500 mb-1">Lock Period</label>
-                          <select
-                            value={lockPeriod}
-                            onChange={(e) => setLockPeriod(Number(e.target.value))}
-                            className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-lime-500"
-                          >
-                            <option value={7}>7 days (1.0x Influence)</option>
-                            <option value={30}>30 days (1.5x Influence)</option>
-                            <option value={90}>90 days (2.0x Influence)</option>
-                          </select>
-                        </div>
-                        
-                        <div className="flex gap-2">
-                          <button
-                            onClick={handleStake}
-                            disabled={!stakeAmount || stakeAmount <= 0 || isLoadingStake}
-                            className="flex-1 px-4 py-2 bg-lime-500 text-white rounded text-sm font-semibold hover:bg-lime-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            {isLoadingStake ? 'Staking...' : 'Stake'}
-                          </button>
-                          <button className="flex-1 px-4 py-2 bg-red-500 text-white rounded text-sm font-semibold hover:bg-red-600">
-                            Unstake
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* User Position */}
-                    {userPosition && (
-                      <div className="p-6 border-b border-gray-200">
-                        <h4 className="text-sm font-semibold text-gray-800 mb-3">Your Position</h4>
-                        <div className="grid grid-cols-2 gap-4 text-xs">
-                          <div>
-                            <div className="text-gray-500">Staked</div>
-                            <div className="font-mono text-lime-600">{userPosition.staked} VPC</div>
-                          </div>
-                          <div>
-                            <div className="text-gray-500">Pending</div>
-                            <div className="font-mono text-yellow-600">{userPosition.pending} VPC</div>
-                          </div>
-                          <div>
-                            <div className="text-gray-500">Influence Score</div>
-                            <div className="font-mono text-purple-600">{userPosition.influenceScore}</div>
-                          </div>
-                          <div>
-                            <div className="text-gray-500">Access Tickets</div>
-                            <div className="font-mono text-blue-600">{userPosition.accessTickets}</div>
-                          </div>
-                        </div>
-                        {userPosition.unlockDate && (
-                          <div className="mt-2 text-xs">
-                            <span className="text-gray-500">Unlock Date: </span>
-                            <span className="font-mono text-gray-800">{userPosition.unlockDate}</span>
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Security Note */}
-                    <div className="p-6 bg-gray-50">
-                      <p className="text-xs text-gray-600">
-                        <strong>Note:</strong> Staking VPC strengthens this domain's allocation capacity. 
-                        Rewards are non-financial: Influence Score, AccessTickets, Reputation.
-                      </p>
-                    </div>
-                  </>
+                  </div>
                 );
-              })()}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Stake Drawer - inline, archive style */}
+      {showStakeDrawer && selectedAgent && (() => {
+        const agent = AGENT_DOMAINS.find(a => a.id === selectedAgent);
+        const userPosition = userPositions.find(p => p.agent === selectedAgent);
+        
+        return (
+          <div className="mt-6 border-t border-gray-200 pt-6">
+            <div className="text-xs font-semibold text-gray-800 mb-2">
+              {agent?.name} — {agent?.domain}
+            </div>
+            
+            <div className="space-y-2 text-xs">
+              <div>
+                <label className="text-gray-500">Amount (VPC): </label>
+                <input
+                  type="number"
+                  value={stakeAmount}
+                  onChange={(e) => setStakeAmount(Number(e.target.value))}
+                  className="ml-2 px-2 py-1 border border-gray-300 rounded text-xs font-mono w-24 focus:outline-none focus:ring-1 focus:ring-lime-500"
+                  placeholder="100"
+                />
+              </div>
+              
+              {userPosition && (
+                <div className="space-y-1">
+                  <div>Your Position: Staked: <span className="font-mono text-lime-600">{userPosition.staked} VPC</span>, Pending: <span className="font-mono text-yellow-600">{userPosition.pending} VPC</span></div>
+                  <div>Influence Score: <span className="font-mono text-purple-600">{userPosition.influenceScore}</span>, Access Tickets: <span className="font-mono text-blue-600">{userPosition.accessTickets}</span></div>
+                  {userPosition.unlockDate && <div>Unlock Date: <span className="font-mono">{userPosition.unlockDate}</span></div>}
+                </div>
+              )}
+              
+              <div className="space-x-2 pt-2">
+                <button
+                  onClick={handleStake}
+                  disabled={!stakeAmount || stakeAmount <= 0}
+                  className="text-lime-600 hover:text-lime-800 underline disabled:text-gray-400 disabled:no-underline"
+                >
+                  Stake
+                </button>
+                <button className="text-red-600 hover:text-red-800 underline">
+                  Unstake
+                </button>
+                <button 
+                  onClick={() => setShowStakeDrawer(false)}
+                  className="text-gray-500 hover:text-gray-700 underline"
+                >
+                  Close
+                </button>
+              </div>
+              
+              <div className="text-gray-500 mt-2">
+                Staking VPC strengthens this domain's allocation capacity. Rewards are non-financial: Influence Score, AccessTickets, Reputation.
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }
