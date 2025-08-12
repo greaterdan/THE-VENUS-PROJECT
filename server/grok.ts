@@ -98,18 +98,56 @@ export async function generateAgentConversation(context: {
     const fromAgent = AGENT_PROFILES[fromId];
     const toAgent = AGENT_PROFILES[toId];
 
-    const prompt = `You are ${fromAgent.name}, an AI agent responsible for ${fromAgent.domain}. Your personality: ${fromAgent.personality}
+    // Real decision interactions based on agent roles
+    const DECISION_CONTEXTS = {
+      'alpha-beta': 'District expansion power source - local renewable vs central grid integration',
+      'alpha-delta': 'Biodiversity corridor preservation in new construction zones',
+      'alpha-iota': 'Material surplus verification for habitat module construction',
+      'alpha-kappa': 'Architecture reflecting resource-based economic values',
+      'beta-gamma': 'Peak energy allocation for vertical farm growing cycles',
+      'beta-zeta': 'Emergency power prioritization between transport and residential heating',
+      'beta-delta': 'Hydroelectric capacity expansion ecosystem impact assessment',
+      'gamma-iota': 'Nutrient cycle optimization for soil regeneration systems',
+      'gamma-eta': 'Seasonal nutrition planning to prevent deficiencies',
+      'gamma-delta': 'Urban pollinator habitat maintenance protocols',
+      'delta-alpha': 'Wildlife corridor integration in infrastructure planning',
+      'delta-beta': 'Low-impact renewable installation site selection',
+      'delta-zeta': 'Transit route design minimizing habitat fragmentation',
+      'epsilon-alpha': 'Community space design fostering human connection',
+      'epsilon-theta': 'AI governance transparency in public education',
+      'epsilon-kappa': 'Cultural arts programs strengthening community identity',
+      'zeta-beta': 'Peak demand power allocation for transport systems',
+      'zeta-alpha': 'Transit infrastructure before residential development',
+      'zeta-gamma': 'Fresh food distribution route optimization',
+      'eta-gamma': 'Nutritional balance coordination across food systems',
+      'eta-beta': 'Medical facility priority power during grid shortages',
+      'eta-epsilon': 'Community mental health through environmental design',
+      'theta-kappa': 'Venus Project ethics integration in educational curriculum',
+      'theta-beta': 'Universal digital access for remote learning systems',
+      'theta-eta': 'Life-stage health education program development',
+      'iota-alpha': 'Construction approval based on resource surplus analysis',
+      'iota-beta': 'Sector energy demand balancing across city systems',
+      'iota-gamma': 'Water and nutrient allocation efficiency protocols',
+      'kappa-alpha': 'Cultural compatibility review for infrastructure expansion',
+      'kappa-beta': 'Long-term environmental protection vs immediate energy needs',
+      'kappa-epsilon': 'Participatory governance transparency maintenance'
+    };
 
-Current context:
-- Decision being debated: ${context.currentDecision || 'Sustainable Habitat Expansion Protocol'}
-- You are communicating with ${toAgent.name} (${toAgent.domain})
-- Recent system events: ${context.recentEvents?.join(', ') || 'System optimization ongoing'}
+    const interactionKey = `${fromId}-${toId}` as keyof typeof DECISION_CONTEXTS;
+    const reverseKey = `${toId}-${fromId}` as keyof typeof DECISION_CONTEXTS;
+    const decisionContext = DECISION_CONTEXTS[interactionKey] || DECISION_CONTEXTS[reverseKey] || 'Resource allocation optimization';
 
-Generate a brief, professional message (20-40 words) that ${fromAgent.name} would send to ${toAgent.name}. The message should:
-1. Be specific to your domain expertise
-2. Address a coordination need or share relevant data
-3. Sound like communication between AI systems
-4. Be focused on the current decision or operational needs
+    const prompt = `You are ${fromAgent.name}, the AI agent for ${fromAgent.domain} in The Venus Project's autonomous city council.
+
+Your role: ${fromAgent.personality}
+
+You are coordinating with ${toAgent.name} (${toAgent.domain}) on: ${decisionContext}
+
+Generate a realistic inter-agent message (15-30 words) that:
+1. Uses professional AI council communication style
+2. Addresses the specific coordination context
+3. Shows your domain expertise and priorities
+4. Requests action, data, or proposes a solution
 
 Message:`;
 

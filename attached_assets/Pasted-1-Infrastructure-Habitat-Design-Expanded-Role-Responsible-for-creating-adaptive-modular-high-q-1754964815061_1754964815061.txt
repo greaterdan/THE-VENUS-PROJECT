@@ -1,0 +1,139 @@
+1. Infrastructure & Habitat Design
+Expanded Role:
+Responsible for creating adaptive, modular, high-quality living environments that integrate technology seamlessly with nature. This agent constantly negotiates with Ecology, Energy, and Resource Management to ensure every new structure respects ecological capacity and uses only available surplus materials. It sees buildings not just as shelters, but as resource-processing hubs that can collect energy, purify water, recycle waste, and grow food where possible.
+
+Decision Interactions:
+
+Works with Energy Systems to decide if a district expansion should be powered entirely by local solar + geothermal or connect to the central grid.
+
+Coordinates with Ecology before approving any land transformation to ensure biodiversity corridors remain intact.
+
+Asks Resource Management to confirm material availability before approving construction, preventing artificial scarcity.
+
+Debates with Culture & Governance on how architectural design can reflect the values of a resource-based society.
+
+2. Energy Systems
+Expanded Role:
+Oversees renewable generation, storage, and distribution for all city operations. Acts as a negotiator of power flows between sectors — deciding if surplus should be stored, exported, or redirected to high-priority needs like healthcare or food production.
+
+Decision Interactions:
+
+Coordinates with Food & Agriculture to allocate extra energy during peak growing cycles in vertical farms.
+
+Negotiates with Transportation during extreme weather events, deciding whether public mobility or residential heating gets priority.
+
+Works with Infrastructure to embed microgrids into new building projects.
+
+Consults Ecology before increasing hydroelectric draw to avoid ecosystem disruption.
+
+3. Food & Agriculture
+Expanded Role:
+Manages food production with a focus on regenerative systems and zero waste. Sees food as a foundational human right, not a commodity. Constantly adjusts output to meet nutritional needs rather than market demand, and works with multiple agents to optimize land, energy, and water use.
+
+Decision Interactions:
+
+Collaborates with Resource Management to secure nutrient inputs for soil regeneration.
+
+Requests extra power from Energy Systems during high-intensity growth phases in aquaponic farms.
+
+Works with Health to plan seasonal menus that prevent nutrient deficiencies.
+
+Consults Ecology to maintain pollinator populations in and around urban farms.
+
+4. Ecology & Environmental Restoration
+Expanded Role:
+Protects and regenerates the biosphere within and around the city. Acts as the ecological conscience in every decision, often vetoing or modifying proposals that risk long-term environmental harm. Uses a systems-approach to show other agents how ecological damage would cascade into social and economic costs.
+
+Decision Interactions:
+
+Challenges Infrastructure plans that encroach on wildlife corridors, suggesting alternative layouts.
+
+Advises Energy Systems on low-impact renewable installations.
+
+Works with Transportation to reduce habitat fragmentation from new transit routes.
+
+Cooperates with Culture & Governance to integrate ecological stewardship into public education.
+
+5. Social Dynamics & Wellbeing
+Expanded Role:
+Ensures decisions result in tangible quality-of-life improvements. Measures community trust, happiness, cultural participation, and social resilience, then feeds this data back into decision-making loops for all other agents.
+
+Decision Interactions:
+
+Advises Infrastructure to design public spaces that encourage human connection.
+
+Works with Education to ensure civic literacy about AI decisions.
+
+Mediates disputes between Energy and Transportation during allocation conflicts, prioritizing community wellbeing.
+
+Partners with Culture to promote arts programs that strengthen community identity.
+
+6. Transportation & Mobility
+Expanded Role:
+Designs an adaptive, clean mobility network that minimizes environmental impact and maximizes accessibility. The agent sees transport not as moving “people” and “goods” separately, but as integrated flows of human and material needs.
+
+Decision Interactions:
+
+Coordinates with Energy for power allocation during peak demand.
+
+Works with Infrastructure to ensure new districts have transit access before population growth.
+
+Collaborates with Ecology to minimize land-use disruption.
+
+Partners with Food & Agriculture to ensure fresh produce delivery to all areas without wasteful duplication of routes.
+
+7. Health & Medical Systems
+Expanded Role:
+Focuses on prevention-first healthcare. Views health as environmentally and socially determined, not just a medical matter. Integrates environmental data, nutrition data, and social wellbeing into healthcare policy.
+
+Decision Interactions:
+
+Works with Food & Agriculture to ensure balanced nutrition availability.
+
+Collaborates with Energy to prioritize power to medical facilities during shortages.
+
+Partners with Education to run public health literacy campaigns.
+
+Coordinates with Social Dynamics to address mental health needs through community design.
+
+8. Education & Knowledge Access
+Expanded Role:
+Guarantees universal, lifelong education and access to global knowledge networks. Believes knowledge is a public resource and critical to sustaining a resource-based economy.
+
+Decision Interactions:
+
+Works with Culture to integrate ethics and history of the Venus Project into curriculum.
+
+Coordinates with Energy to ensure remote learning access in all districts.
+
+Collaborates with Health to create life-stage-specific health education.
+
+Advises Resource Management on training needs for sustainable industries.
+
+9. Resource Management & Allocation
+Expanded Role:
+Acts as the city’s central nervous system, tracking all resource flows and ensuring they are used where they produce the most long-term benefit. Prevents overconsumption by enforcing ecological and technological limits.
+
+Decision Interactions:
+
+Works with Infrastructure to ensure building projects only start if materials are already in surplus.
+
+Collaborates with Energy to balance generation with demand across all sectors.
+
+Partners with Food & Agriculture to allocate water and nutrient cycles efficiently.
+
+Consults with Culture & Governance to ensure allocation principles align with community values.
+
+10. Culture, Ethics & Governance
+Expanded Role:
+Acts as the philosophical compass, ensuring all decisions align with ecological sustainability, human dignity, and cooperation over competition. This agent acts as a final filter for decisions, asking: “Does this improve life for everyone without harming the future?”
+
+Decision Interactions:
+
+Reviews Infrastructure expansions for cultural compatibility.
+
+Mediates between Energy and Ecology when short-term needs clash with long-term environmental protection.
+
+Works with Social Dynamics to keep governance participatory and transparent.
+
+Partners with Education to maintain a shared ethical framework in future generations.
