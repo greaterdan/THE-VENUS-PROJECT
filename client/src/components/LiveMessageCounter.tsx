@@ -104,7 +104,6 @@ export const LiveMessageCounter: React.FC<LiveMessageCounterProps> = ({
                 />
               )}
             </div>
-            <h3 className="text-sm font-semibold text-lime-400">Live Activity</h3>
           </div>
         </div>
 
