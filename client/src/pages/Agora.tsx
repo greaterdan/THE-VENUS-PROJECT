@@ -823,20 +823,20 @@ export default function Agora() {
           </>
         ) : (
           /* Archive View */
-          <div className="w-full bg-black text-green-400 font-mono p-6 overflow-hidden">
+          <div className="w-full bg-white text-gray-700 font-mono p-6 overflow-hidden border-l border-gray-200">
             <div className="mb-4">
-              <div className="text-yellow-400 text-xs">DECISION ARCHIVE - VENUS PROJECT AGORA</div>
-              <div className="text-xs">System Time: {currentTime} | Status: OPERATIONAL</div>
-              <div className="border-t border-green-800 my-2"></div>
+              <div className="text-gray-800 text-xs font-semibold">DECISION ARCHIVE - VENUS PROJECT AGORA</div>
+              <div className="text-xs text-gray-600">System Time: {currentTime} | Status: OPERATIONAL</div>
+              <div className="border-t border-gray-200 my-2"></div>
             </div>
             
             <div className="space-y-1 text-xs max-h-[calc(100vh-10rem)] overflow-hidden">
               {ARCHIVE_DECISIONS.map((decision) => (
-                <div key={decision.id} className="hover:bg-green-900/20 p-1 cursor-pointer">
-                  <span className="text-yellow-400">[{decision.timestamp}]</span>
-                  <span className="ml-2">{decision.title}</span>
-                  <span className="ml-4 text-cyan-400">{decision.status}</span>
-                  <span className="ml-4 text-gray-400">{decision.impact}</span>
+                <div key={decision.id} className="hover:bg-gray-100 p-1 cursor-pointer rounded">
+                  <span className="text-lime-600 font-medium">[{decision.timestamp}]</span>
+                  <span className="ml-2 text-gray-800">{decision.title}</span>
+                  <span className="ml-4 text-blue-600">{decision.status}</span>
+                  <span className="ml-4 text-gray-500">{decision.impact}</span>
                 </div>
               ))}
             </div>
