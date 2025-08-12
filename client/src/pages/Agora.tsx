@@ -460,45 +460,62 @@ export default function Agora() {
     return () => clearInterval(timeInterval);
   }, []);
 
-  // Dynamic connection system
+  // Grok-powered AI conversation system
   useEffect(() => {
-    const createConnection = () => {
-      const conversation = getRandomConversation();
-      const newConnection: ActiveConnection = {
-        id: `conn-${Date.now()}-${Math.random()}`,
-        from: conversation.from,
-        to: conversation.to,
-        type: conversation.type,
-        message: conversation.message,
-        timestamp: Date.now()
-      };
+    const createGrokConversation = async () => {
+      try {
+        const response = await fetch('/api/agent-conversation');
+        const conversation = await response.json();
+        
+        const newConnection: ActiveConnection = {
+          id: `conn-${Date.now()}-${Math.random()}`,
+          from: conversation.from,
+          to: conversation.to,
+          type: conversation.type,
+          message: conversation.message,
+          timestamp: Date.now()
+        };
 
-      setActiveConnections(prev => [...prev, newConnection]);
+        setActiveConnections(prev => [...prev, newConnection]);
 
-      // Add to chat messages with timestamp
-      const chatMessage = {
-        id: newConnection.id,
-        timestamp: new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-        from: newConnection.from.toUpperCase(),
-        to: newConnection.to.toUpperCase(),
-        message: newConnection.message,
-        type: newConnection.type
-      };
-      setChatMessages(prev => [...prev.slice(-19), chatMessage]); // Keep last 20 messages
+        // Add to chat messages with timestamp
+        const chatMessage = {
+          id: newConnection.id,
+          timestamp: new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+          from: newConnection.from.toUpperCase(),
+          to: newConnection.to.toUpperCase(),
+          message: newConnection.message,
+          type: newConnection.type
+        };
+        setChatMessages(prev => [...prev.slice(-19), chatMessage]); // Keep last 20 messages
 
-      // Remove connection after 3 seconds
-      setTimeout(() => {
-        setActiveConnections(prev => prev.filter(conn => conn.id !== newConnection.id));
-      }, 3000);
+        // Remove connection after 3 seconds
+        setTimeout(() => {
+          setActiveConnections(prev => prev.filter(conn => conn.id !== newConnection.id));
+        }, 3000);
+      } catch (error) {
+        console.error('Grok conversation failed:', error);
+        // Fallback to template-based conversation
+        const fallback = getRandomConversation();
+        const newConnection: ActiveConnection = {
+          id: `conn-${Date.now()}-${Math.random()}`,
+          from: fallback.from,
+          to: fallback.to,
+          type: fallback.type,
+          message: fallback.message,
+          timestamp: Date.now()
+        };
+        setActiveConnections(prev => [...prev, newConnection]);
+      }
     };
 
-    // Create new connections every 2 seconds
-    const connectionInterval = setInterval(createConnection, 2000);
-    
-    // Create initial connection
-    createConnection();
+    // Generate initial Grok conversation
+    createGrokConversation();
 
-    return () => clearInterval(connectionInterval);
+    // Create new Grok conversations every 4 seconds
+    const interval = setInterval(createGrokConversation, 4000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
