@@ -52,8 +52,8 @@ export default function AgoraChain() {
   const [, setLocation] = useLocation();
 
   const [chainEvents, setChainEvents] = useState<ChainEvent[]>([]);
-  const [walletConnected, setWalletConnected] = useState(false);
-  const [walletAlias, setWalletAlias] = useState<string>('');
+  const [walletConnected, setWalletConnected] = useState(true);  // Set to true for testing
+  const [walletAlias, setWalletAlias] = useState<string>('beta7…vxs');
   const [showStakeDrawer, setShowStakeDrawer] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState<string>('');
   const [stakeAmount, setStakeAmount] = useState<number>(0);
