@@ -73,26 +73,48 @@ export const LiveMessageCounter: React.FC<LiveMessageCounterProps> = ({
   const activeAgents = getMostActiveAgents();
   const connectionCount = activeConnections.length;
 
+  // When showDetails is false, render minimal version
+  if (!showDetails) {
+    return (
+      <div className={`text-xs text-gray-500 text-center ${className}`}>
+        {messageCount} messages
+      </div>
+    );
+  }
+
   return (
     <Card className={`bg-black/40 border-lime-500/30 ${className}`}>
       <CardContent className="p-4">
-        <div className="flex items-center justify-center mb-3">
-          <div className="relative">
-            {isLoadingNewMessage && (
-              <motion.div
-                className="absolute -top-1 -right-1 w-2 h-2 bg-lime-400 rounded-full"
-                animate={{
-                  scale: [1, 1.3, 1],
-                  opacity: [0.6, 1, 0.6]
-                }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              />
-            )}
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              <MessageSquare className="w-5 h-5 text-lime-400" />
+              {isLoadingNewMessage && (
+                <motion.div
+                  className="absolute -top-1 -right-1 w-3 h-3 bg-lime-400 rounded-full"
+                  animate={{
+                    scale: [1, 1.3, 1],
+                    opacity: [0.6, 1, 0.6]
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
+              )}
+            </div>
+            <h3 className="text-sm font-semibold text-lime-400">Neural Activity</h3>
           </div>
+          
+          {onExpandConversation && (
+            <button
+              onClick={onExpandConversation}
+              className="text-xs text-gray-400 hover:text-lime-400 transition-colors cursor-pointer"
+            >
+              Click to expand full conversation
+            </button>
+          )}
         </div>
 
         <div className="grid grid-cols-3 gap-4 mb-4">
