@@ -420,6 +420,14 @@ export default function AgoraChain() {
     }
   };
 
+  // Open blockchain explorer for transaction
+  const openExplorer = (eventId: string) => {
+    // Store transaction data in localStorage for the explorer
+    localStorage.setItem('explorerTx', eventId);
+    // Open explorer in new tab
+    window.open('/explorer?tx=' + eventId, '_blank');
+  };
+
   // Handle staking action
   const handleStake = async () => {
     if (!stakeAmount || stakeAmount <= 0) return;
@@ -567,8 +575,9 @@ export default function AgoraChain() {
                       key={event.id}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="hover:bg-gray-100 p-1 cursor-pointer rounded"
-                      onClick={() => walletConnected && openStakeDrawer(AGENT_DOMAINS.find(a => a.name === event.agent)?.id || '')}
+                      className="hover:bg-gray-100 p-1 cursor-pointer rounded transition-all duration-150"
+                      onClick={() => openExplorer(event.id)}
+                      title="Click to view transaction details in explorer"
                     >
                       <span className="text-lime-600 font-medium">[{event.timestamp}]</span>
                       <span className="ml-2 text-gray-800 font-semibold">{event.domain.toUpperCase()}</span>
