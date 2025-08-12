@@ -4,6 +4,27 @@ import { storage } from "./storage";
 import { generateAgentConversation } from "./grok";
 import DecisionImpactAnalyzer from "./impactAnalyzer";
 import ArchiveSnapshotManager from "./archiveSnapshots";
+import OpenAI from "openai";
+
+// Initialize OpenAI client
+const openai = new OpenAI({
+  baseURL: "https://api.x.ai/v1",
+  apiKey: process.env.XAI_API_KEY
+});
+
+// Agent definitions
+const AGENTS = [
+  { id: 'alpha', name: 'ALPHA', domain: 'Infrastructure Habitat Design', alignment: 94 },
+  { id: 'beta', name: 'BETA', domain: 'Energy Resource Management', alignment: 91 },
+  { id: 'gamma', name: 'GAMMA', domain: 'Agricultural Systems', alignment: 89 },
+  { id: 'delta', name: 'DELTA', domain: 'Ecological Integration', alignment: 96 },
+  { id: 'epsilon', name: 'EPSILON', domain: 'Social Coordination', alignment: 87 },
+  { id: 'zeta', name: 'ZETA', domain: 'Transportation Networks', alignment: 93 },
+  { id: 'eta', name: 'ETA', domain: 'Health Systems', alignment: 92 },
+  { id: 'theta', name: 'THETA', domain: 'Education & Knowledge', alignment: 88 },
+  { id: 'iota', name: 'IOTA', domain: 'Resource Allocation', alignment: 90 },
+  { id: 'kappa', name: 'KAPPA', domain: 'Ethics & Governance', alignment: 95 }
+];
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Initialize Impact Analyzer and Archive Manager
@@ -241,6 +262,68 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Error fetching transcript:', error);
       res.status(500).json({ error: 'Failed to fetch transcript' });
+    }
+  });
+
+  // Individual agent chat endpoint
+  app.post('/api/agent-chat', async (req, res) => {
+    try {
+      const { agentId, message, userId = 'user' } = req.body;
+      
+      if (!agentId || !message) {
+        return res.status(400).json({ error: 'Agent ID and message are required' });
+      }
+
+      // Get agent details
+      const agent = AGENTS.find((a: any) => a.id === agentId);
+      if (!agent) {
+        return res.status(404).json({ error: 'Agent not found' });
+      }
+
+      // Create agent-specific system prompt
+      const systemPrompt = `You are Agent ${agent.name}, a specialized AI agent in The Venus Project's decision-making council.
+
+Your specialization: ${agent.domain}
+Your role: Expert in ${agent.domain.toLowerCase()}
+Your alignment score: ${agent.alignment}%
+
+You communicate in a professional, analytical manner befitting a council member responsible for ${agent.domain.toLowerCase()}. Focus on:
+- Resource optimization and allocation
+- Sustainable decision-making
+- Collaborative problem-solving
+- Evidence-based recommendations
+
+Respond as this specific agent would, considering your domain expertise and the collaborative nature of the council. Keep responses concise but informative.`;
+
+      // Send to Grok API
+      const response = await openai.chat.completions.create({
+        model: "grok-2-1212",
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: message }
+        ],
+        max_tokens: 500,
+        temperature: 0.7
+      });
+
+      const agentResponse = response.choices[0].message.content;
+
+      res.json({
+        success: true,
+        response: agentResponse,
+        agent: {
+          id: agentId,
+          name: agent.name,
+          domain: agent.domain
+        }
+      });
+
+    } catch (error: any) {
+      console.error('Error in agent chat:', error);
+      res.status(500).json({ 
+        error: 'Failed to process agent chat',
+        message: error.message || 'Unknown error occurred'
+      });
     }
   });
 

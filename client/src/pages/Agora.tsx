@@ -519,6 +519,8 @@ export default function Agora() {
   const [showAgentChat, setShowAgentChat] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState<string | null>(null);
   const [userMessage, setUserMessage] = useState('');
+  const [chatHistory, setChatHistory] = useState<{[agentId: string]: {user: string; agent: string; timestamp: string}[]}>({});
+  const [isLoadingResponse, setIsLoadingResponse] = useState(false);
   
   // Local state for page-specific features
   const chatMessagesRef = useRef(chatMessages);
@@ -630,6 +632,76 @@ export default function Agora() {
       }
     } catch (error) {
       console.error('Error fetching transcript:', error);
+    }
+  };
+
+  const sendMessageToAgent = async () => {
+    if (!selectedAgent || !userMessage.trim() || isLoadingResponse) return;
+
+    const messageToSend = userMessage.trim();
+    const timestamp = new Date().toLocaleTimeString();
+
+    setIsLoadingResponse(true);
+    setUserMessage('');
+
+    try {
+      const response = await fetch('/api/agent-chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          agentId: selectedAgent,
+          message: messageToSend,
+          userId: 'user'
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Add to chat history
+        setChatHistory(prev => ({
+          ...prev,
+          [selectedAgent]: [
+            ...(prev[selectedAgent] || []),
+            {
+              user: messageToSend,
+              agent: data.response,
+              timestamp
+            }
+          ]
+        }));
+      } else {
+        console.error('Error from agent:', data.error);
+        // Show error to user
+        setChatHistory(prev => ({
+          ...prev,
+          [selectedAgent]: [
+            ...(prev[selectedAgent] || []),
+            {
+              user: messageToSend,
+              agent: `Error: ${data.error || 'Failed to get response from agent'}`,
+              timestamp
+            }
+          ]
+        }));
+      }
+    } catch (error) {
+      console.error('Error sending message to agent:', error);
+      setChatHistory(prev => ({
+        ...prev,
+        [selectedAgent]: [
+          ...(prev[selectedAgent] || []),
+          {
+            user: messageToSend,
+            agent: 'Error: Unable to connect to agent. Please try again.',
+            timestamp
+          }
+        ]
+      }));
+    } finally {
+      setIsLoadingResponse(false);
     }
   };
 
@@ -1124,6 +1196,43 @@ export default function Agora() {
                         How can I assist you with decision analysis and resource coordination?
                       </p>
                     </div>
+
+                    {/* Chat History */}
+                    {selectedAgent && chatHistory[selectedAgent]?.map((entry, index) => (
+                      <div key={index} className="space-y-2">
+                        {/* User Message */}
+                        <div className="flex justify-end">
+                          <div className="bg-lime-500 text-white rounded-lg p-3 max-w-[80%]">
+                            <p className="text-sm">{entry.user}</p>
+                            <p className="text-xs opacity-75 mt-1">{entry.timestamp}</p>
+                          </div>
+                        </div>
+                        {/* Agent Response */}
+                        <div className="flex justify-start">
+                          <div className="bg-white border rounded-lg p-3 max-w-[80%]">
+                            <div className="flex items-center gap-2 mb-2">
+                              <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                              <span className="text-xs font-medium text-gray-600">
+                                Agent {AGENTS.find(a => a.id === selectedAgent)?.name}
+                              </span>
+                            </div>
+                            <p className="text-sm text-gray-800">{entry.agent}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+
+                    {/* Loading indicator */}
+                    {isLoadingResponse && (
+                      <div className="flex justify-start">
+                        <div className="bg-white border rounded-lg p-3">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
+                            <span className="text-xs text-gray-500">Agent is thinking...</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -1137,23 +1246,17 @@ export default function Agora() {
                       placeholder={`Message Agent ${AGENTS.find(a => a.id === selectedAgent)?.name}...`}
                       className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-lime-500"
                       onKeyPress={(e) => {
-                        if (e.key === 'Enter' && userMessage.trim()) {
-                          console.log(`Sending to ${selectedAgent}:`, userMessage);
-                          setUserMessage('');
+                        if (e.key === 'Enter' && userMessage.trim() && !isLoadingResponse) {
+                          sendMessageToAgent();
                         }
                       }}
                     />
                     <button
-                      onClick={() => {
-                        if (userMessage.trim()) {
-                          console.log(`Sending to ${selectedAgent}:`, userMessage);
-                          setUserMessage('');
-                        }
-                      }}
-                      disabled={!userMessage.trim()}
+                      onClick={sendMessageToAgent}
+                      disabled={!userMessage.trim() || isLoadingResponse}
                       className="px-4 py-2 bg-lime-500 text-white rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-lime-600 transition-colors"
                     >
-                      Send
+                      {isLoadingResponse ? 'Sending...' : 'Send'}
                     </button>
                   </div>
                 </div>
