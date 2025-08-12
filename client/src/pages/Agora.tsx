@@ -487,7 +487,23 @@ export default function Agora() {
           message: newConnection.message,
           type: newConnection.type
         };
-        setChatMessages(prev => [...prev.slice(-19), chatMessage]); // Keep last 20 messages
+        setChatMessages(prev => {
+          const newMessages = [...prev.slice(-19), chatMessage]; // Keep last 20 messages
+          
+          // Auto-scroll to bottom only if user is near the bottom
+          setTimeout(() => {
+            const chatContainer = document.getElementById('chat-container');
+            if (chatContainer) {
+              const { scrollTop, scrollHeight, clientHeight } = chatContainer;
+              const isNearBottom = scrollTop + clientHeight >= scrollHeight - 50;
+              if (isNearBottom) {
+                chatContainer.scrollTop = scrollHeight;
+              }
+            }
+          }, 100);
+          
+          return newMessages;
+        });
 
         // Remove connection after 3 seconds
         setTimeout(() => {
@@ -512,8 +528,8 @@ export default function Agora() {
     // Generate initial Grok conversation
     createGrokConversation();
 
-    // Create new Grok conversations every 4 seconds
-    const interval = setInterval(createGrokConversation, 4000);
+    // Create new Grok conversations every 6 seconds (reduced frequency)
+    const interval = setInterval(createGrokConversation, 6000);
 
     return () => clearInterval(interval);
   }, []);
@@ -659,7 +675,7 @@ export default function Agora() {
                   </div>
                   
                   <div className="bg-gray-50 rounded-lg border flex-1 overflow-hidden">
-                    <div className="h-64 overflow-y-auto p-3 space-y-2">
+                    <div className="h-64 overflow-y-auto p-3 space-y-2" id="chat-container">
                       {chatMessages.length === 0 && (
                         <div className="text-gray-500 text-xs text-center py-8">
                           Waiting for agent communications...
