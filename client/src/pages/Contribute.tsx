@@ -7,7 +7,7 @@ import { WalletConnect } from '@/components/WalletConnect';
 import { GPUController } from '@/components/GPUController';
 import { NetworkStats } from '@/components/NetworkStats';
 import { RewardsCalculator } from '@/components/RewardsCalculator';
-import { GlobalMap } from '@/components/GlobalMap';
+
 import { Leaderboard } from '@/components/Leaderboard';
 import { ContributorStatus } from '@/components/ContributorStatus';
 
@@ -99,8 +99,7 @@ export default function Contribute() {
               stats={gpuStats}
             />
 
-            {/* Global Network Map */}
-            <GlobalMap />
+
 
             {/* Rewards Calculator */}
             <RewardsCalculator />
