@@ -24,7 +24,7 @@ export function NetworkStats() {
     simulationSpeedBoost: 32.4,
     activeContributors: 1924
   };
-  const networkStats = (stats as NetworkStats) || mockStats;
+  const networkStats = stats ? (stats as NetworkStats) : mockStats;
 
   const formatTflops = (tflops: number) => {
     if (tflops >= 1000) return `${(tflops / 1000).toFixed(1)}P`;
@@ -47,7 +47,7 @@ export function NetworkStats() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-mono text-black mb-1">
-              {networkStats.totalNodesOnline.toLocaleString()}
+              {networkStats.totalNodesOnline?.toLocaleString() || '0'}
             </div>
             <Badge className="bg-lime-100 text-lime-700 text-xs">
               <Activity className="w-3 h-3 mr-1" />
@@ -71,7 +71,7 @@ export function NetworkStats() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-mono text-lime-600 mb-1">
-              {formatTflops(networkStats.totalTflops)}FLOPS
+              {formatTflops(networkStats.totalTflops || 0)}FLOPS
             </div>
             <Badge className="bg-lime-100 text-lime-700 text-xs">
               <TrendingUp className="w-3 h-3 mr-1" />
@@ -95,7 +95,7 @@ export function NetworkStats() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-mono text-black mb-1">
-              +{networkStats.simulationSpeedBoost.toFixed(1)}%
+              +{(networkStats.simulationSpeedBoost || 0).toFixed(1)}%
             </div>
             <Badge className="bg-gray-100 text-gray-600 text-xs">
               Decision cycles
@@ -118,7 +118,7 @@ export function NetworkStats() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-mono text-black mb-1">
-              {networkStats.activeContributors.toLocaleString()}
+              {networkStats.activeContributors?.toLocaleString() || '0'}
             </div>
             <Badge className="bg-gray-100 text-gray-600 text-xs">
               <Activity className="w-3 h-3 mr-1" />

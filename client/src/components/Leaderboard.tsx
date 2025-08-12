@@ -162,7 +162,7 @@ export function Leaderboard() {
                     </Badge>
                   </div>
                   <div className="text-sm text-white/60">
-                    {entry.walletAddress.slice(0, 6)}...{entry.walletAddress.slice(-4)}
+                    {entry.walletAddress ? `${entry.walletAddress.slice(0, 6)}...${entry.walletAddress.slice(-4)}` : 'N/A'}
                   </div>
                 </div>
 
