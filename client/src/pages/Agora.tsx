@@ -521,9 +521,10 @@ export default function Agora() {
   const [userMessage, setUserMessage] = useState('');
   const [chatHistory, setChatHistory] = useState<{[agentId: string]: {user: string; agent: string; timestamp: string}[]}>({});
   const [isLoadingResponse, setIsLoadingResponse] = useState(false);
+  const chatMessagesRef = useRef<HTMLDivElement>(null);
   
   // Local state for page-specific features
-  const chatMessagesRef = useRef(chatMessages);
+  const globalChatMessagesRef = useRef(chatMessages);
   const isComponentMounted = useRef(true);
 
   useEffect(() => {
@@ -540,7 +541,7 @@ export default function Agora() {
 
   // Keep refs in sync
   useEffect(() => {
-    chatMessagesRef.current = chatMessages;
+    globalChatMessagesRef.current = chatMessages;
   }, [chatMessages]);
 
   // Connect to impact metrics SSE stream
@@ -672,6 +673,13 @@ export default function Agora() {
             }
           ]
         }));
+        
+        // Auto-scroll to bottom after adding new message
+        setTimeout(() => {
+          if (chatMessagesRef.current) {
+            chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+          }
+        }, 100);
       } else {
         console.error('Error from agent:', data.error);
         // Show error to user
@@ -686,6 +694,13 @@ export default function Agora() {
             }
           ]
         }));
+        
+        // Auto-scroll to bottom after adding error message
+        setTimeout(() => {
+          if (chatMessagesRef.current) {
+            chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+          }
+        }, 100);
       }
     } catch (error) {
       console.error('Error sending message to agent:', error);
@@ -700,6 +715,13 @@ export default function Agora() {
           }
         ]
       }));
+      
+      // Auto-scroll to bottom after adding error message
+      setTimeout(() => {
+        if (chatMessagesRef.current) {
+          chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+        }
+      }, 100);
     } finally {
       setIsLoadingResponse(false);
     }
@@ -1186,7 +1208,10 @@ export default function Agora() {
                 </div>
 
                 {/* Chat Messages Area */}
-                <div className="flex-1 p-4 overflow-y-auto bg-gray-50">
+                <div 
+                  ref={chatMessagesRef}
+                  className="flex-1 p-4 overflow-y-auto bg-gray-50"
+                >
                   <div className="space-y-3">
                     {/* System message */}
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
