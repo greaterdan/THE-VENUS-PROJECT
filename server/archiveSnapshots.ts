@@ -107,25 +107,25 @@ class ArchiveSnapshotManager {
 
     try {
       const now = new Date();
-      const hourStart = new Date(now.getTime() - 60 * 60 * 1000); // 1 hour ago
-      const hourEnd = new Date(now.getTime());
+      const periodStart = new Date(now.getTime() - 5 * 60 * 1000); // 5 minutes ago
+      const periodEnd = new Date(now.getTime());
 
-      console.log(`[ARCHIVE] Capturing snapshots for hour: ${hourStart.toISOString()} - ${hourEnd.toISOString()}`);
+      console.log(`[ARCHIVE] Capturing snapshots for period: ${periodStart.toISOString()} - ${periodEnd.toISOString()}`);
 
-      // Get messages from the past hour
-      const hourMessages = this.messages.filter(msg => 
-        msg.timestamp >= hourStart && msg.timestamp < hourEnd
+      // Get messages from the past 5 minutes
+      const periodMessages = this.messages.filter(msg => 
+        msg.timestamp >= periodStart && msg.timestamp < periodEnd
       );
 
-      if (hourMessages.length === 0) {
-        console.log('[ARCHIVE] No messages in past hour, skipping snapshot');
+      if (periodMessages.length === 0) {
+        console.log('[ARCHIVE] No messages in past 5 minutes, skipping snapshot');
         this.isCapturing = false;
         return;
       }
 
       // Group messages by decision_id
       const messagesByDecision = new Map<string, ChatMessage[]>();
-      hourMessages.forEach(msg => {
+      periodMessages.forEach(msg => {
         const id = msg.decision_id || 'general-coordination';
         if (!messagesByDecision.has(id)) {
           messagesByDecision.set(id, []);
@@ -141,7 +141,7 @@ class ArchiveSnapshotManager {
         const msgs = messagesByDecision.get(decisionId)!;
         if (msgs.length === 0) continue;
 
-        const snapshot = await this.createSnapshot(decisionId, msgs, hourStart, hourEnd);
+        const snapshot = await this.createSnapshot(decisionId, msgs, periodStart, periodEnd);
         this.snapshots.unshift(snapshot); // Add to beginning for reverse chronological order
         snapshotCount++;
       }
@@ -161,8 +161,8 @@ class ArchiveSnapshotManager {
   private async createSnapshot(
     decisionId: string, 
     messages: ChatMessage[], 
-    hourStart: Date, 
-    hourEnd: Date
+    periodStart: Date, 
+    periodEnd: Date
   ): Promise<HourlySnapshot> {
     // Calculate metrics delta for this hour
     const initialMetrics = this.impactAnalyzer.getCurrentMetrics();
@@ -206,9 +206,9 @@ class ArchiveSnapshotManager {
     const summary_line = this.generateSummaryLine(messages, metrics_delta, participants);
 
     return {
-      id: `${decisionId}-${hourStart.getTime()}`,
-      timestamp_start: hourStart.toISOString(),
-      timestamp_end: hourEnd.toISOString(),
+      id: `${decisionId}-${periodStart.getTime()}`,
+      timestamp_start: periodStart.toISOString(),
+      timestamp_end: periodEnd.toISOString(),
       decision_id: decisionId,
       title,
       status,
