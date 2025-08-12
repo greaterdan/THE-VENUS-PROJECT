@@ -1133,12 +1133,8 @@ export default function Agora() {
                     </div>
                   </div>
                   
-                  <div className="mt-2">
-                    <LiveMessageCounter
-                      showDetails={false}
-                      onExpandConversation={() => setShowChatModal(true)}
-                      className="bg-transparent border-0 shadow-none p-0"
-                    />
+                  <div className="mt-2 text-xs text-gray-500 text-center">
+                    {chatMessages.length} messages
                   </div>
                 </div>
 

@@ -104,17 +104,8 @@ export const LiveMessageCounter: React.FC<LiveMessageCounterProps> = ({
                 />
               )}
             </div>
-            <h3 className="text-sm font-semibold text-lime-400">Neural Activity</h3>
+            <h3 className="text-sm font-semibold text-lime-400">Live Activity</h3>
           </div>
-          
-          {onExpandConversation && (
-            <button
-              onClick={onExpandConversation}
-              className="text-xs text-gray-400 hover:text-lime-400 transition-colors cursor-pointer"
-            >
-              Click to expand full conversation
-            </button>
-          )}
         </div>
 
         <div className="grid grid-cols-3 gap-4 mb-4">
