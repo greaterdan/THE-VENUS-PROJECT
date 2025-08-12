@@ -979,6 +979,12 @@ export default function Agora() {
                 ARCHIVE
               </button>
               <button
+                onClick={() => {/* TODO: Add Agora Chain functionality */}}
+                className="px-3 py-1 text-xs font-mono rounded bg-gray-200 text-gray-600 hover:bg-gray-300"
+              >
+                AGORA CHAIN
+              </button>
+              <button
                 onClick={() => setShowAgentChat(true)}
                 className="px-3 py-1 text-xs font-mono rounded bg-gray-200 text-gray-600 hover:bg-gray-300"
               >
