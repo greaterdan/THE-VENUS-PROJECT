@@ -42,14 +42,14 @@ export function WalletConnect({ onConnect, isConnected, walletAddress, vnsBalanc
 
   if (isConnected && walletAddress) {
     return (
-      <div className="flex items-center gap-4 px-4 py-2 bg-white/5 backdrop-blur-md rounded-xl border border-white/10">
+      <div className="flex items-center gap-4 px-4 py-2 bg-gray-50 rounded-lg border">
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 bg-lime-400 rounded-full animate-pulse"></div>
-          <span className="text-sm text-white/80">
+          <span className="text-sm text-gray-600">
             {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
           </span>
         </div>
-        <div className="text-sm text-lime-400 font-mono">
+        <div className="text-sm text-lime-600 font-mono font-medium">
           {vnsBalance?.toFixed(2) || '0.00'} VNS
         </div>
       </div>
@@ -62,29 +62,33 @@ export function WalletConnect({ onConnect, isConnected, walletAddress, vnsBalanc
         <Button
           variant="outline"
           disabled={isConnecting}
-          className="bg-white/5 backdrop-blur-md border-white/10 text-white hover:bg-white/10 hover:text-lime-400 transition-all duration-300"
+          className="bg-white border-gray-200 text-black hover:bg-lime-50 hover:border-lime-400 hover:text-lime-600 transition-all duration-300"
         >
           <Wallet className="w-4 h-4 mr-2" />
           {isConnecting ? 'Connecting...' : 'Connect Wallet'}
           <ChevronDown className="w-4 h-4 ml-2" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="bg-black/90 backdrop-blur-xl border-white/10">
+      <DropdownMenuContent className="bg-white border border-gray-200">
         <DropdownMenuItem
           onClick={() => connectWallet('phantom')}
-          className="text-white hover:bg-white/10 cursor-pointer"
+          className="text-black hover:bg-lime-50 cursor-pointer"
         >
           <div className="flex items-center gap-2">
-            <div className="w-5 h-5 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full"></div>
+            <div className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center">
+              <div className="w-2.5 h-2.5 bg-purple-500 rounded-full"></div>
+            </div>
             Phantom Wallet
           </div>
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => connectWallet('metamask')}
-          className="text-white hover:bg-white/10 cursor-pointer"
+          className="text-black hover:bg-lime-50 cursor-pointer"
         >
           <div className="flex items-center gap-2">
-            <div className="w-5 h-5 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full"></div>
+            <div className="w-5 h-5 bg-orange-100 rounded-full flex items-center justify-center">
+              <div className="w-2.5 h-2.5 bg-orange-500 rounded-full"></div>
+            </div>
             MetaMask
           </div>
         </DropdownMenuItem>
