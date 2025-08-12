@@ -422,8 +422,8 @@ export default function AgoraChain() {
               )}
             </div>
 
-            {/* Staking Protocols - arranged horizontally to fill screen */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
+            {/* Staking Protocols - arranged in 2 rows of 5 */}
+            <div className="grid grid-cols-5 gap-3">
               {AGENT_DOMAINS.map((agent) => {
                 const stats = generatePoolStats(agent.id);
                 const userPosition = userPositions.find(p => p.agent === agent.id);
