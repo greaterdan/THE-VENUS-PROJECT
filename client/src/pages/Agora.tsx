@@ -612,7 +612,7 @@ export default function Agora() {
   }, []); // Empty dependency array - run only once
 
   return (
-    <div className="h-screen bg-white text-black pt-20 overflow-hidden fixed inset-0" style={{ touchAction: 'none' }}>
+    <div className="h-screen bg-white text-black pt-20 overflow-hidden" style={{ touchAction: 'none' }}>
       
       {/* Header */}
       <div className="px-6 py-3 border-b border-gray-200 bg-gray-50/50">
@@ -856,6 +856,7 @@ export default function Agora() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+            style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
             onClick={(e) => e.target === e.currentTarget && setShowChatModal(false)}
           >
             <motion.div
