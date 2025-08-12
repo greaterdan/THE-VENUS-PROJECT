@@ -60,7 +60,8 @@ export default function Navigation() {
   };
 
   // Calculate navigation opacity based on scroll position
-  // Icons appear only after scrolling down with smooth fade
+  // Icons appear only after scrolling down with smooth fade on home page
+  // Always visible on other pages
   const navOpacity = location === "/" ? Math.min(1, scrollY / 100) : 1;
 
   const venusLinks = [
