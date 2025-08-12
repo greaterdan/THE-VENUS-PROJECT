@@ -379,17 +379,15 @@ export default function AgoraChain() {
 
       {/* Main content - live events on right, staking cards on left */}
       <div className="p-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="space-y-8">
           
-          {/* Left Column - What's happening on chain title only */}
-          <div className="lg:col-span-1">
-            <div className="mb-6">
-              <h2 className="text-sm font-semibold text-gray-800 mb-4">What's happening on chain</h2>
-            </div>
+          {/* What's happening on chain title */}
+          <div className="mb-6">
+            <h2 className="text-sm font-semibold text-gray-800 mb-4">What's happening on chain</h2>
           </div>
 
-          {/* Right Column - Live Chain Events + Staking Cards below */}
-          <div className="lg:col-span-2">
+          {/* Live Chain Events */}
+          <div>
             {/* Chain Events */}
             <div className="space-y-1 text-xs max-h-96 overflow-y-auto mb-8">
               {chainEvents.length === 0 ? (
@@ -424,8 +422,8 @@ export default function AgoraChain() {
               )}
             </div>
 
-            {/* Staking Protocols - moved under chain events */}
-            <div className="space-y-3">
+            {/* Staking Protocols - arranged horizontally to fill screen */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
               {AGENT_DOMAINS.map((agent) => {
                 const stats = generatePoolStats(agent.id);
                 const userPosition = userPositions.find(p => p.agent === agent.id);
