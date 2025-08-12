@@ -634,7 +634,7 @@ export default function AgoraChain() {
                             console.log('Stake button clicked for agent:', agent.id);
                             handleStakeAction(agent.id, 'stake');
                           }}
-                          className="text-slate-600 hover:text-slate-800 underline text-xs cursor-pointer z-10"
+                          className="text-green-600 hover:text-green-800 underline text-xs cursor-pointer z-10"
                         >
                           Stake
                         </button>
@@ -698,7 +698,7 @@ export default function AgoraChain() {
                 <button
                   onClick={handleStake}
                   disabled={!stakeAmount || stakeAmount <= 0}
-                  className="text-slate-600 hover:text-slate-800 underline disabled:text-gray-400 disabled:no-underline"
+                  className="text-green-600 hover:text-green-800 underline disabled:text-gray-400 disabled:no-underline"
                 >
                   Stake
                 </button>
