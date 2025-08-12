@@ -135,20 +135,7 @@ export function GPUController({ isRunning, onToggle, gpuPower, onPowerChange, st
           )}
         </AnimatePresence>
 
-        {/* Desktop Node Option */}
-        <div className="p-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg border border-blue-500/20">
-          <div className="flex items-center justify-between mb-2">
-            <h4 className="font-medium">Want Higher Rewards?</h4>
-            <Badge className="bg-blue-400/20 text-blue-400">Up to 5x VNS</Badge>
-          </div>
-          <p className="text-sm text-white/60 mb-3">
-            Download the desktop node for dedicated GPU mining with higher efficiency
-          </p>
-          <Button variant="outline" size="sm" className="border-blue-400/30 text-blue-400 hover:bg-blue-400/10">
-            <Download className="w-4 h-4 mr-2" />
-            Download Desktop Node
-          </Button>
-        </div>
+
       </CardContent>
     </Card>
   );
