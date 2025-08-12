@@ -153,12 +153,52 @@ const CURRENT_DECISION: Decision = {
   participants: ['alpha', 'beta', 'gamma', 'delta', 'epsilon', 'zeta', 'eta', 'theta', 'iota', 'kappa']
 };
 
-// Dynamic conversation patterns for random agent communications
+// Enhanced conversation templates reflecting specialized agent roles
 const CONVERSATION_TEMPLATES = [
-  { type: 'energy', messages: ['Solar array status', 'Power allocation', 'Grid optimization', 'Energy transfer'] },
-  { type: 'material', messages: ['Resource delivery', 'Material analysis', 'Supply coordination', 'Inventory update'] },
-  { type: 'data', messages: ['Data analysis', 'Information sync', 'Model update', 'Status report'] },
-  { type: 'time', messages: ['Schedule sync', 'Task coordination', 'Timeline update', 'Process timing'] }
+  { 
+    type: 'energy', 
+    messages: [
+      'Proposing dynamic grid reallocation to support vertical farming expansion',
+      'Solar array efficiency peaked at 94% - surplus available for industrial processes',
+      'Wind patterns suggest 18% increase in turbine output next quarter',
+      'Requesting priority energy allocation for emergency medical systems',
+      'Thermal storage optimization could reduce peak load by 23%',
+      'Energy export potential to neighboring districts exceeds current capacity'
+    ] 
+  },
+  { 
+    type: 'material', 
+    messages: [
+      'Prefab modules ready for habitat deployment - coordinating with Infrastructure',
+      'Circular economy protocols show 67% material recovery rate this cycle',
+      'Biocomposite materials testing shows 15% stronger durability than concrete',
+      'Critical shortage of rare earth elements detected - seeking alternatives',
+      'Modular housing units can be reconfigured for seasonal population changes',
+      'Material flow analysis indicates waste reduction opportunity in construction'
+    ] 
+  },
+  { 
+    type: 'data', 
+    messages: [
+      'Biodiversity index shows positive trend in rewilded zones - sharing with Ecology',
+      'AI diagnostic accuracy improved to 97.8% with latest health data integration',
+      'Cultural participation metrics indicate need for expanded arts infrastructure',
+      'Transportation flow models predict 12% efficiency gain with new routing',
+      'Educational outcome data suggests curriculum adjustment for emerging tech skills',
+      'Social harmony indicators show strong correlation with green space access'
+    ] 
+  },
+  { 
+    type: 'time', 
+    messages: [
+      'Climate adaptation window narrowing - accelerating restoration timeline',
+      'Food security projections require immediate agricultural diversification',
+      'Infrastructure resilience upgrade must complete before storm season',
+      'Cultural preservation digitization project needs priority scheduling',
+      'Medical AI training requires 72-hour uninterrupted compute allocation',
+      'Educational re-skilling programs must launch within 30 days for maximum impact'
+    ] 
+  }
 ] as const;
 
 const getRandomConversation = () => {
