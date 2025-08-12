@@ -45,16 +45,11 @@ export default function Navigation() {
     document.addEventListener("mousedown", handleClickOutside);
     window.addEventListener("scroll", handleScroll);
 
-    // Glitch effect timer - triggers every 5 seconds
-    const glitchInterval = setInterval(() => {
-      setGlitchActive(true);
-      setTimeout(() => setGlitchActive(false), 400); // Glitch lasts 400ms
-    }, 5000);
+    // Glitch effect disabled
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
       window.removeEventListener("scroll", handleScroll);
-      clearInterval(glitchInterval);
     };
   }, []);
 
@@ -119,7 +114,7 @@ export default function Navigation() {
                   <img 
                     src={venusIcon} 
                     alt="Venus Project" 
-                    className={`h-8 w-8 ${glitchActive ? 'animate-glitch' : ''}`}
+                    className="h-8 w-8"
                   />
                 </button>
                 {venusDropdownOpen && (
@@ -153,7 +148,7 @@ export default function Navigation() {
                   <img 
                     src={agoraIcon} 
                     alt="Agora" 
-                    className={`h-8 w-8 ${glitchActive ? 'animate-glitch' : ''}`}
+                    className="h-8 w-8"
                   />
                 </button>
                 {agoraDropdownOpen && (
@@ -187,7 +182,7 @@ export default function Navigation() {
                   <img 
                     src={contributeIcon} 
                     alt="Contribute" 
-                    className={`h-8 w-8 ${glitchActive ? 'animate-glitch' : ''}`}
+                    className="h-8 w-8"
                   />
                 </button>
                 {contributeDropdownOpen && (
@@ -221,7 +216,7 @@ export default function Navigation() {
                   <img 
                     src={docsIcon} 
                     alt="Docs" 
-                    className={`h-8 w-8 ${glitchActive ? 'animate-glitch' : ''}`}
+                    className="h-8 w-8"
                   />
                 </button>
                 {docsDropdownOpen && (
