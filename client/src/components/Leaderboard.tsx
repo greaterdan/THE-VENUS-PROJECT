@@ -105,10 +105,10 @@ export function Leaderboard() {
   };
 
   return (
-    <Card className="bg-white/5 backdrop-blur-xl border-white/10 text-white">
+    <Card className="bg-white border text-black">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Trophy className="w-5 h-5 text-yellow-400" />
+          <Trophy className="w-5 h-5 text-lime-600" />
           Leaderboard
         </CardTitle>
       </CardHeader>

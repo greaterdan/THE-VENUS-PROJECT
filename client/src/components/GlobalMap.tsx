@@ -56,10 +56,10 @@ export function GlobalMap() {
   };
 
   return (
-    <Card className="bg-white/5 backdrop-blur-xl border-white/10 text-white">
+    <Card className="bg-white border text-black">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Globe className="w-5 h-5 text-blue-400" />
+          <Globe className="w-5 h-5 text-lime-600" />
           Global Node Network
         </CardTitle>
       </CardHeader>

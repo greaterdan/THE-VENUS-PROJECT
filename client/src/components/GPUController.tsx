@@ -39,24 +39,24 @@ export function GPUController({ isRunning, onToggle, gpuPower, onPowerChange, st
   };
 
   return (
-    <Card className="bg-white/5 backdrop-blur-xl border-white/10 text-white">
+    <Card className="bg-white border text-black">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Zap className="w-5 h-5 text-lime-400" />
           Light Mode (WebGPU)
         </CardTitle>
-        <CardDescription className="text-white/60">
+        <CardDescription className="text-gray-600">
           Browser-based GPU contribution - no download required
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* GPU Detection */}
-        <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
           <div className="flex items-center gap-2">
             <Activity className="w-4 h-4 text-lime-400" />
             <span className="text-sm">{gpuInfo}</span>
           </div>
-          <Badge variant={webGPUSupported ? "default" : "destructive"} className="bg-lime-400/20 text-lime-400">
+          <Badge variant={webGPUSupported ? "default" : "destructive"} className="bg-lime-100 text-lime-700 border-lime-200">
             {webGPUSupported ? 'Compatible' : 'Not Supported'}
           </Badge>
         </div>
@@ -65,7 +65,7 @@ export function GPUController({ isRunning, onToggle, gpuPower, onPowerChange, st
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <label className="text-sm font-medium">GPU Power Allocation</label>
-            <span className="text-lime-400 font-mono">{gpuPower}%</span>
+            <span className="text-lime-600 font-mono">{gpuPower}%</span>
           </div>
           <Slider
             value={[gpuPower]}
@@ -76,7 +76,7 @@ export function GPUController({ isRunning, onToggle, gpuPower, onPowerChange, st
             className="w-full"
             disabled={isRunning}
           />
-          <p className="text-xs text-white/60">
+          <p className="text-xs text-gray-500">
             Higher allocation = more VNS rewards but may affect browser performance
           </p>
         </div>

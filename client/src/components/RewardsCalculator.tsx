@@ -24,10 +24,10 @@ export function RewardsCalculator() {
   const gpuTier = getGpuTier(gpuPower);
 
   return (
-    <Card className="bg-white/5 backdrop-blur-xl border-white/10 text-white">
+    <Card className="bg-white border text-black">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Calculator className="w-5 h-5 text-lime-400" />
+          <Calculator className="w-5 h-5 text-lime-600" />
           Rewards Calculator
         </CardTitle>
       </CardHeader>
@@ -39,7 +39,7 @@ export function RewardsCalculator() {
               <Clock className="w-4 h-4" />
               Hours per day
             </label>
-            <span className="text-lime-400 font-mono">{hours}h</span>
+            <span className="text-lime-600 font-mono">{hours}h</span>
           </div>
           <Slider
             value={[hours]}
