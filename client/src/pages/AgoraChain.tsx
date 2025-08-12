@@ -340,52 +340,17 @@ export default function AgoraChain() {
         <div className="border-t border-gray-200 my-2"></div>
       </div>
 
-      {/* Main content - split between live events and protocol cards */}
+      {/* Main content - live events on right, staking cards on left */}
       <div className="p-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
-          {/* Live Chain Events - matching archive list exactly */}
-          <div className="lg:col-span-2">
-            <div className="space-y-1 text-xs max-h-[calc(100vh-12rem)] overflow-y-auto">
-              {chainEvents.length === 0 ? (
-                <div className="text-gray-500 p-4 text-center">
-                  No chain events yet.<br/>
-                  Events will appear as staking and faucet activities occur.
-                </div>
-              ) : (
-                <AnimatePresence>
-                  {chainEvents.map((event, index) => (
-                    <motion.div
-                      key={event.id}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="hover:bg-gray-100 p-1 cursor-pointer rounded"
-                      onClick={() => walletConnected && openStakeDrawer(AGENT_DOMAINS.find(a => a.name === event.agent)?.id || '')}
-                    >
-                      <span className="text-lime-600 font-medium">[{event.timestamp}]</span>
-                      <span className="ml-2 text-gray-800 font-semibold">{event.domain.toUpperCase()}</span>
-                      <span className="ml-2 text-blue-600">{event.action}</span>
-                      <span className="ml-2 text-gray-500">{event.details}</span>
-                      <span className={`ml-4 text-xs ${
-                        event.status === 'CONFIRMED' ? 'text-green-600' :
-                        event.status === 'PENDING' ? 'text-yellow-600' :
-                        'text-red-600'
-                      }`}>
-                        {event.status}
-                      </span>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              )}
+          {/* Left Column - What's happening on chain title + staking cards below */}
+          <div className="lg:col-span-1">
+            <div className="mb-6">
+              <h2 className="text-sm font-semibold text-gray-800 mb-4">What's happening on chain</h2>
             </div>
             
-            <div className="mt-6 text-xs text-gray-500">
-              &gt; Connect wallet to interact with staking protocols
-            </div>
-          </div>
-
-          {/* Staking Protocols - matching archive cards */}
-          <div className="lg:col-span-1">
+            {/* Staking Protocols */}
             <div className="space-y-3">
               {AGENT_DOMAINS.map((agent) => {
                 const stats = generatePoolStats(agent.id);
@@ -425,6 +390,46 @@ export default function AgoraChain() {
                   </div>
                 );
               })}
+            </div>
+            
+            <div className="mt-6 text-xs text-gray-500">
+              &gt; Connect wallet to interact with staking protocols
+            </div>
+          </div>
+
+          {/* Right Column - Live Chain Events */}
+          <div className="lg:col-span-2">
+            <div className="space-y-1 text-xs max-h-[calc(100vh-12rem)] overflow-y-auto">
+              {chainEvents.length === 0 ? (
+                <div className="text-gray-500 p-4 text-center">
+                  No chain events yet.<br/>
+                  Events will appear as staking and faucet activities occur.
+                </div>
+              ) : (
+                <AnimatePresence>
+                  {chainEvents.map((event, index) => (
+                    <motion.div
+                      key={event.id}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="hover:bg-gray-100 p-1 cursor-pointer rounded"
+                      onClick={() => walletConnected && openStakeDrawer(AGENT_DOMAINS.find(a => a.name === event.agent)?.id || '')}
+                    >
+                      <span className="text-lime-600 font-medium">[{event.timestamp}]</span>
+                      <span className="ml-2 text-gray-800 font-semibold">{event.domain.toUpperCase()}</span>
+                      <span className="ml-2 text-blue-600">{event.action}</span>
+                      <span className="ml-2 text-gray-500">{event.details}</span>
+                      <span className={`ml-4 text-xs ${
+                        event.status === 'CONFIRMED' ? 'text-green-600' :
+                        event.status === 'PENDING' ? 'text-yellow-600' :
+                        'text-red-600'
+                      }`}>
+                        {event.status}
+                      </span>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              )}
             </div>
           </div>
         </div>
