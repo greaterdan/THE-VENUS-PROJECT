@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import { SiX, SiGithub } from "react-icons/si";
+import { WalletButton } from "@/components/WalletButton";
 import agoraIcon from "@assets/Untitled design_1754878809797.gif";
 import docsIcon from "@assets/Untitled design_1754879488364.gif";
 import contributeIcon from "@assets/Untitled design (1)_1754880001361.gif";
@@ -264,6 +265,11 @@ export default function Navigation() {
                 )}
               </div>
 
+              {/* Wallet Connect Button */}
+              <div className="ml-4">
+                <WalletButton />
+              </div>
+
             </div>
           </div>
 
@@ -345,6 +351,11 @@ export default function Navigation() {
                 </span>
               </Link>
             ))}
+            
+            {/* Mobile Wallet Button */}
+            <div className="px-3 py-2">
+              <WalletButton />
+            </div>
           </div>
         </div>
       )}

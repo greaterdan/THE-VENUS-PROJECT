@@ -5,6 +5,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { GlobalConversationProvider } from "@/contexts/GlobalConversationContext";
+import { WalletProvider } from "@/hooks/useWallet";
 import { SiX, SiGithub, SiInstagram, SiLinkedin, SiTiktok, SiYoutube } from "react-icons/si";
 import { AnimatePresence } from "framer-motion";
 import Navigation from "@/components/Navigation";
@@ -85,8 +86,9 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <GlobalConversationProvider>
+      <WalletProvider>
+        <TooltipProvider>
+          <GlobalConversationProvider>
           <div className="min-h-screen bg-venus-bg text-foreground font-inter">
           {/* Navigation - controlled by scroll position */}
           <Navigation />
@@ -154,6 +156,7 @@ function App() {
           <Toaster />
         </GlobalConversationProvider>
       </TooltipProvider>
+      </WalletProvider>
     </QueryClientProvider>
   );
 }
