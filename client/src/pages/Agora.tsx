@@ -500,6 +500,16 @@ export default function Agora() {
   const { chatMessages, activeConnections: globalActiveConnections, isLoadingNewMessage } = useGlobalConversation();
   const [showChatModal, setShowChatModal] = useState(false);
   
+  // Real-time impact metrics from SSE
+  const [impactMetrics, setImpactMetrics] = useState({
+    ecological: 78,
+    wellbeing: 82,
+    efficiency: 74,
+    resilience: 71,
+    equity: 79,
+    innovation: 76
+  });
+  
   // Local state for page-specific features
   const chatMessagesRef = useRef(chatMessages);
   const isComponentMounted = useRef(true);
@@ -519,6 +529,55 @@ export default function Agora() {
   // Keep refs in sync
   useEffect(() => {
     chatMessagesRef.current = chatMessages;
+  }, [chatMessages]);
+
+  // Connect to impact metrics SSE stream
+  useEffect(() => {
+    const eventSource = new EventSource('/api/impact');
+    
+    eventSource.onmessage = (event) => {
+      try {
+        const metrics = JSON.parse(event.data);
+        setImpactMetrics(metrics);
+      } catch (error) {
+        console.error('Error parsing impact metrics:', error);
+      }
+    };
+    
+    eventSource.onerror = (error) => {
+      console.error('SSE connection error:', error);
+    };
+    
+    return () => {
+      eventSource.close();
+    };
+  }, []);
+
+  // Send chat messages to impact analyzer
+  useEffect(() => {
+    const processLatestMessage = async () => {
+      if (chatMessages.length === 0) return;
+      
+      const latestMessage = chatMessages[chatMessages.length - 1];
+      if (!latestMessage.from || !latestMessage.message) return;
+      
+      try {
+        await fetch('/api/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            agent: latestMessage.from,
+            text: latestMessage.message
+          })
+        });
+      } catch (error) {
+        console.error('Error sending message to impact analyzer:', error);
+      }
+    };
+    
+    processLatestMessage();
   }, [chatMessages]);
 
   // Disable all scrolling on AGORA page only
@@ -673,12 +732,12 @@ export default function Agora() {
                 <div>
                   <h3 className="text-sm font-semibold text-gray-800 mb-4">Decision Impact Analysis</h3>
                   <div className="grid grid-cols-3 gap-3">
-                    <MetricGauge label="Ecological" value={CURRENT_DECISION.impact.ecological} color="text-green-500" />
-                    <MetricGauge label="Wellbeing" value={CURRENT_DECISION.impact.wellbeing} color="text-blue-500" />
-                    <MetricGauge label="Efficiency" value={CURRENT_DECISION.impact.efficiency} color="text-purple-500" />
-                    <MetricGauge label="Resilience" value={CURRENT_DECISION.impact.resilience} color="text-orange-500" />
-                    <MetricGauge label="Equity" value={CURRENT_DECISION.impact.equity} color="text-red-500" />
-                    <MetricGauge label="Innovation" value={CURRENT_DECISION.impact.innovation} color="text-cyan-500" />
+                    <MetricGauge label="Ecological" value={Math.round(impactMetrics.ecological)} color="text-green-500" />
+                    <MetricGauge label="Wellbeing" value={Math.round(impactMetrics.wellbeing)} color="text-blue-500" />
+                    <MetricGauge label="Efficiency" value={Math.round(impactMetrics.efficiency)} color="text-purple-500" />
+                    <MetricGauge label="Resilience" value={Math.round(impactMetrics.resilience)} color="text-orange-500" />
+                    <MetricGauge label="Equity" value={Math.round(impactMetrics.equity)} color="text-red-500" />
+                    <MetricGauge label="Innovation" value={Math.round(impactMetrics.innovation)} color="text-cyan-500" />
                   </div>
                 </div>
 

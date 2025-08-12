@@ -2,8 +2,29 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { generateAgentConversation } from "./grok";
+import DecisionImpactAnalyzer from "./impactAnalyzer";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Initialize Impact Analyzer
+  const impactAnalyzer = new DecisionImpactAnalyzer();
+  const sseClients = new Set<any>();
+  
+  // Start idle drift timer (every 10 seconds)
+  setInterval(() => {
+    const metrics = impactAnalyzer.applyIdleDrift();
+    broadcastMetrics(metrics);
+  }, 10000);
+  
+  function broadcastMetrics(metrics: any) {
+    const data = JSON.stringify(metrics);
+    sseClients.forEach(client => {
+      try {
+        client.write(`data: ${data}\n\n`);
+      } catch (error) {
+        sseClients.delete(client);
+      }
+    });
+  }
   // Grok-powered AI agent conversation endpoint
   app.get('/api/agent-conversation', async (req, res) => {
     try {
@@ -109,6 +130,80 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }));
     
     res.json(leaderboard);
+  });
+
+  // Decision Impact Analysis endpoints
+  app.post('/api/chat', (req, res) => {
+    try {
+      const { agent, text } = req.body;
+      
+      if (!agent || !text) {
+        return res.status(400).json({ error: 'Missing agent or text' });
+      }
+
+      const result = impactAnalyzer.processMessage({ agent, text });
+      impactAnalyzer.logProcessing({ agent, text }, result);
+      
+      // Broadcast updated metrics to all SSE clients
+      broadcastMetrics(result.newMetrics);
+      
+      res.json({
+        success: true,
+        deltas: result.deltas,
+        metrics: result.newMetrics,
+        keywords: result.keywords
+      });
+    } catch (error) {
+      console.error('Error processing chat message:', error);
+      res.status(500).json({ error: 'Failed to process message' });
+    }
+  });
+
+  app.get('/api/impact', (req, res) => {
+    res.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': 'Cache-Control'
+    });
+
+    // Send current metrics immediately
+    const currentMetrics = impactAnalyzer.getCurrentMetrics();
+    res.write(`data: ${JSON.stringify(currentMetrics)}\n\n`);
+    
+    // Add client to SSE list
+    sseClients.add(res);
+    
+    // Clean up on client disconnect
+    req.on('close', () => {
+      sseClients.delete(res);
+    });
+  });
+
+  // Test endpoint with sample messages
+  app.post('/api/test-impact', (req, res) => {
+    const sampleMessages = [
+      { agent: 'beta', text: 'Implementing renewable energy grid optimization with solar panel efficiency boost' },
+      { agent: 'gamma', text: 'Initiating rewilding project to restore biodiversity and ecosystem health' },
+      { agent: 'eta', text: 'Upgrading accessibility features for inclusive community participation' },
+      { agent: 'alpha', text: 'Phase out diesel generators completely, replacing with clean energy systems' },
+      { agent: 'delta', text: 'Expanding organic food production to improve nutrition and wellbeing' }
+    ];
+    
+    const results = sampleMessages.map(msg => {
+      const result = impactAnalyzer.processMessage(msg);
+      impactAnalyzer.logProcessing(msg, result);
+      return { message: msg, result };
+    });
+    
+    // Broadcast final metrics
+    broadcastMetrics(impactAnalyzer.getCurrentMetrics());
+    
+    res.json({ 
+      testResults: results,
+      finalMetrics: impactAnalyzer.getCurrentMetrics()
+    });
   });
 
   const httpServer = createServer(app);
