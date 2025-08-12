@@ -20,6 +20,9 @@ interface Decision {
     ecological: number;
     wellbeing: number;
     efficiency: number;
+    resilience: number;
+    equity: number;
+    innovation: number;
   };
   timeline: string;
   participants: string[];
@@ -148,7 +151,10 @@ const CURRENT_DECISION: Decision = {
   impact: {
     ecological: 78,
     wellbeing: 85,
-    efficiency: 92
+    efficiency: 92,
+    resilience: 88,
+    equity: 90,
+    innovation: 82
   },
   timeline: '72 hours',
   participants: ['alpha', 'beta', 'gamma', 'delta', 'epsilon', 'zeta', 'eta', 'theta', 'iota', 'kappa']
@@ -224,11 +230,55 @@ const getRandomConversation = () => {
 };
 
 const ARCHIVE_DECISIONS = [
-  { id: 1, title: 'Solar Array Recalibration', status: 'IMPLEMENTED', timestamp: '14:18:23', impact: '+18% efficiency' },
-  { id: 2, title: 'Biodiversity Restoration Phase 3', status: 'APPROVED', timestamp: '14:15:07', impact: '+12% ecosystem health' },
-  { id: 3, title: 'Transport Network Optimization', status: 'IMPLEMENTED', timestamp: '14:12:45', impact: 'Zero emissions achieved' },
-  { id: 4, title: 'Agricultural Yield Enhancement', status: 'APPROVED', timestamp: '14:09:33', impact: '+18% food production' },
-  { id: 5, title: 'Healthcare System Upgrade', status: 'IMPLEMENTED', timestamp: '14:06:12', impact: '97.3% diagnostic accuracy' }
+  { 
+    id: 1, 
+    title: 'Solar Array Recalibration', 
+    status: 'IMPLEMENTED', 
+    timestamp: '14:18:23', 
+    impact: 'Ecological: +12 | Wellbeing: +5 | Efficiency: +18 | Resilience: +25 | Equity: +8 | Innovation: +15' 
+  },
+  { 
+    id: 2, 
+    title: 'Biodiversity Restoration Phase 3', 
+    status: 'APPROVED', 
+    timestamp: '14:15:07', 
+    impact: 'Ecological: +20 | Wellbeing: +15 | Efficiency: +10 | Resilience: +22 | Equity: +18 | Innovation: +12' 
+  },
+  { 
+    id: 3, 
+    title: 'Transport Network Optimization', 
+    status: 'IMPLEMENTED', 
+    timestamp: '14:12:45', 
+    impact: 'Ecological: +8 | Wellbeing: +12 | Efficiency: +25 | Resilience: +16 | Equity: +20 | Innovation: +18' 
+  },
+  { 
+    id: 4, 
+    title: 'Agricultural Yield Enhancement', 
+    status: 'APPROVED', 
+    timestamp: '14:09:33', 
+    impact: 'Ecological: +18 | Wellbeing: +20 | Efficiency: +14 | Resilience: +15 | Equity: +25 | Innovation: +10' 
+  },
+  { 
+    id: 5, 
+    title: 'Healthcare System Upgrade', 
+    status: 'IMPLEMENTED', 
+    timestamp: '14:06:12', 
+    impact: 'Ecological: +5 | Wellbeing: +28 | Efficiency: +12 | Resilience: +20 | Equity: +22 | Innovation: +16' 
+  },
+  { 
+    id: 6, 
+    title: 'Educational AI Ethics Framework', 
+    status: 'DEBATING', 
+    timestamp: '14:03:51', 
+    impact: 'Ecological: +3 | Wellbeing: +18 | Efficiency: +8 | Resilience: +12 | Equity: +30 | Innovation: +25' 
+  },
+  { 
+    id: 7, 
+    title: 'Resource Recovery Automation Protocol', 
+    status: 'VOTING', 
+    timestamp: '14:00:37', 
+    impact: 'Ecological: +25 | Wellbeing: +8 | Efficiency: +22 | Resilience: +18 | Equity: +10 | Innovation: +20' 
+  }
 ];
 
 const SVGAgentNode = ({ agent, isHovered, onMouseEnter, onMouseLeave }: { agent: Agent; isHovered: boolean; onMouseEnter: () => void; onMouseLeave: () => void }) => {
