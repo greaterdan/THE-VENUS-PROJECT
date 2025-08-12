@@ -50,7 +50,7 @@ interface StakePosition {
 
 export default function AgoraChain() {
   const [, setLocation] = useLocation();
-  const [searchTerm, setSearchTerm] = useState("");
+
   const [chainEvents, setChainEvents] = useState<ChainEvent[]>([]);
   const [walletConnected, setWalletConnected] = useState(false);
   const [walletAlias, setWalletAlias] = useState<string>('');
@@ -82,24 +82,58 @@ export default function AgoraChain() {
     return () => clearInterval(timer);
   }, []);
 
-  // Mock wallet connection
-  const connectWallet = async (type: 'phantom' | 'metamask') => {
-    const mockAlias = type === 'phantom' ? 'alpha…9d3f' : 'beta…1a2b';
-    setWalletAlias(mockAlias);
-    setWalletConnected(true);
-    
-    // Generate mock positions
-    const positions: StakePosition[] = AGENT_DOMAINS.slice(0, 3).map(agent => ({
-      agent: agent.id,
-      staked: Math.floor(Math.random() * 1000) + 100,
-      pending: Math.floor(Math.random() * 100),
-      unlockDate: Math.random() > 0.5 ? format(new Date(Date.now() + Math.random() * 30 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd') : undefined,
-      influenceScore: Math.floor(Math.random() * 100) + 50,
-      accessTickets: Math.floor(Math.random() * 10) + 2,
-      lockPeriod: [7, 30, 90][Math.floor(Math.random() * 3)]
-    }));
-    
-    setUserPositions(positions);
+  // Phantom wallet connection
+  const connectWallet = async (type: 'phantom') => {
+    try {
+      if (type === 'phantom') {
+        // Check if Phantom is available
+        const phantom = (window as any).phantom?.solana;
+        
+        if (!phantom) {
+          // Open Phantom installation page
+          window.open('https://phantom.app/', '_blank');
+          return;
+        }
+
+        if (phantom.isPhantom) {
+          // Request connection to Phantom
+          const response = await phantom.connect();
+          const publicKey = response.publicKey.toString();
+          
+          setWalletConnected(true);
+          setWalletAlias(`phantom_${publicKey.slice(0, 4)}...${publicKey.slice(-4)}`);
+          
+          // Add connect event to chain
+          const connectEvent: ChainEvent = {
+            id: `connect-${Date.now()}`,
+            timestamp: format(new Date(), 'HH:mm'),
+            domain: 'WALLET',
+            agent: 'PHANTOM',
+            action: 'CONNECTED',
+            details: `Wallet connected: ${publicKey.slice(0, 4)}...${publicKey.slice(-4)}`,
+            status: 'CONFIRMED',
+            wallet: publicKey.slice(0, 4) + '...' + publicKey.slice(-4)
+          };
+          
+          setChainEvents(prev => [connectEvent, ...prev]);
+          
+          // Generate mock positions after successful connection
+          const positions: StakePosition[] = AGENT_DOMAINS.slice(0, 3).map(agent => ({
+            agent: agent.id,
+            staked: Math.floor(Math.random() * 1000) + 100,
+            pending: Math.floor(Math.random() * 100),
+            unlockDate: Math.random() > 0.5 ? format(new Date(Date.now() + Math.random() * 30 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd') : undefined,
+            influenceScore: Math.floor(Math.random() * 100) + 50,
+            accessTickets: Math.floor(Math.random() * 10) + 2,
+            lockPeriod: [7, 30, 90][Math.floor(Math.random() * 3)]
+          }));
+          
+          setUserPositions(positions);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to connect wallet:', error);
+    }
   };
 
   // Generate initial chain events
@@ -191,15 +225,6 @@ export default function AgoraChain() {
     
     return () => clearInterval(interval);
   }, []);
-
-  // Filter events
-  const filteredEvents = chainEvents.filter(event => {
-    return !searchTerm || 
-      event.agent.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      event.domain.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      event.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (event.wallet && event.wallet.toLowerCase().includes(searchTerm.toLowerCase()));
-  });
 
   // Handle staking action
   const handleStake = async () => {
@@ -305,41 +330,14 @@ export default function AgoraChain() {
         <div className="text-xs text-gray-600 flex items-center justify-between">
           <span>System Time: [{currentTime}] | Status: OPERATIONAL</span>
           {!walletConnected ? (
-            <span className="text-gray-600">
-              Connect wallet (
-              <button onClick={() => connectWallet('phantom')} className="text-lime-600 hover:text-lime-800 underline">Phantom</button>
-              {' / '}
-              <button onClick={() => connectWallet('metamask')} className="text-lime-600 hover:text-lime-800 underline">MetaMask</button>
-              )
-            </span>
+            <button onClick={() => connectWallet('phantom')} className="text-lime-600 hover:text-lime-800 underline">
+              Connect Phantom Wallet
+            </button>
           ) : (
             <span className="text-gray-600">{walletAlias}</span>
           )}
         </div>
         <div className="border-t border-gray-200 my-2"></div>
-        
-        {/* Search Bar - identical to Archive */}
-        <div className="mb-4">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search conversations and decisions..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-500 focus:border-transparent font-mono"
-            />
-            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-              <svg className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-              </svg>
-            </div>
-          </div>
-          {searchTerm && (
-            <div className="mt-1 text-xs text-gray-500">
-              Filtering results for "{searchTerm}"
-            </div>
-          )}
-        </div>
       </div>
 
       {/* Main content - split between live events and protocol cards */}
@@ -349,23 +347,14 @@ export default function AgoraChain() {
           {/* Live Chain Events - matching archive list exactly */}
           <div className="lg:col-span-2">
             <div className="space-y-1 text-xs max-h-[calc(100vh-12rem)] overflow-y-auto">
-              {filteredEvents.length === 0 ? (
+              {chainEvents.length === 0 ? (
                 <div className="text-gray-500 p-4 text-center">
-                  {searchTerm ? (
-                    <>
-                      No results found for "{searchTerm}".<br/>
-                      Try different search terms or clear the search.
-                    </>
-                  ) : (
-                    <>
-                      No chain events yet.<br/>
-                      Events will appear as staking and faucet activities occur.
-                    </>
-                  )}
+                  No chain events yet.<br/>
+                  Events will appear as staking and faucet activities occur.
                 </div>
               ) : (
                 <AnimatePresence>
-                  {filteredEvents.map((event, index) => (
+                  {chainEvents.map((event, index) => (
                     <motion.div
                       key={event.id}
                       initial={{ opacity: 0 }}
@@ -392,16 +381,6 @@ export default function AgoraChain() {
             
             <div className="mt-6 text-xs text-gray-500">
               &gt; Connect wallet to interact with staking protocols
-              {searchTerm && (
-                <div className="mt-1">
-                  <button 
-                    onClick={() => setSearchTerm('')}
-                    className="text-lime-600 hover:text-lime-800 underline"
-                  >
-                    Clear search
-                  </button>
-                </div>
-              )}
             </div>
           </div>
 
