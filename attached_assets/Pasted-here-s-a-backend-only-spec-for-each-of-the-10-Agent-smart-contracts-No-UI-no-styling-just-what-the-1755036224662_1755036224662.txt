@@ -1,0 +1,345 @@
+here’s a backend-only spec for each of the 10 Agent smart contracts. No UI, no styling—just what the programs do, the state they own, the instructions they expose, the checks they must run, and how they interoperate (faucets, staking, telemetry, and cross-agent approvals). Use Solana/Anchor or any equivalent; the shapes are implementation-agnostic.
+
+Shared primitives (used by all agents)
+Accounts / PDAs
+
+ResourceType: {symbol, unit, env_factor}
+
+CityNode: {node_id, kind, capacities[ResourceType]}
+
+Faucet: {from_node, to_node, rtype, max_rate, current_rate, opens_at, closes_at, policy_ref, status}
+
+Proposal: {id, domain, author, changes[Change], metrics_claim{eco,well,eff,res,equ,inn}, rationale_hash, status, quorum_req, created_at, expires_at}
+
+Attestation: {proposal_id, signer_domain, vote, note_hash, ts}
+
+StakePool(domain): {vpc_total, faucet_threshold, influence_weight, active_stakers}
+
+StakePosition(domain, wallet): {amount, lock_until}
+
+AccessTicket(wallet, domain) (non-transferable): {amount, unlock_ts}
+
+Reputation(wallet) (SBT): {ecology,equity,efficiency,resilience,innovation,reliability}
+
+TelemetryFeed: rolling sensor/sim aggregates for each domain.
+
+Common instructions (invoked across agents)
+
+create_proposal, attest_proposal, enact_proposal, rollback_proposal
+
+open_faucet, scale_faucet, close_faucet
+
+stake_vpc, unstake_vpc, issue_ticket, consume_ticket
+
+record_telemetry, assert_thresholds (guardrails)
+
+Common guardrails
+
+Every enactment must satisfy Ecology & Equity constraints (soft fail → scale-down; hard fail → reject).
+
+All faucets are rate-limited + time-boxed; require expiries.
+
+Proposals expire if not enacted before expires_at.
+
+Reputation and Tickets are slashed for malicious attestations.
+
+1) Infrastructure & Habitat (ALPHA)
+Owns / writes
+
+CityNode definitions (habitats, public facilities).
+
+Material & fabrication patterns (refs to IPFS/Arweave).
+
+Instructions
+
+propose_habitat(node_spec) → creates Proposal with NodeDeltas.
+
+attest_buildability(materials_ok, lifecycle_ok)
+
+enact_habitat() → creates/updates CityNode + requests Energy and Water faucets for embedded systems.
+
+Checks
+
+Lifecycle > fixed min years; reuse % meets circularity target.
+
+Land use approved by Ecology; material budget approved by ResourceMgmt.
+
+Events
+
+EVT_NODE_CREATED/UPDATED, EVT_BUILD_DENIED.
+
+2) Energy Systems (BETA)
+Owns / writes
+
+Energy ResourceType & grid Faucets (kWh/time).
+
+Storage pools metadata.
+
+Instructions
+
+propose_energy_allocation({from,to,rate,duration})
+
+attest_grid_stability(n_1 contingency, reserve_margin)
+
+enact_allocation() → opens/scales/closes energy faucets.
+
+register_generation(asset_id, capacity_profile_uri)
+
+Checks
+
+Reserve margin ≥ policy; renewable share ≥ target; Ecology must approve hydro/tidal impacts.
+
+No fossil inputs.
+
+Events
+
+EVT_POWER_FLOW_OPENED/SCALED/CLOSED, EVT_GRID_ALERT.
+
+3) Food & Agriculture (GAMMA)
+Owns / writes
+
+Food & nutrient faucets (water, nutrients, produce kg/day).
+
+Farm/greenhouse nodes.
+
+Instructions
+
+propose_crop_cycle(plan_uri, water_liters, energy_kwh)
+
+attest_nutrition_balance() (with Health)
+
+enact_farm_support() → opens water/energy/data faucets to farms.
+
+record_harvest(yield_kg, waste_kg)
+
+Checks
+
+Water draw within watershed budget (Ecology).
+
+Distribution plan covers underserved districts (Equity).
+
+Events
+
+EVT_FARM_FACILITATED, EVT_HARVEST_RECORDED.
+
+4) Ecology & Restoration (DELTA)
+Owns / writes
+
+Ecological thresholds (caps), restoration tasks, veto flags.
+
+Instructions
+
+set_thresholds({watershed_cap,emissions_cap,habitat_min})
+
+attest_ecology(proposal_id, impact_score)
+
+veto_or_scale(proposal_id, factor)
+
+propose_restoration(task_uri, needed_resources) → opens faucets for remediation.
+
+Checks
+
+Hard caps enforced before any enactment.
+
+Continuous telemetry compliance.
+
+Events
+
+EVT_ECO_OK, EVT_ECO_SCALE, EVT_ECO_VETO, EVT_RESTORATION_OPENED.
+
+5) Social & Wellbeing (EPSILON)
+Owns / writes
+
+Wellbeing metrics, equity indices, public-space allocation rules.
+
+Instructions
+
+attest_equity(proposal_id, gini_delta, access_map_uri)
+
+propose_public_space(node_delta)
+
+issue_access_tickets(target_group, amount, domain) (for inclusion)
+
+Checks
+
+Minimum access scores per district; no displacement; cultural inclusion.
+
+Events
+
+EVT_EQUITY_OK/FAIL, EVT_TICKET_ISSUED.
+
+6) Transportation & Mobility (ZETA)
+Owns / writes
+
+Logistics/minutes faucets (vehicle-minutes, rail-slots).
+
+Mobility corridors (nodes/edges).
+
+Instructions
+
+propose_route_capacity({corridor, minutes, duration})
+
+attest_congestion_effect()
+
+enact_mobility_faucet()
+
+record_ridership(load_factor)
+
+Checks
+
+Energy draw approved by Energy; habitat fragmentation reviewed by Ecology.
+
+ADA/inclusion constraints from Social.
+
+Events
+
+EVT_CORRIDOR_OPENED/CLOSED, EVT_RIDERSHIP.
+
+7) Health & Medical (ETA)
+Owns / writes
+
+Priority queues for power/water/data to clinics; prevention programs.
+
+Instructions
+
+propose_health_priority({facility_ids, kWh, L, data})
+
+attest_benefit(avoided_risk_score)
+
+enact_clinic_support()
+
+record_outcomes(prevented_cases, response_time_ms)
+
+Checks
+
+Energy first to critical care; privacy enforcement on data.
+
+Events
+
+EVT_HEALTH_PRIORITY_OPENED, EVT_OUTCOMES.
+
+8) Education & Knowledge (THETA)
+Owns / writes
+
+Learning compute/bandwidth faucets; open curriculum refs.
+
+Instructions
+
+propose_learning_campaign({hours_compute, bandwidth, districts})
+
+issue_learning_tickets(wallets, hours)
+
+enact_learning_support()
+
+record_learning_gain(kpi_uri)
+
+Checks
+
+Net benefit to underserved districts (Equity); content openness.
+
+Events
+
+EVT_EDU_SUPPORT_OPENED, EVT_TICKETS_ISSUED.
+
+9) Resource Management & Allocation (IOTA)
+Owns / writes
+
+Global inventory; circularity contracts; material faucets.
+
+Instructions
+
+register_material(stock_kg, quality)
+
+propose_material_allocation({from_rescue_hub, to_project, kg, duration})
+
+attest_availability()
+
+enact_material_flow()
+
+record_recycling(recovered_kg)
+
+Checks
+
+No artificial scarcity; first use recovered stock; verify availability before any build.
+
+Events
+
+EVT_MATERIAL_FLOW_OPENED, EVT_RECOVERY_RECORDED.
+
+10) Culture, Ethics & Governance (KAPPA)
+Owns / writes
+
+Ethical rule set; final compliance attestations; transparency log.
+
+Instructions
+
+attest_ethics(proposal_id, compliance_uri)
+
+mediate_conflict(proposal_id, resolution)
+
+enforce_transparency(proposal_id) (ensures rationale/data hashes published)
+
+rollback_for_violation(proposal_id)
+
+Checks
+
+Human dignity, long-termism, prevention bias; openness of evidence.
+
+Events
+
+EVT_ETHICS_OK/FAIL, EVT_ROLLBACK_ENFORCED.
+
+Staking & influence (applies to all agents)
+What staking does (backend only)
+
+stake_vpc(domain, amount, lock_days) mints Influence(domain) and AccessTickets(domain) to the staker.
+
+Influence increases the weight of user attestations or co-author rights in that domain (not coin voting).
+
+unstake_vpc respects lock_until.
+
+Agents can require tickets to attach user proposals to their pipeline.
+
+Slashing / decay
+
+Malicious attestations or proposals disproven by telemetry → burn tickets, reduce reputation, temporary domain mute.
+
+Proposal lifecycle (cross-program choreography)
+Create: any Agent (optionally co-authored by a wallet with tickets) calls create_proposal.
+
+Review:
+
+Ecology runs attest_ecology.
+
+Social runs attest_equity.
+
+Relevant peer agents add attestations (e.g., Energy for Transport).
+
+Enact: If quorum + guardrails pass, authoring Agent calls enact_proposal → opens/scales/ closes Faucet(s).
+
+Verify: record_telemetry feeds outcomes; if breach detected, Ecology/Social/Kappa may call rollback_proposal or scale_faucet.
+
+Archive: every step emits compact events for the existing log feed.
+
+Minimal events (example strings all agents must emit)
+"[23:11] ENERGY STAKING +320 VPC | Pool: 41,993 VPC | Efficiency:+0.2"
+
+"[23:12] FOOD PROPOSAL Farm Cycle Q3 | Water: +12,000 L/day (48h)"
+
+"[23:13] ECOLOGY ATTEST OK | Impact: Ecological:+1.6"
+
+"[23:14] RESOURCE FAUCET OPENED 600 kg recycled Al → Habitat-27 (72h)"
+
+"[23:15] KAPPA ROLLBACK Ethics violation: missing transparency refs"
+
+Hard invariants
+No faucet without expiry.
+
+No enactment if Ecology or Equity attestation fails.
+
+Material allocation must reference existing inventory or approved recovery.
+
+All user-facing rights are non-transferable (tickets, reputation, influence).
+
+All proposals/transitions produce an event line suitable for your Archive UI.
+
