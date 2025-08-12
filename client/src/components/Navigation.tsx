@@ -84,7 +84,7 @@ export default function Navigation() {
   ];
 
   return (
-    <nav className="sticky top-0 z-50">
+    <nav className="sticky top-0 z-[100]">
       <div className="w-full">
         <div className="flex items-center justify-between h-16 pr-4">
           {/* Left Logo - Home Link - Appears on scroll */}
