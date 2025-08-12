@@ -453,6 +453,7 @@ export default function Agora() {
     type: 'energy' | 'material' | 'data' | 'time';
   }>>([]);
   const [isLoadingNewMessage, setIsLoadingNewMessage] = useState(false);
+  const [showChatModal, setShowChatModal] = useState(false);
 
   useEffect(() => {
     const timeInterval = setInterval(() => {
@@ -709,24 +710,33 @@ export default function Agora() {
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-sm font-semibold text-gray-800">Live Communications</h3>
                     <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setShowChatModal(true)}
+                        className="px-2 py-1 text-xs bg-gray-200 hover:bg-lime-200 rounded transition-colors"
+                      >
+                        Expand
+                      </button>
                       <div className={`w-2 h-2 rounded-full ${isLoadingNewMessage ? 'bg-blue-400 animate-spin' : 'bg-green-400 animate-pulse'}`}></div>
                       <span className="text-xs text-gray-500">{isLoadingNewMessage ? 'Generating...' : 'Live'}</span>
                     </div>
                   </div>
                   
-                  <div className="bg-gray-50 rounded-lg border flex-1 overflow-hidden">
+                  <div 
+                    className="bg-gray-50 rounded-lg border flex-1 overflow-hidden cursor-pointer hover:bg-gray-100 transition-colors"
+                    onClick={() => setShowChatModal(true)}
+                  >
                     <div className="h-64 overflow-y-auto p-3 space-y-2" id="chat-container">
                       {chatMessages.length === 0 && (
                         <div className="text-gray-500 text-xs text-center py-8">
                           Waiting for agent communications...
                         </div>
                       )}
-                      {chatMessages.map((message) => (
+                      {chatMessages.slice(-5).map((message) => (
                         <motion.div
                           key={message.id}
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="bg-white rounded p-2 shadow-sm border"
+                          className="bg-white rounded p-2 shadow-sm border hover:shadow-md transition-shadow"
                         >
                           <div className="flex items-center justify-between mb-1">
                             <div className="flex items-center gap-2">
@@ -752,7 +762,7 @@ export default function Agora() {
                   </div>
                   
                   <div className="mt-2 text-xs text-gray-500 text-center">
-                    {chatMessages.length} messages • Real-time AI agent communications
+                    {chatMessages.length} messages • Click to expand full conversation
                   </div>
                 </div>
 
@@ -807,6 +817,112 @@ export default function Agora() {
           </div>
         )}
       </div>
+
+      {/* Live Communications Modal */}
+      <AnimatePresence>
+        {showChatModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+            onClick={(e) => e.target === e.currentTarget && setShowChatModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-lg shadow-2xl w-full max-w-4xl h-[80vh] flex flex-col"
+            >
+              {/* Modal Header */}
+              <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-800">Agent Communications - The Bigger Picture</h2>
+                  <p className="text-sm text-gray-500 mt-1">Real-time conversations between AI agents in The Venus Project</p>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <div className={`w-3 h-3 rounded-full ${isLoadingNewMessage ? 'bg-blue-400 animate-spin' : 'bg-green-400 animate-pulse'}`}></div>
+                    <span className="text-sm text-gray-600">{isLoadingNewMessage ? 'Generating...' : 'Live'}</span>
+                    <span className="text-sm text-gray-500">• {chatMessages.length} messages</span>
+                  </div>
+                  <button
+                    onClick={() => setShowChatModal(false)}
+                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                  >
+                    <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              {/* Modal Content */}
+              <div className="flex-1 p-6 overflow-hidden">
+                <div className="h-full bg-gray-50 rounded-lg border overflow-hidden">
+                  <div className="h-full overflow-y-auto p-4 space-y-3" id="modal-chat-container">
+                    {chatMessages.length === 0 && (
+                      <div className="text-gray-500 text-center py-16">
+                        <div className="text-lg mb-2">Waiting for agent communications...</div>
+                        <div className="text-sm">AI agents are preparing to share their insights</div>
+                      </div>
+                    )}
+                    {chatMessages.map((message, index) => (
+                      <motion.div
+                        key={message.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                        className="bg-white rounded-lg p-4 shadow-sm border hover:shadow-md transition-shadow"
+                      >
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-2">
+                              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-lime-400 to-green-500 flex items-center justify-center">
+                                <span className="text-xs font-bold text-white">{message.from.charAt(0)}</span>
+                              </div>
+                              <div>
+                                <div className="text-sm font-semibold text-gray-800">{message.from}</div>
+                                <div className="text-xs text-gray-500">to {message.to}</div>
+                              </div>
+                            </div>
+                            <span className={`px-3 py-1 rounded-full text-xs font-medium text-white ${
+                              message.type === 'energy' ? 'bg-yellow-400' :
+                              message.type === 'material' ? 'bg-blue-400' :
+                              message.type === 'data' ? 'bg-purple-400' : 'bg-green-400'
+                            }`}>
+                              {message.type}
+                            </span>
+                          </div>
+                          <div className="text-xs text-gray-400 font-mono">{message.timestamp}</div>
+                        </div>
+                        <div className="text-sm text-gray-700 leading-relaxed pl-11">
+                          {message.message}
+                        </div>
+                        <div className="flex items-center gap-4 mt-3 pl-11">
+                          <div className="text-xs text-gray-400">
+                            Agent-to-Agent Communication
+                          </div>
+                          <div className="text-xs text-gray-400">
+                            Priority: {message.type === 'time' ? 'High' : message.type === 'energy' ? 'Critical' : 'Normal'}
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="p-6 border-t border-gray-200 bg-gray-50">
+                <div className="text-center text-xs text-gray-500">
+                  These conversations are generated in real-time by Grok AI, representing authentic coordination between specialized city management agents
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
