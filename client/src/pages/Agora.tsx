@@ -766,11 +766,16 @@ export default function Agora() {
     processLatestMessage();
   }, [chatMessages]);
 
-  // Fetch archive snapshots
+  // Fetch archive snapshots with search
   useEffect(() => {
     const fetchArchiveSnapshots = async () => {
       try {
-        const response = await fetch('/api/archive/snapshots');
+        // Use search endpoint for comprehensive searching
+        const endpoint = archiveSearchQuery 
+          ? `/api/archive/search?q=${encodeURIComponent(archiveSearchQuery)}`
+          : '/api/archive/snapshots';
+        
+        const response = await fetch(endpoint);
         if (response.ok) {
           const snapshots = await response.json();
           setArchiveEntries(snapshots);
@@ -786,7 +791,7 @@ export default function Agora() {
       const interval = setInterval(fetchArchiveSnapshots, 30000);
       return () => clearInterval(interval);
     }
-  }, [viewMode]);
+  }, [viewMode, archiveSearchQuery]); // Added archiveSearchQuery to dependencies
 
   // Handle archive entry click - now opens modal
   const handleArchiveEntryClick = async (entry: any) => {
@@ -1197,34 +1202,26 @@ export default function Agora() {
             
             <div className="space-y-1 text-xs max-h-[calc(100vh-12rem)] overflow-y-auto">
               {(() => {
-                // Filter archive entries based on search query
-                const filteredEntries = archiveEntries.filter(entry => 
-                  archiveSearchQuery === '' || 
-                  entry.title.toLowerCase().includes(archiveSearchQuery.toLowerCase()) ||
-                  entry.status.toLowerCase().includes(archiveSearchQuery.toLowerCase()) ||
-                  entry.impact?.toLowerCase().includes(archiveSearchQuery.toLowerCase()) ||
-                  entry.participants?.toString().toLowerCase().includes(archiveSearchQuery.toLowerCase())
-                );
-                
+                // No client-side filtering needed - server handles search now
                 if (archiveEntries.length === 0) {
                   return (
                     <div className="text-gray-500 p-4 text-center">
-                      No archive snapshots available yet.<br/>
-                      Snapshots are created hourly based on agent conversations.
+                      {archiveSearchQuery ? (
+                        <>
+                          No results found for "{archiveSearchQuery}".<br/>
+                          Try different search terms or clear the search.
+                        </>
+                      ) : (
+                        <>
+                          No archive snapshots available yet.<br/>
+                          Snapshots are created every 2 minutes based on agent conversations.
+                        </>
+                      )}
                     </div>
                   );
                 }
                 
-                if (filteredEntries.length === 0 && archiveSearchQuery !== '') {
-                  return (
-                    <div className="text-gray-500 p-4 text-center">
-                      No results found for "{archiveSearchQuery}".<br/>
-                      Try different search terms or clear the search.
-                    </div>
-                  );
-                }
-                
-                return filteredEntries.map((entry) => (
+                return archiveEntries.map((entry: any) => (
                   <div key={entry.id}>
                     <div 
                       className="hover:bg-gray-100 p-1 cursor-pointer rounded"
@@ -1234,7 +1231,19 @@ export default function Agora() {
                       <span className="ml-2 text-gray-800">{entry.title}</span>
                       <span className="ml-4 text-blue-600">{entry.status}</span>
                       <span className="ml-4 text-gray-500">{entry.impact}</span>
+                      {entry.relevanceScore > 0 && (
+                        <span className="ml-2 px-1 bg-lime-100 text-lime-700 rounded text-xs">
+                          {entry.relevanceScore} matches
+                        </span>
+                      )}
                     </div>
+                    {/* Show matched content preview for search results */}
+                    {archiveSearchQuery && entry.matchedContent && entry.matchedContent.length > 0 && (
+                      <div className="ml-4 mt-1 text-xs text-gray-600 italic">
+                        Found in: {entry.matchedContent.slice(0, 2).join(' • ')}
+                        {entry.matchedContent.length > 2 && ' • ...'}
+                      </div>
+                    )}
                   </div>
                 ));
               })()}

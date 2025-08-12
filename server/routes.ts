@@ -266,6 +266,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Enhanced archive search endpoint
+  app.get('/api/archive/search', (req, res) => {
+    try {
+      const query = req.query.q as string || '';
+      const results = archiveManager.searchSnapshots(query);
+      res.json(results);
+    } catch (error) {
+      console.error('Error searching archive:', error);
+      res.status(500).json({ error: 'Failed to search archive' });
+    }
+  });
+
   // Individual agent chat endpoint
   app.post('/api/agent-chat', async (req, res) => {
     try {

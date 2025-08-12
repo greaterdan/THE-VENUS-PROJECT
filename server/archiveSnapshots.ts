@@ -410,6 +410,145 @@ class ArchiveSnapshotManager {
   getSnapshotCount(): number {
     return this.snapshots.length;
   }
+
+  // Enhanced search functionality
+  searchSnapshots(query: string): Array<{
+    id: string;
+    timestamp: string;
+    title: string;
+    status: string;
+    impact: string;
+    participants: string[];
+    messageCount: number;
+    relevanceScore: number;
+    matchedContent: string[];
+  }> {
+    if (!query || query.trim().length === 0) {
+      return this.getSnapshotHeaders().map(header => ({
+        ...header,
+        participants: [],
+        messageCount: 0,
+        relevanceScore: 0,
+        matchedContent: []
+      }));
+    }
+
+    const searchTerm = query.toLowerCase().trim();
+    const results = this.snapshots.map(snapshot => {
+      let relevanceScore = 0;
+      const matchedContent: string[] = [];
+
+      // Search in title (high weight)
+      if (snapshot.title.toLowerCase().includes(searchTerm)) {
+        relevanceScore += 10;
+        matchedContent.push(`Title: ${snapshot.title}`);
+      }
+
+      // Search in summary_line (high weight)
+      if (snapshot.summary_line.toLowerCase().includes(searchTerm)) {
+        relevanceScore += 8;
+        matchedContent.push(`Summary: ${snapshot.summary_line}`);
+      }
+
+      // Search in status (medium weight)
+      if (snapshot.status.toLowerCase().includes(searchTerm)) {
+        relevanceScore += 5;
+        matchedContent.push(`Status: ${snapshot.status}`);
+      }
+
+      // Search in decision_id (medium weight)
+      if (snapshot.decision_id.toLowerCase().includes(searchTerm)) {
+        relevanceScore += 6;
+        matchedContent.push(`Decision Type: ${snapshot.decision_id}`);
+      }
+
+      // Search in participants (medium weight)
+      const participantMatches = snapshot.participants.filter(p => 
+        p.toLowerCase().includes(searchTerm)
+      );
+      if (participantMatches.length > 0) {
+        relevanceScore += 4 * participantMatches.length;
+        matchedContent.push(`Participants: ${participantMatches.join(', ')}`);
+      }
+
+      // Search in transcript lines (high weight for content)
+      const transcriptMatches = snapshot.transcript_lines.filter(line => 
+        line.toLowerCase().includes(searchTerm)
+      );
+      if (transcriptMatches.length > 0) {
+        relevanceScore += 7 * transcriptMatches.length;
+        transcriptMatches.forEach(match => {
+          matchedContent.push(`Conversation: ${match}`);
+        });
+      }
+
+      // Search in metrics (if they relate to search terms)
+      const metricsKeywords = {
+        'ecological': ['environment', 'ecological', 'green', 'sustainability', 'carbon', 'eco'],
+        'wellbeing': ['wellbeing', 'health', 'wellness', 'happiness', 'quality of life'],
+        'efficiency': ['efficiency', 'optimization', 'performance', 'productivity'],
+        'resilience': ['resilience', 'stability', 'robust', 'recovery', 'adaptation'],
+        'equity': ['equity', 'fairness', 'equal', 'justice', 'distribution'],
+        'innovation': ['innovation', 'technology', 'advancement', 'research', 'development']
+      };
+
+      Object.entries(metricsKeywords).forEach(([metric, keywords]) => {
+        if (keywords.some(keyword => searchTerm.includes(keyword))) {
+          const value = snapshot.metrics_delta[metric as keyof SnapshotMetrics];
+          if (Math.abs(value) > 0) {
+            relevanceScore += 3;
+            matchedContent.push(`${metric}: ${value > 0 ? '+' : ''}${value.toFixed(1)}`);
+          }
+        }
+      });
+
+      // Search for specific terms that agents commonly discuss
+      const agentTopics = {
+        'energy': ['solar', 'power', 'grid', 'electricity', 'renewable'],
+        'transport': ['transport', 'mobility', 'transit', 'autonomous', 'vehicle'],
+        'agriculture': ['farm', 'food', 'crop', 'harvest', 'hydroponic'],
+        'health': ['medical', 'healthcare', 'treatment', 'diagnosis', 'wellness'],
+        'education': ['learning', 'teaching', 'curriculum', 'knowledge', 'training'],
+        'resource': ['allocation', 'distribution', 'management', 'supply', 'inventory'],
+        'infrastructure': ['building', 'construction', 'habitat', 'facility', 'structure'],
+        'social': ['community', 'social', 'coordination', 'collaboration', 'interaction'],
+        'governance': ['ethics', 'policy', 'decision', 'governance', 'regulation'],
+        'ecology': ['ecosystem', 'biodiversity', 'environmental', 'conservation', 'restoration']
+      };
+
+      Object.entries(agentTopics).forEach(([topic, keywords]) => {
+        if (keywords.some(keyword => searchTerm.includes(keyword))) {
+          const topicMatches = snapshot.transcript_lines.filter(line =>
+            keywords.some(k => line.toLowerCase().includes(k))
+          );
+          if (topicMatches.length > 0) {
+            relevanceScore += 5;
+            matchedContent.push(`${topic.charAt(0).toUpperCase() + topic.slice(1)} Topic: ${topicMatches.length} references`);
+          }
+        }
+      });
+
+      return {
+        id: snapshot.id,
+        timestamp: new Date(snapshot.timestamp_start).toLocaleTimeString('en-US', { 
+          hour12: false, 
+          hour: '2-digit', 
+          minute: '2-digit' 
+        }),
+        title: snapshot.title,
+        status: snapshot.status,
+        impact: snapshot.summary_line,
+        participants: snapshot.participants,
+        messageCount: snapshot.transcript_lines.length,
+        relevanceScore,
+        matchedContent: matchedContent.slice(0, 5) // Limit to top 5 matches
+      };
+    })
+    .filter(result => result.relevanceScore > 0) // Only return results with matches
+    .sort((a, b) => b.relevanceScore - a.relevanceScore); // Sort by relevance
+
+    return results;
+  }
 }
 
 export default ArchiveSnapshotManager;
