@@ -255,11 +255,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get('/api/archive/transcript/:id', (req, res) => {
     try {
-      const transcript = archiveManager.getSnapshotTranscript(req.params.id);
-      if (!transcript) {
+      const snapshotData = archiveManager.getSnapshotTranscript(req.params.id);
+      if (!snapshotData) {
         return res.status(404).json({ error: 'Transcript not found' });
       }
-      res.json({ transcript });
+      res.json(snapshotData);
     } catch (error) {
       console.error('Error fetching transcript:', error);
       res.status(500).json({ error: 'Failed to fetch transcript' });

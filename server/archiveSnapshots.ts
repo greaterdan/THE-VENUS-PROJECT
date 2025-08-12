@@ -402,9 +402,13 @@ class ArchiveSnapshotManager {
     }));
   }
 
-  getSnapshotTranscript(id: string): string[] | null {
+  getSnapshotTranscript(id: string): { transcript: string[]; metrics: SnapshotMetrics; participants: string[] } | null {
     const snapshot = this.snapshots.find(s => s.id === id);
-    return snapshot ? snapshot.transcript_lines : null;
+    return snapshot ? {
+      transcript: snapshot.transcript_lines,
+      metrics: snapshot.metrics_delta,
+      participants: snapshot.participants
+    } : null;
   }
 
   getSnapshotCount(): number {

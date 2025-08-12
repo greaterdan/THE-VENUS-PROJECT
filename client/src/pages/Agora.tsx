@@ -801,7 +801,9 @@ export default function Agora() {
         const data = await response.json();
         setSelectedArchiveEntry({
           ...entry,
-          transcript: data.transcript
+          transcript: data.transcript,
+          metrics: data.metrics,
+          participants: data.participants
         });
         setShowArchiveModal(true);
       }
@@ -1477,11 +1479,14 @@ export default function Agora() {
                   <div className="text-xs text-gray-500">
                     Archived conversation from decision process: {selectedArchiveEntry.id}
                   </div>
-                  {selectedArchiveEntry.impact && (
+                  {selectedArchiveEntry.metrics && (
                     <div className="flex items-center gap-4 text-xs">
-                      <span className="text-green-600">Ecological: {selectedArchiveEntry.impact.ecological || 'N/A'}</span>
-                      <span className="text-blue-600">Wellbeing: {selectedArchiveEntry.impact.wellbeing || 'N/A'}</span>
-                      <span className="text-purple-600">Efficiency: {selectedArchiveEntry.impact.efficiency || 'N/A'}</span>
+                      <span className="text-green-600">Ecological: {selectedArchiveEntry.metrics.ecological > 0 ? '+' : ''}{selectedArchiveEntry.metrics.ecological?.toFixed(1) || '0.0'}</span>
+                      <span className="text-blue-600">Wellbeing: {selectedArchiveEntry.metrics.wellbeing > 0 ? '+' : ''}{selectedArchiveEntry.metrics.wellbeing?.toFixed(1) || '0.0'}</span>
+                      <span className="text-purple-600">Efficiency: {selectedArchiveEntry.metrics.efficiency > 0 ? '+' : ''}{selectedArchiveEntry.metrics.efficiency?.toFixed(1) || '0.0'}</span>
+                      <span className="text-orange-600">Resilience: {selectedArchiveEntry.metrics.resilience > 0 ? '+' : ''}{selectedArchiveEntry.metrics.resilience?.toFixed(1) || '0.0'}</span>
+                      <span className="text-pink-600">Equity: {selectedArchiveEntry.metrics.equity > 0 ? '+' : ''}{selectedArchiveEntry.metrics.equity?.toFixed(1) || '0.0'}</span>
+                      <span className="text-indigo-600">Innovation: {selectedArchiveEntry.metrics.innovation > 0 ? '+' : ''}{selectedArchiveEntry.metrics.innovation?.toFixed(1) || '0.0'}</span>
                     </div>
                   )}
                 </div>
