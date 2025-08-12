@@ -758,8 +758,8 @@ export default function Agora() {
     <div className="h-screen bg-white text-black overflow-hidden" style={{ touchAction: 'none' }}>
       <Navigation />
       
-      {/* Header - with top margin to account for navigation */}
-      <div className="px-6 py-3 border-b border-gray-200 bg-gray-50/50 mt-20">
+      {/* Header - with minimal top margin to account for navigation */}
+      <div className="px-6 py-3 border-b border-gray-200 bg-gray-50/50 mt-16">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-6">
             <div>
@@ -803,7 +803,7 @@ export default function Agora() {
         </div>
       </div>
 
-      <div className="flex h-[calc(100vh-5rem)] overflow-hidden">
+      <div className="flex h-[calc(100vh-8rem)] overflow-hidden">
         
         {viewMode === 'live' ? (
           <>
