@@ -473,9 +473,32 @@ export default function Agora() {
     chatMessagesRef.current = chatMessages;
   }, [chatMessages]);
 
-  // Component cleanup
+  // Disable all scrolling on this page
   useEffect(() => {
+    // Disable scrolling on the page
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+    
+    // Prevent scroll events
+    const preventScroll = (e: Event) => {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    };
+    
+    window.addEventListener('scroll', preventScroll, { passive: false });
+    window.addEventListener('wheel', preventScroll, { passive: false });
+    window.addEventListener('touchmove', preventScroll, { passive: false });
+    
     return () => {
+      // Re-enable scrolling when leaving the page
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      
+      window.removeEventListener('scroll', preventScroll);
+      window.removeEventListener('wheel', preventScroll);
+      window.removeEventListener('touchmove', preventScroll);
+      
       isComponentMounted.current = false;
       if (conversationIntervalRef.current) {
         clearInterval(conversationIntervalRef.current);
@@ -589,7 +612,7 @@ export default function Agora() {
   }, []); // Empty dependency array - run only once
 
   return (
-    <div className="h-screen bg-white text-black pt-20 overflow-hidden">
+    <div className="h-screen bg-white text-black pt-20 overflow-hidden fixed inset-0" style={{ touchAction: 'none' }}>
       
       {/* Header */}
       <div className="px-6 py-3 border-b border-gray-200 bg-gray-50/50">
