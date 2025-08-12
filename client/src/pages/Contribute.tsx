@@ -36,23 +36,25 @@ export default function Contribute() {
   return (
     <div className="min-h-screen bg-white text-black">
       <div className="container mx-auto px-6 py-12">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-12">
-          <div className="text-center flex-1 mr-8">
-            <p className="text-gray-600 text-lg max-w-3xl mx-auto leading-relaxed">
+        {/* Hero Section */}
+        <div className="text-center mb-16">
+          <div className="max-w-4xl mx-auto">
+            <h1 className="text-3xl md:text-4xl font-light text-gray-800 mb-8 leading-relaxed">
               Contribute your GPU power to help The Venus Project's AI City grow and make decisions faster, while earning voting rights to shape its future and gaining early access to upcoming features.
-            </p>
+            </h1>
+            <div className="flex justify-center">
+              <WalletConnect
+                onConnect={handleWalletConnect}
+                isConnected={isConnected}
+                walletAddress={walletAddress}
+                vnsBalance={vnsBalance}
+              />
+            </div>
           </div>
-          <WalletConnect
-            onConnect={handleWalletConnect}
-            isConnected={isConnected}
-            walletAddress={walletAddress}
-            vnsBalance={vnsBalance}
-          />
         </div>
 
         {/* Real-Time Network Stats */}
-        <div className="mb-12">
+        <div className="mb-20">
           <NetworkStats />
         </div>
 
@@ -60,22 +62,22 @@ export default function Contribute() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-12 p-6 bg-gray-50 rounded-lg border"
+          className="mb-20 p-8 bg-gradient-to-r from-gray-50 to-lime-50 rounded-2xl border border-gray-100"
         >
-          <div className="flex items-start gap-4">
-            <div className="p-3 bg-lime-100 rounded-full">
-              <Brain className="w-6 h-6 text-lime-600" />
+          <div className="flex items-start gap-6">
+            <div className="p-4 bg-white rounded-2xl shadow-sm border border-lime-100">
+              <Brain className="w-8 h-8 text-lime-600" />
             </div>
             <div className="flex-1">
-              <h3 className="text-xl font-semibold mb-2">Every Second Counts</h3>
-              <p className="text-gray-600 mb-4">
+              <h3 className="text-2xl font-medium mb-4 text-gray-800">Every Second Counts</h3>
+              <p className="text-gray-600 mb-6 text-lg leading-relaxed">
                 Every second your GPU runs, the Venus AI city learns faster — balancing energy, 
                 resources, and wellbeing in real time. Your contribution directly accelerates 
                 the development of sustainable urban solutions.
               </p>
-              <div className="flex items-center gap-2">
-                <Info className="w-4 h-4 text-gray-500" />
-                <span className="text-sm text-gray-500">
+              <div className="flex items-start gap-3 p-4 bg-white/70 rounded-xl border border-white/50">
+                <Info className="w-5 h-5 text-gray-500 mt-0.5" />
+                <span className="text-gray-600 leading-relaxed">
                   Currently processing: Urban optimization algorithms, resource distribution models, 
                   and social harmony calculations
                 </span>
@@ -84,9 +86,9 @@ export default function Contribute() {
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Left Column - Main Controls */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-12">
             {/* GPU Controller */}
             <GPUController
               isRunning={isGPURunning}
@@ -106,7 +108,7 @@ export default function Contribute() {
           </div>
 
           {/* Right Column - Status */}
-          <div className="space-y-8">
+          <div className="space-y-12">
             {/* Contributor Status */}
             {isConnected && (
               <ContributorStatus
@@ -126,7 +128,7 @@ export default function Contribute() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-12 p-6 bg-gray-900 rounded-lg border"
+            className="mt-20 p-8 bg-gray-900 rounded-2xl border border-gray-800"
           >
             <div className="flex items-center gap-2 mb-4">
               <div className="w-3 h-3 bg-lime-400 rounded-full animate-pulse"></div>
@@ -149,10 +151,10 @@ export default function Contribute() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-12 text-center p-8 bg-gray-50 rounded-lg border"
+            className="mt-20 text-center p-12 bg-gradient-to-br from-gray-50 to-lime-50 rounded-2xl border border-gray-100"
           >
-            <h3 className="text-2xl font-bold mb-4">Ready to Power the Future?</h3>
-            <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+            <h3 className="text-3xl font-medium mb-6 text-gray-800">Ready to Power the Future?</h3>
+            <p className="text-gray-600 mb-10 max-w-2xl mx-auto text-lg leading-relaxed">
               Connect your wallet to start contributing GPU power to the Venus AI city simulation. 
               Earn VNS tokens while helping build sustainable urban solutions.
             </p>
