@@ -98,9 +98,12 @@ export default function Navigation() {
 
   const docsLinks = [
     { href: "/manifesto", label: "Manifesto" },
-    { href: "/structure", label: "Structure" },
-    { href: "/contact", label: "Contact Us" },
   ];
+
+  const handleLogout = () => {
+    localStorage.removeItem("venusFront_authenticated");
+    window.location.reload();
+  };
 
   return (
     <nav 
@@ -264,6 +267,16 @@ export default function Navigation() {
                 )}
               </div>
 
+              {/* Logout Button */}
+              <div className="ml-4">
+                <button
+                  onClick={handleLogout}
+                  className="text-black hover:text-red-600 transition-colors duration-300 text-sm font-medium"
+                >
+                  Logout
+                </button>
+              </div>
+
             </div>
           </div>
 
@@ -345,6 +358,16 @@ export default function Navigation() {
                 </span>
               </Link>
             ))}
+            {/* Mobile Logout Button */}
+            <button
+              onClick={() => {
+                handleLogout();
+                setMobileMenuOpen(false);
+              }}
+              className="block w-full text-left px-3 py-2 text-sm font-medium text-black hover:text-red-600 transition-colors cursor-pointer"
+            >
+              Logout
+            </button>
           </div>
         </div>
       )}

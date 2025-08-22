@@ -101,6 +101,23 @@
   background-color: var(--venus-bg);
 }
 
+/* Ensure text visibility in Vision section */
+.vision-text-container {
+  overflow: visible !important;
+  height: auto !important;
+  min-height: auto !important;
+}
+
+.vision-text-container p {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+  background-color: var(--venus-bg);
+}
+
 .venus-lime {
   color: var(--venus-lime);
 }

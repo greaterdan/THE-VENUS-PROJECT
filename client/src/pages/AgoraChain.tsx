@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
 import { useLocation } from "wouter";
+import HelpModal from "../components/HelpModal";
 
 // Agent domain mapping
 const AGENT_DOMAINS = [
@@ -69,6 +70,7 @@ export default function AgoraChain() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [validationError, setValidationError] = useState<string>('');
   const [transactionMessage, setTransactionMessage] = useState<string>('');
+  const [showHelpModal, setShowHelpModal] = useState(false);
 
   // Generate pool statistics for each agent
   const generatePoolStats = (agentId: string) => {
@@ -91,6 +93,8 @@ export default function AgoraChain() {
     }, 1000);
     return () => clearInterval(timer);
   }, []);
+
+
 
   // Phantom wallet connection
   const connectWallet = async (type: 'phantom') => {
@@ -531,21 +535,29 @@ export default function AgoraChain() {
         <div className="text-gray-800 text-xs font-semibold">AGORA CHAIN — VENUS PROJECT NETWORK</div>
         <div className="text-xs text-gray-600 flex items-center justify-between">
           <span>System Time: [{currentTime}] | Status: OPERATIONAL</span>
-          {!walletConnected ? (
-            <button onClick={() => connectWallet('phantom')} className="text-slate-600 hover:text-slate-800 underline">
-              Connect Phantom Wallet
-            </button>
-          ) : (
-            <div className="flex items-center gap-2">
-              <span className="text-gray-600">{walletAlias}</span>
-              <button 
-                onClick={disconnectWallet}
-                className="text-red-600 hover:text-red-800 underline text-xs"
-              >
-                Disconnect
+          <div className="flex flex-col items-end gap-1">
+            {!walletConnected ? (
+              <button onClick={() => connectWallet('phantom')} className="text-slate-600 hover:text-slate-800 underline">
+                Connect Phantom Wallet
               </button>
-            </div>
-          )}
+            ) : (
+              <div className="flex flex-col items-end gap-1">
+                <button 
+                  onClick={() => setShowHelpModal(true)}
+                  className="text-blue-600 hover:text-blue-800 underline text-xs"
+                >
+                  Help
+                </button>
+                <button 
+                  onClick={disconnectWallet}
+                  className="text-red-600 hover:text-red-800 underline text-xs"
+                >
+                  Disconnect
+                </button>
+                <span className="text-gray-600">{walletAlias}</span>
+              </div>
+            )}
+          </div>
         </div>
         <div className="border-t border-gray-200 my-2"></div>
       </div>
@@ -980,6 +992,12 @@ export default function AgoraChain() {
           </motion.div>
         )}
       </AnimatePresence>
+
+            {/* Help Modal */}
+      <HelpModal 
+        isOpen={showHelpModal} 
+        onClose={() => setShowHelpModal(false)} 
+      />
     </div>
   );
 }

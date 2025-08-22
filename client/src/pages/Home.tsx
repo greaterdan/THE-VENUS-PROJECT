@@ -161,7 +161,7 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
       
       {/* Transition section */}
       <div 
-        className={`min-h-screen bg-white p-8 relative z-30 transition-all duration-3000 ease-out delay-1400 ${
+        className={`min-h-screen bg-white p-8 relative z-30 transition-all duration-3000 ease-out delay-1400 overflow-visible ${
           showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}
         style={{
@@ -171,24 +171,24 @@ export default function Home({ isLoaded = true, showContent = true }: HomeProps)
         }}
       >
         <div 
-          className="w-full bg-white px-4 sm:px-6 lg:px-8 lg:pr-[650px]"
+          className="w-full bg-white px-4 sm:px-6 lg:px-8 lg:pr-[650px] min-h-screen flex items-center"
           style={{
             opacity: Math.min(1, Math.max(0.3, (scrollY - 100) / 200)),
             transform: `translateY(${Math.max(0, 50 - (scrollY - 100) * 0.2)}px)`,
           }}
         >
-          <div className="max-w-lg">
+          <div className="max-w-lg py-16 vision-text-container">
           <h2 className={`text-4xl font-bold text-black mb-8 ${isTyping ? "fade-in-up" : ""}`}>
             Vision for Tomorrow
           </h2>
-          <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
-            <p className={isTyping ? "fade-in-up" : ""} style={{ animationDelay: "0.2s" }}>
+          <div className="space-y-6 text-lg text-gray-700 leading-relaxed vision-text-container">
+            <p className={`${isTyping ? "fade-in-up" : ""} block`} style={{ animationDelay: "0.2s" }}>
               Cities shaped not by control, but by balance. Where decentralized decision-making meets intelligent design.
             </p>
-            <p className={isTyping ? "fade-in-up" : ""} style={{ animationDelay: "0.4s" }}>
+            <p className={`${isTyping ? "fade-in-up" : ""} block`} style={{ animationDelay: "0.4s" }}>
               AI as partner, not master. Creating living urban organisms that learn, adapt, and evolve with their inhabitants.
             </p>
-            <p className={isTyping ? "fade-in-up" : ""} style={{ animationDelay: "0.6s" }}>
+            <p className={`${isTyping ? "fade-in-up" : ""} block`} style={{ animationDelay: "0.6s" }}>
               A cultural shift toward sustainable prosperity. Where innovation emerges from anywhere, and the future remains open.
             </p>
           </div>

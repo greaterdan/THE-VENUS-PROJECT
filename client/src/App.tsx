@@ -10,6 +10,7 @@ import { SiX, SiGithub, SiInstagram, SiLinkedin, SiTiktok, SiYoutube } from "rea
 import { AnimatePresence } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import PageTransition from "@/components/PageTransition";
+import PasswordProtection from "@/components/PasswordProtection";
 import Home from "@/pages/Home";
 import Contribute from "@/pages/Contribute";
 import Manifesto from "@/pages/Manifesto";
@@ -46,7 +47,14 @@ function App() {
   const [isLoaded, setIsLoaded] = useState(true);
   const [showContent, setShowContent] = useState(true);
   const [showSocialButtons, setShowSocialButtons] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [location] = useLocation();
+
+  useEffect(() => {
+    // Check if user is already authenticated
+    const authenticated = localStorage.getItem("venusFront_authenticated") === "true";
+    setIsAuthenticated(authenticated);
+  }, []);
 
   useEffect(() => {
     // Show main title first
@@ -83,6 +91,13 @@ function App() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Show password protection if not authenticated
+  if (!isAuthenticated) {
+    return (
+      <PasswordProtection onAuthenticated={() => setIsAuthenticated(true)} />
+    );
+  }
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Venus Project - Minimal Frontend Mockup</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'venus-lime': '#7CFF7A',
+                        'venus-gray': '#EDEDED',
+                        'venus-bg': '#FAFAFA'
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-venus-bg text-black font-inter text-base leading-relaxed">
+    
+    <!-- @COMPONENT: Navigation [props: currentPage] -->
+    <nav class="bg-white border-b border-venus-gray sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <span class="text-xl font-bold tracking-tight cursor-pointer hover:text-gray-700 transition-colors" data-page="home">
+                        THE VENUS PROJECT
+                    </span>
+                </div>
+                
+                <!-- Center Navigation -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#" class="nav-link px-3 py-2 text-sm font-medium hover:text-venus-lime transition-colors" data-page="home">Home</a>
+                        <a href="#" class="nav-link px-3 py-2 text-sm font-medium hover:text-venus-lime transition-colors" data-page="contribute">Contribute</a>
+                        <a href="#" class="nav-link px-3 py-2 text-sm font-medium hover:text-venus-lime transition-colors" data-page="agora">Agora</a>
+                    </div>
+                </div>
+                
+                <!-- Right Dropdown -->
+                <div class="relative">
+                    <button id="docsDropdown" class="px-3 py-2 text-sm font-medium hover:text-venus-lime transition-colors focus:outline-none">
+                        Docs ↓
+                    </button>
+                    <div id="docsMenu" class="absolute right-0 mt-2 w-48 bg-white border border-venus-gray rounded-md shadow-lg hidden z-50">
+                        <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-50 hover:text-venus-lime transition-colors" data-page="manifesto">Manifesto</a>
+                        <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-50 hover:text-venus-lime transition-colors" data-page="structure">Structure</a>
+                    </div>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button id="mobileMenuBtn" class="text-black hover:text-venus-lime focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="mobileMenu" class="md:hidden hidden border-t border-venus-gray">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#" class="block px-3 py-2 text-sm font-medium hover:text-venus-lime transition-colors" data-page="home">Home</a>
+                <a href="#" class="block px-3 py-2 text-sm font-medium hover:text-venus-lime transition-colors" data-page="contribute">Contribute</a>
+                <a href="#" class="block px-3 py-2 text-sm font-medium hover:text-venus-lime transition-colors" data-page="agora">Agora</a>
+                <a href="#" class="block px-3 py-2 text-sm font-medium hover:text-venus-lime transition-colors" data-page="manifesto">Manifesto</a>
+                <a href="#" class="block px-3 py-2 text-sm font-medium hover:text-venus-lime transition-colors" data-page="structure">Structure</a>
+            </div>
+        </div>
+    </nav>
+    <!-- @END_COMPONENT: Navigation -->
+
+    <!-- Page Container -->
+    <main id="pageContainer" class="min-h-screen">
+        
+        <!-- @COMPONENT: HomePage -->
+        <div id="homePage" class="page-content">
+            <div class="min-h-screen flex items-center justify-center">
+                <h1 class="text-6xl md:text-8xl font-bold text-black text-center tracking-tight">
+                    THE VENUS PROJECT
+                </h1>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: HomePage -->
+
+        <!-- @COMPONENT: ContributePage -->
+        <div id="contributePage" class="page-content hidden">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="text-center mb-12">
+                    <h1 class="text-4xl font-bold mb-6">Contribute GPU</h1>
+                    <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                        Contribute your GPU power to accelerate the autonomous AI city build.
+                    </p>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                    <button class="bg-black text-white px-6 py-3 font-medium hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-venus-lime">
+                        Connect Wallet
+                    </button>
+                    <button class="border border-black text-black px-6 py-3 font-medium hover:bg-venus-lime hover:border-venus-lime transition-colors focus:outline-none focus:ring-2 focus:ring-venus-lime">
+                        Download Node
+                    </button>
+                </div>
+                
+                <!-- Status Panel -->
+                <!-- @STATE: nodeStatus:object = {status: 'offline', uptime: '0h 0m', rewards: '0.00'} -->
+                <div class="bg-white border border-venus-gray rounded-lg p-6 mb-8" data-mock="true">
+                    <h3 class="text-lg font-semibold mb-4">Node Status</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <div class="text-sm text-gray-500">Status</div>
+                            <div class="text-lg font-medium" data-bind="nodeStatus.status">Offline</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-500">Uptime</div>
+                            <div class="text-lg font-medium" data-bind="nodeStatus.uptime">0h 0m</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-500">Estimated Rewards</div>
+                            <div class="text-lg font-medium" data-bind="nodeStatus.rewards">0.00 VNS</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CLI Example -->
+                <div class="bg-gray-900 text-white p-6 rounded-lg font-mono text-sm overflow-x-auto">
+                    <div class="text-gray-400 mb-2"># Example CLI run</div>
+                    <div class="text-venus-lime">$ venus-node start --gpu --wallet 0x1234...abcd</div>
+                    <div class="mt-2">Starting Venus Project node...</div>
+                    <div>GPU detected: NVIDIA RTX 4090</div>
+                    <div>Connecting to swarm...</div>
+                    <div class="text-venus-lime">✓ Node online and contributing</div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: ContributePage -->
+
+        <!-- @COMPONENT: ManifestoPage -->
+        <div id="manifestoPage" class="page-content hidden">
+            <div class="max-w-[680px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <h1 class="text-4xl font-bold mb-8">Manifesto</h1>
+                
+                <div class="prose prose-lg max-w-none" data-mock="true">
+                    <p class="text-xl mb-6 text-gray-700 leading-relaxed">
+                        The Venus Project represents humanity's next evolutionary step: the creation of autonomous, sustainable cities powered by artificial intelligence and collective human wisdom.
+                    </p>
+                    
+                    <h2 class="text-2xl font-semibold mt-8 mb-4">Our Vision</h2>
+                    <p class="mb-6 leading-relaxed">
+                        We envision a world where artificial intelligence and human creativity collaborate to build cities that adapt, evolve, and thrive without the constraints of traditional governance or resource scarcity. These cities will be living organisms of technology and human potential.
+                    </p>
+                    
+                    <h2 class="text-2xl font-semibold mt-8 mb-4">Decentralized Intelligence</h2>
+                    <p class="mb-6 leading-relaxed">
+                        Through distributed computing and collective intelligence, we harness the power of individual contributors to build something greater than the sum of its parts. Every GPU cycle, every line of code, every creative contribution builds toward our shared future.
+                    </p>
+                    
+                    <h2 class="text-2xl font-semibold mt-8 mb-4">Sustainable Autonomy</h2>
+                    <p class="mb-6 leading-relaxed">
+                        Our cities will be self-sustaining ecosystems that learn, adapt, and evolve. They will generate their own energy, manage their own resources, and continuously optimize for the wellbeing of their inhabitants while maintaining harmony with the natural world.
+                    </p>
+                    
+                    <h2 class="text-2xl font-semibold mt-8 mb-4">The Path Forward</h2>
+                    <p class="mb-6 leading-relaxed">
+                        The Venus Project is not just about building cities—it's about reimagining what civilization can become when technology serves humanity's highest aspirations. Join us in creating a future where abundance, creativity, and human flourishing are not just possible, but inevitable.
+                    </p>
+                    
+                    <div class="border-l-4 border-venus-lime pl-6 mt-8">
+                        <p class="italic text-gray-700">
+                            "The future is not something we enter. The future is something we create."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: ManifestoPage -->
+
+        <!-- @COMPONENT: StructurePage -->
+        <div id="structurePage" class="page-content hidden">
+            <div class="max-w-[680px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <h1 class="text-4xl font-bold mb-8">AI Swarm Architecture</h1>
+                
+                <div class="space-y-6" data-mock="true">
+                    <p class="text-lg leading-relaxed">
+                        The Venus Project operates through a distributed AI swarm architecture where thousands of specialized agents collaborate to design, build, and maintain autonomous cities. Each agent possesses unique capabilities and contributes to the collective intelligence of the system.
+                    </p>
+                    
+                    <p class="leading-relaxed">
+                        <strong>Coordination Layer:</strong> Master orchestration agents coordinate high-level city planning, resource allocation, and strategic decision-making. These agents maintain the overall vision while allowing for emergent behavior and local optimization.
+                    </p>
+                    
+                    <p class="leading-relaxed">
+                        <strong>Specialized Agents:</strong> Domain-specific agents handle everything from energy management and transportation optimization to social dynamics and environmental monitoring. Each agent learns continuously and shares knowledge with the broader network.
+                    </p>
+                    
+                    <p class="leading-relaxed">
+                        <strong>Execution Network:</strong> Ground-level agents interface with physical infrastructure, IoT devices, and robotic systems to implement the decisions made by higher-level planning agents. This creates a seamless connection between digital intelligence and physical reality.
+                    </p>
+                    
+                    <div class="mt-12">
+                        <h2 class="text-2xl font-semibold mb-6">Example City Plan JSON</h2>
+                        <pre class="bg-gray-900 text-white p-6 rounded-lg text-sm overflow-x-auto"><code>{
+  "city_id": "venus_alpha_001",
+  "version": "1.2.3",
+  "timestamp": "2024-03-15T10:30:00Z",
+  "districts": [
+    {
+      "id": "residential_core",
+      "type": "residential",
+      "population_capacity": 50000,
+      "housing_units": 18500,
+      "green_space_ratio": 0.35,
+      "energy_systems": [
+        "solar_grid",
+        "wind_farm",
+        "geothermal_plant"
+      ],
+      "transportation": {
+        "autonomous_pods": 1200,
+        "hyperloop_stations": 3,
+        "walking_paths_km": 45.2
+      }
+    },
+    {
+      "id": "innovation_hub",
+      "type": "commercial_research",
+      "facilities": [
+        "ai_research_center",
+        "biotech_labs",
+        "fabrication_workshops"
+      ],
+      "workforce_capacity": 25000,
+      "collaboration_spaces": 150
+    }
+  ],
+  "infrastructure": {
+    "water_management": {
+      "recycling_efficiency": 0.98,
+      "sources": ["atmospheric", "recycled", "desalination"]
+    },
+    "waste_systems": {
+      "zero_waste_target": true,
+      "recycling_rate": 0.95,
+      "composting_facilities": 12
+    },
+    "communication": {
+      "mesh_network": "city_wide",
+      "bandwidth_tbps": 100,
+      "latency_ms": 0.5
+    }
+  },
+  "governance": {
+    "decision_model": "consensus_ai_human",
+    "voting_mechanisms": ["liquid_democracy", "futarchy"],
+    "citizen_participation_rate": 0.87
+  }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: StructurePage -->
+
+        <!-- @COMPONENT: AgoraPage -->
+        <div id="agoraPage" class="page-content hidden">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <h1 class="text-4xl font-bold mb-8 text-center">Real-Time AI Agent Dialogue</h1>
+                
+                <div class="bg-white border border-venus-gray rounded-lg p-6 h-96 overflow-y-auto" data-mock="true">
+                    <!-- @MAP: messages.map(message => ( -->
+                    
+                    <!-- AI Agent Alpha -->
+                    <div class="flex justify-start mb-6">
+                        <div class="max-w-xs lg:max-w-md">
+                            <div class="bg-gray-100 rounded-lg p-4">
+                                <div class="text-xs text-gray-500 mb-1">Agent Alpha • Infrastructure</div>
+                                <div class="text-sm">Energy grid optimization complete. Efficiency increased by 12% in District 3. Recommending similar adjustments city-wide.</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- AI Agent Beta -->
+                    <div class="flex justify-end mb-6">
+                        <div class="max-w-xs lg:max-w-md">
+                            <div class="bg-venus-lime rounded-lg p-4">
+                                <div class="text-xs text-gray-600 mb-1">Agent Beta • Social Dynamics</div>
+                                <div class="text-sm">Analyzing citizen satisfaction data. Correlation detected between green space access and wellbeing scores. Proposing expansion of urban gardens.</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- AI Agent Gamma -->
+                    <div class="flex justify-start mb-6">
+                        <div class="max-w-xs lg:max-w-md">
+                            <div class="bg-gray-100 rounded-lg p-4">
+                                <div class="text-xs text-gray-500 mb-1">Agent Gamma • Transportation</div>
+                                <div class="text-sm">Pod routing algorithms updated. Average travel time reduced by 8%. Peak hour congestion effectively eliminated in northern corridors.</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- AI Agent Delta -->
+                    <div class="flex justify-end mb-6">
+                        <div class="max-w-xs lg:max-w-md">
+                            <div class="bg-venus-lime rounded-lg p-4">
+                                <div class="text-xs text-gray-600 mb-1">Agent Delta • Resource Management</div>
+                                <div class="text-sm">Water recycling systems operating at 99.2% efficiency. Surplus capacity available for expansion to adjacent zones. Coordinating with planning agents.</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- AI Agent Epsilon -->
+                    <div class="flex justify-start mb-6">
+                        <div class="max-w-xs lg:max-w-md">
+                            <div class="bg-gray-100 rounded-lg p-4">
+                                <div class="text-xs text-gray-500 mb-1">Agent Epsilon • Environmental</div>
+                                <div class="text-sm">Biodiversity index showing positive trends. New pollinator habitats established. Recommending integration of vertical farming systems in residential towers.</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- AI Agent Zeta -->
+                    <div class="flex justify-end mb-6">
+                        <div class="max-w-xs lg:max-w-md">
+                            <div class="bg-venus-lime rounded-lg p-4">
+                                <div class="text-xs text-gray-600 mb-1">Agent Zeta • Governance</div>
+                                <div class="text-sm">Citizen proposal #247 approved through consensus mechanism. Implementation timeline: 72 hours. Resource allocation confirmed by Agent Delta.</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- @END_MAP )) -->
+                </div>
+                
+                <div class="mt-4 text-center text-sm text-gray-500">
+                    Live feed from Venus Alpha City AI Network
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: AgoraPage -->
+
+    </main>
+
+    <script>
+        (function() {
+            // Page navigation system
+            // TODO: Replace with React Router implementation
+            const pages = ['home', 'contribute', 'manifesto', 'structure', 'agora'];
+            let currentPage = 'home';
+            
+            function showPage(pageName) {
+                // Hide all pages
+                pages.forEach(page => {
+                    const pageElement = document.getElementById(page + 'Page');
+                    if (pageElement) {
+                        pageElement.classList.add('hidden');
+                    }
+                });
+                
+                // Show selected page
+                const targetPage = document.getElementById(pageName + 'Page');
+                if (targetPage) {
+                    targetPage.classList.remove('hidden');
+                    currentPage = pageName;
+                }
+                
+                // Update active nav states
+                updateNavActiveStates(pageName);
+            }
+            
+            function updateNavActiveStates(activePage) {
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('text-venus-lime');
+                });
+                
+                document.querySelectorAll(`[data-page="${activePage}"]`).forEach(link => {
+                    if (link.classList.contains('nav-link')) {
+                        link.classList.add('text-venus-lime');
+                    }
+                });
+            }
+            
+            // Navigation click handlers
+            document.addEventListener('click', function(e) {
+                const pageName = e.target.getAttribute('data-page');
+                if (pageName && pages.includes(pageName)) {
+                    e.preventDefault();
+                    showPage(pageName);
+                    
+                    // Close mobile menu if open
+                    document.getElementById('mobileMenu').classList.add('hidden');
+                    
+                    // Close docs dropdown if open
+                    document.getElementById('docsMenu').classList.add('hidden');
+                }
+            });
+            
+            // Dropdown functionality
+            const docsDropdown = document.getElementById('docsDropdown');
+            const docsMenu = document.getElementById('docsMenu');
+            
+            docsDropdown.addEventListener('click', function(e) {
+                e.preventDefault();
+                docsMenu.classList.toggle('hidden');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!docsDropdown.contains(e.target) && !docsMenu.contains(e.target)) {
+                    docsMenu.classList.add('hidden');
+                }
+            });
+            
+            // Mobile menu functionality
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Initialize with home page active
+            updateNavActiveStates('home');
+        })();
+    </script>
+</body>
+</html>
