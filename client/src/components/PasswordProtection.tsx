@@ -34,30 +34,22 @@ export default function PasswordProtection({ onAuthenticated }: PasswordProtecti
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg p-8 max-w-md w-full"
+        className="bg-white border border-gray-200 rounded-lg p-8 max-w-md w-full shadow-lg"
       >
         <div className="text-center mb-8">
           <motion.h1 
-            className="text-3xl font-bold text-white mb-2"
+            className="text-3xl font-bold text-gray-900 mb-2"
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            VENUS FRONT
+            THE VENUS PROJECT
           </motion.h1>
-          <motion.p 
-            className="text-white/70 text-sm"
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            AGORA Decision War Room
-          </motion.p>
         </div>
 
         <motion.form 
@@ -68,7 +60,7 @@ export default function PasswordProtection({ onAuthenticated }: PasswordProtecti
           transition={{ delay: 0.4 }}
         >
           <div>
-            <label htmlFor="password" className="block text-white/80 text-sm font-medium mb-2">
+            <label htmlFor="password" className="block text-gray-700 text-sm font-medium mb-2">
               Enter Access Code
             </label>
             <input
@@ -76,7 +68,7 @@ export default function PasswordProtection({ onAuthenticated }: PasswordProtecti
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
               placeholder="Enter password..."
               disabled={isLoading}
               autoFocus
@@ -87,7 +79,7 @@ export default function PasswordProtection({ onAuthenticated }: PasswordProtecti
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-red-400 text-sm text-center"
+              className="text-red-600 text-sm text-center"
             >
               {error}
             </motion.div>
@@ -96,7 +88,7 @@ export default function PasswordProtection({ onAuthenticated }: PasswordProtecti
           <motion.button
             type="submit"
             disabled={isLoading || !password}
-            className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -117,7 +109,7 @@ export default function PasswordProtection({ onAuthenticated }: PasswordProtecti
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
         >
-          <p className="text-white/50 text-xs">
+          <p className="text-gray-500 text-xs">
             Secure access to The Venus Project's autonomous city council
           </p>
         </motion.div>
