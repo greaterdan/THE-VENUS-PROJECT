@@ -115,8 +115,6 @@
   height: auto !important;
   overflow: visible !important;
 }
-  background-color: var(--venus-bg);
-}
 
 .venus-lime {
   color: var(--venus-lime);
